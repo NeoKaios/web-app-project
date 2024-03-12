@@ -1,18 +1,18 @@
 version: "3.8"
 services:
-  frontend:
+  frontend-prod:
     build: ./frontend
-    container_name: frontend_c
+    container_name: frontend-prod
     ports:
       - '3000:3000'
-    # volumes:
-    #   - ./frontend:/app
-  backend:
+    volumes:
+      - /app
+  backend-prod:
     build: ./backend
-    container_name: backend_c
+    container_name: backend-prod
     ports:
       - '4000:4000'
     stdin_open: true
     tty: true
-    # volumes:
-    #   - ./backend:/app
+    volumes:
+      - /app

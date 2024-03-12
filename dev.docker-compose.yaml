@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  frontend-dev:
+    build: ./frontend
+    container_name: frontend-dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules/
+  backend-dev:
+    build: ./backend
+    container_name: backend-dev
+    ports:
+      - '4000:4000'
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./backend:/app
+      - /app/node_modules/
