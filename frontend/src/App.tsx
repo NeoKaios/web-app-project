@@ -1,24 +1,14 @@
-import logo from "./logo.svg";
-import "./App.css";
-import React, { useEffect } from "react";
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
 
 function App() {
-  const fetchData = async () => {
-    const res = await fetch("http://localhost:4000/");
-    console.log(res);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
-      Modification ?!!! working?
+          Edit <code>src/App.tsx</code> and save to reload.
         </p>
         <a
           className="App-link"
