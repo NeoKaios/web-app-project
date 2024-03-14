@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const crypto = require('crypto');
@@ -19,8 +20,8 @@ const app = express()
 app.use(cors())
    .use(cookieParser());
 
-var client_id = 'd3052685fe6a4264af840d25e9977fd5'; // your clientId
-var client_secret = '9e016ccb85be45c4a6e72c1fae440dbb'; // Your secret
+var client_id = process.env.CLIENT_ID;
+var client_secret = process.env.CLIENT_SECRET;
 var redirect_uri = 'http://localhost:4000/callback'; // Your redirect uri
 
 app.get('/login', (req, res) => {
@@ -30,7 +31,7 @@ app.get('/login', (req, res) => {
     res.cookie(stateKey, state);
 
     // your application requests authorization
-    var scope = 'user-read-private user-read-email';
+    var scope = '';
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
