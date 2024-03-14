@@ -7,3 +7,4 @@ rules:
     - - front
       - back
       - config
+      - web

@@ -1,38 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import logo from './assets/logo.svg';
 import './App.scss';
-
-function getHashParams() {
-    var hashParams: any = {};
-    var e, r = /([^&;=]+)=?([^&;]*)/g,
-        q = window.location.hash.substring(1);
-    while ( e = r.exec(q)) {
-                hashParams[e[1]] = decodeURIComponent(e[2]);
-            }
-            return hashParams;
-        }
+import { SimplifiedPlaylist } from 'spotify-types';
+import { fetchTracks } from './lib/fetchPlaylist';
+import { PlaylistList } from './components';
+import { getHashParams } from './lib/utils';
 
 function App() {
-    const params = getHashParams();
+const [playlists, setPlaylists] = useState<SimplifiedPlaylist[]>();
+
+  const params = getHashParams();
+  const logged = params.access_token !== undefined;
+  const getPlaylistsAsync = async () => {
+    setPlaylists(await fetchTracks(params.access_token));
+  };
+
+  if(logged && playlists === undefined) {
+      getPlaylistsAsync();
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a href="http://localhost:4000/login">Login</a>
-        <p>Access token: { params.access_token }</p>
+        { logged ?
+        <div className='tokens'><p>Access token: { params.access_token }</p>
         <p>Refresh token: { params.refresh_token }</p>
         <p>Error: { params.error }</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        </div>
+        : null }
+        { logged ? <a href='http://localhost:3000/'>Log out</a>
+        : <a href="http://localhost:4000/login">Login</a> }
+        { playlists ?
+        <div>
+            <p>List of playlists:</p>
+            <PlaylistList playlists={playlists}></PlaylistList>
+        </div>
+        : null }
       </header>
     </div>
   );
