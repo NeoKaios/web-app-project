@@ -32,7 +32,6 @@ app.get('/login', (req, res) => {
 
     // your application requests authorization
     var scope = '';
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',
@@ -92,11 +91,9 @@ app.get('/callback', function(req, res) {
             });
 
             // we can also pass the token to the browser to make requests from there
-            res.redirect('http://localhost:3000/#' +
-                querystring.stringify({
-                    access_token: access_token,
-                    refresh_token: refresh_token
-                }));
+            res.cookie('access_token', access_token);
+            res.cookie('refresh_token', refresh_token);
+            res.redirect('http://localhost:3000/');
         } else {
             res.redirect('http://localhost:3000/#' +
                 querystring.stringify({

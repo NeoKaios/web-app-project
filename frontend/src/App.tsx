@@ -4,19 +4,25 @@ import "./App.scss";
 import { SimplifiedPlaylist } from "spotify-types";
 import { fetchTracks } from "./lib/fetchPlaylist";
 import { PlaylistList } from "./components";
-import { getHashParams } from "./lib/utils";
+import { getCookie, removeCookie } from "./lib/cookie";
+
+function logout() {
+  removeCookie('access_token');
+  removeCookie('refresh_token');
+}
 
 function App() {
   const [playlists, setPlaylists] = useState<SimplifiedPlaylist[]>();
 
-  const params = getHashParams();
-  const logged = params.access_token !== undefined;
-  const getPlaylistsAsync = async () => {
-    setPlaylists(await fetchTracks(params.access_token));
+  const access_token = getCookie('access_token');
+  const logged = access_token !== undefined;
+
+  const getPlaylistsAsync = async (access_token: string) => {
+    setPlaylists(await fetchTracks(access_token));
   };
 
   if (logged && playlists === undefined) {
-    getPlaylistsAsync();
+    getPlaylistsAsync(access_token);
   }
 
   return (
@@ -24,14 +30,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         {logged ? (
-          <div className="tokens">
-            <p>Access token: {params.access_token}</p>
-            <p>Refresh token: {params.refresh_token}</p>
-            <p>Error: {params.error}</p>
-          </div>
-        ) : null}
-        {logged ? (
-          <a href="http://localhost:3000/">Log out</a>
+          <a href="http://localhost:3000/" onClick={logout}>Log out</a>
         ) : (
           <a href="http://localhost:4000/login">Login</a>
         )}
