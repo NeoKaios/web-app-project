@@ -36,7 +36,7 @@ function App() {
         }
       });
     }
-  }, []);
+  }, [access_token, refresh_token]);
 
   return (
     <div className="App">

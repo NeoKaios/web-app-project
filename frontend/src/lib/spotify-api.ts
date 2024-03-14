@@ -8,7 +8,7 @@ export async function checkToken(access_token: string) {
     }
   });
 
-  if (response.status == 401) {
+  if (response.status === 401) {
     return false;
   }
 
