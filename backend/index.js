@@ -85,11 +85,6 @@ app.get('/callback', function(req, res) {
                 json: true
             };
 
-            // use the access token to access the Spotify Web API
-            request.get(options, function(error, response, body) {
-                console.log(body);
-            });
-
             // we can also pass the token to the browser to make requests from there
             res.cookie('access_token', access_token);
             res.cookie('refresh_token', refresh_token);
@@ -101,6 +96,33 @@ app.get('/callback', function(req, res) {
                 }));
         }
     });
+});
+
+app.get('/refresh_token', function(req, res) {
+  console.log('Got token refresh request');
+
+  var refresh_token = req.query.refresh_token;
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64'))
+    },
+    form: {
+      grant_type: 'refresh_token',
+      refresh_token: refresh_token
+    },
+    json: true
+  };
+
+  request.post(authOptions, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      var access_token = body.access_token;
+      res.cookie('access_token', access_token)
+      res.cookie('refresh_token', refresh_token);
+      res.redirect('http://localhost:3000/');
+    }
+  });
 });
 
 app.listen(4000, () => {

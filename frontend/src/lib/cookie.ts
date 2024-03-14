@@ -1,7 +1,11 @@
-import { ACCESS_TOKEN_COOKIE } from "./consts";
+import { ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from "./consts";
 
 export function getAccessToken() {
   return getCookie(ACCESS_TOKEN_COOKIE);
+}
+
+export function getRefreshToken() {
+  return getCookie(REFRESH_TOKEN_COOKIE);
 }
 
 export function getCookie(key: string) {
