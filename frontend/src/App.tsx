@@ -1,29 +1,17 @@
-import React, { useState } from "react";
 import logo from "./assets/logo.svg";
 import "./App.scss";
-import { SimplifiedPlaylist } from "spotify-types";
-import { fetchTracks } from "./lib/fetchPlaylist";
 import { PlaylistList } from "./components";
 import { getCookie, removeCookie } from "./lib/cookie";
+import { ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from "./lib/consts";
 
 function logout() {
-  removeCookie('access_token');
-  removeCookie('refresh_token');
+  removeCookie(ACCESS_TOKEN_COOKIE);
+  removeCookie(REFRESH_TOKEN_COOKIE);
 }
 
 function App() {
-  const [playlists, setPlaylists] = useState<SimplifiedPlaylist[]>();
-
-  const access_token = getCookie('access_token');
+  const access_token = getCookie(ACCESS_TOKEN_COOKIE);
   const logged = access_token !== undefined;
-
-  const getPlaylistsAsync = async (access_token: string) => {
-    setPlaylists(await fetchTracks(access_token));
-  };
-
-  if (logged && playlists === undefined) {
-    getPlaylistsAsync(access_token);
-  }
 
   return (
     <div className="App">
@@ -34,12 +22,7 @@ function App() {
         ) : (
           <a href="http://localhost:4000/login">Login</a>
         )}
-        {playlists ? (
-          <div>
-            <p>List of playlists:</p>
-            <PlaylistList playlists={playlists}></PlaylistList>
-          </div>
-        ) : null}
+        {logged ? <PlaylistList></PlaylistList> : null}
       </header>
     </div>
   );

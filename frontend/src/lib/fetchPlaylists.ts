@@ -1,6 +1,6 @@
 import { SimplifiedPlaylist } from "spotify-types";
 
-export const fetchTracks = async (apiToken: string): Promise<SimplifiedPlaylist[]> => {
+export const fetchPlaylists = async (apiToken: string): Promise<SimplifiedPlaylist[]> => {
   const response = await fetch('https://api.spotify.com/v1/me/playlists', {
     method: 'GET',
     headers: {
