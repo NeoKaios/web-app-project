@@ -1,7 +1,8 @@
 .playlist-li {
-    display: flex;
-    flex-flow: column nowrap;
-    .playlist-el {
-        margin-block: .5rem;
-    }
+  display: flex;
+  flex-flow: column nowrap;
+
+  .playlist-el {
+    margin-block: .5rem;
+  }
 }
