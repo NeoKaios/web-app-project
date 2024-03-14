@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { SimplifiedPlaylist } from "spotify-types";
 import { PlaylistElement } from "..";
-import { ACCESS_TOKEN_COOKIE } from "../../lib/consts";
-import { getCookie } from "../../lib/cookie";
+import { getAccessToken } from "../../lib/cookie";
 import { fetchPlaylists } from "../../lib/fetchPlaylists";
 import './playlist-list.scss';
 
@@ -13,7 +12,7 @@ export function PlaylistList() {
     setPlaylists(await fetchPlaylists(access_token));
   };
 
-  const access_token = getCookie(ACCESS_TOKEN_COOKIE);
+  const access_token = getAccessToken();
 
   if (access_token === undefined) {
     return null;

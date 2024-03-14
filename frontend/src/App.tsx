@@ -1,7 +1,7 @@
 import logo from "./assets/logo.svg";
 import "./App.scss";
 import { PlaylistList } from "./components";
-import { getCookie, removeCookie } from "./lib/cookie";
+import { getAccessToken, removeCookie } from "./lib/cookie";
 import { ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from "./lib/consts";
 
 function logout() {
@@ -10,7 +10,7 @@ function logout() {
 }
 
 function App() {
-  const access_token = getCookie(ACCESS_TOKEN_COOKIE);
+  const access_token = getAccessToken();
   const logged = access_token !== undefined;
 
   return (

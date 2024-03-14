@@ -1,3 +1,9 @@
+import { ACCESS_TOKEN_COOKIE } from "./consts";
+
+export function getAccessToken() {
+  return getCookie(ACCESS_TOKEN_COOKIE);
+}
+
 export function getCookie(key: string) {
   var b = document.cookie.match("(^|;)\\s*" + key + "\\s*=\\s*([^;]+)");
   return b ? b.pop() : undefined;
