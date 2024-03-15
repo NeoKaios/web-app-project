@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { SimplifiedPlaylist } from "spotify-types";
 import { fetchPlaylists } from "./lib/fetchPlaylists";
 import { checkToken } from "./lib/spotify-api";
+import { Player } from "./components/player/Player";
+import { TestAPI } from "./components/test-api/TestAPI";
 
 function logout() {
   removeCookie(ACCESS_TOKEN_COOKIE);
@@ -16,6 +18,7 @@ function logout() {
 function App() {
   const [playlists, setPlaylists] = useState<SimplifiedPlaylist[]>();
   const [logged, setLogged] = useState(false);
+  const [testing, setTest] = useState(false);
 
   const access_token = getAccessToken();
   const refresh_token = getRefreshToken();
@@ -25,17 +28,18 @@ function App() {
   };
 
   useEffect(() => {
-    if (access_token) {
-      checkToken(access_token).then((isValid) => {
-        console.log("Token validity : ", isValid);
-        if (isValid) {
-          getPlaylistsAsync(access_token);
-          setLogged(true);
-        } else { // Invalid token : generate a new one
-          window.location.href = BACK_URL + 'refresh_token?refresh_token=' + refresh_token;
-        }
-      });
-    }
+    const fun = async () => {
+      if (!access_token) return;
+      const isValid = await checkToken(access_token);
+      console.log("Token validity : ", isValid);
+      if (isValid) {
+        getPlaylistsAsync(access_token);
+        setLogged(true);
+      } else { // Invalid token : generate a new one
+        window.location.href = BACK_URL + 'refresh_token?refresh_token=' + refresh_token;
+      }
+    };
+    fun();
   }, []);
 
   return (
@@ -49,6 +53,8 @@ function App() {
         )}
         {logged && playlists ? <PlaylistList playlists={playlists}></PlaylistList> : null}
       </header>
+      { logged && testing && access_token && <TestAPI access_token={ access_token } /> }
+      <button onClick={ () => setTest(!testing) }>Test : { testing ? "On" : "Off" }</button>
     </div>
   );
 }

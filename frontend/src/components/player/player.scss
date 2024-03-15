@@ -1,0 +1,38 @@
+$scale: 0.85;
+
+.player {
+  .spotify-logo {
+    height: 10vmax;
+
+    &:active {
+      animation: spotify-logo-scale infinite 1s ease;
+    }
+  }
+
+  &.playing {
+    .spotify-logo {
+      animation: spotify-logo-rotate infinite 1s ease;
+    }
+
+    &:hover {
+    }
+  }
+}
+
+@keyframes spotify-logo-scale {
+  0% {
+    transform: scale($scale);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes spotify-logo-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
