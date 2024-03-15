@@ -1,7 +1,10 @@
 $scale: 0.85;
+$alert-color: #e66465ff;
 
 .player {
+
   .spotify-logo {
+    border-radius: 50%;
     height: 10vmax;
 
     &:active {
@@ -14,7 +17,8 @@ $scale: 0.85;
       animation: spotify-logo-rotate infinite 1s ease;
     }
 
-    &:hover {
+    &.end .spotify-logo {
+      animation: spotify-logo-pulse infinite 1s;
     }
   }
 }
@@ -36,3 +40,19 @@ $scale: 0.85;
     transform: rotate(360deg);
   }
 }
+
+@keyframes spotify-logo-pulse {
+  0% {
+    box-shadow: 0 0 0 0 $alert-color;
+    transform: rotate(0deg);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10vmin transparent;
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
