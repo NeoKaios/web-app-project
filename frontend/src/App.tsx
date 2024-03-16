@@ -5,9 +5,9 @@ import { getRefreshToken, removeCookie } from "./lib/cookie";
 import { ACCESS_TOKEN_COOKIE, BACK_URL, FRONT_URL, REFRESH_TOKEN_COOKIE } from "./lib/consts";
 import { useCallback, useState } from "react";
 import { SimplifiedPlaylist } from "spotify-types";
-import { fetchPlaylists } from "./lib/fetchPlaylists";
 import { TestAPI } from "./components/test-api/TestAPI";
 import { Oauth } from "./components/oauth/Oauth";
+import { SpotifyAPI } from "./lib/spotify-api";
 
 function logout() {
   removeCookie(ACCESS_TOKEN_COOKIE);
@@ -21,7 +21,8 @@ function App() {
 
   const onValidToken = useCallback((access_token: string) => {
     const getPlaylistsAsync = async () => {
-      setPlaylists(await fetchPlaylists(access_token));
+      const api = new SpotifyAPI();
+      setPlaylists(await api.getUserPlaylists(access_token));
     };
     getPlaylistsAsync();
     setAccessToken(access_token);
