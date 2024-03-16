@@ -118,9 +118,7 @@ app.get('/refresh_token', function(req, res) {
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token;
-      res.cookie('access_token', access_token)
-      res.cookie('refresh_token', refresh_token);
-      res.redirect('http://localhost:3000/');
+      return res.send(access_token);
     }
   });
 });
