@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardContent, CardMedia, SvgIconTypeMap, Typography } from '@mui/material';
+import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
 export function ModeCard({ image, title, description, href }: { image: JSX.Element, title: string, description: string, href: string }) {

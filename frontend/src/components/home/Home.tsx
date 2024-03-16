@@ -41,7 +41,7 @@ export function Home() {
                 chosenPlaylist ? (
                   <>
                     <IconButton aria-label="unselect playlist" size="large" onClick={() => setChosenPlaylist(undefined)}><ArrowBackIcon /></IconButton>
-                    <ModeSelector />
+                    <ModeSelector playlist={chosenPlaylist} />
                   </>
                 )
                   : <PlaylistTable playlists={playlists} callback={setChosenPlaylist} />

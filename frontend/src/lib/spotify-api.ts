@@ -57,8 +57,8 @@ export class SpotifyAPI {
   }
 
   @failSafe
-  async getPlaylistItems(access_token: string, playlist: SimplifiedPlaylist): Promise<SimplifiedTrack[]> {
-    const response = await this.requestAPI(access_token, `${SPOTIFY_URL}playlists/${playlist.id.toString()}/tracks`);
+  async getPlaylistItems(access_token: string, playlist_id: string): Promise<SimplifiedTrack[]> {
+    const response = await this.requestAPI(access_token, `${SPOTIFY_URL}playlists/${playlist_id}/tracks`);
     const data = await response.json() as { items: SimplifiedTrack[] };
     return data.items.map((elem: any) => elem.track);
   }

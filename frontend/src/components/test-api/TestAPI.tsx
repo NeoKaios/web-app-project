@@ -13,7 +13,7 @@ export function TestAPI() {
     const fn = async () => {
       const playlists = await api.getUserPlaylists(access_token);
       if (!playlists?.length || playlists.length < 1) return;
-      const playlistItems = await api.getPlaylistItems(access_token, playlists[0]);
+      const playlistItems = await api.getPlaylistItems(access_token, playlists[0].id.toString());
       if (!playlistItems?.[0]) return;
       setTrack(playlistItems[0].preview_url);
     };

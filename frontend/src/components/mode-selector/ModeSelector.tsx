@@ -5,8 +5,9 @@ import BookIcon from '@mui/icons-material/Book';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';
 import { STUDY_URL } from "../../lib/consts";
+import { SimplifiedPlaylist } from "spotify-types";
 
-export function ModeSelector() {
+export function ModeSelector({ playlist }: { playlist: SimplifiedPlaylist }) {
   const learningIcon = (<BookIcon sx={{
     fontSize: "15vmin"
   }} />);
@@ -26,7 +27,7 @@ export function ModeSelector() {
         <ModeCard image={learningIcon}
           title="Study"
           description="Learn your songs in an adaptative manner using an anki-based approach."
-          href={STUDY_URL}
+          href={STUDY_URL + "/" + playlist.id.toString()}
         />
         <ModeCard image={trainingIcon}
           title="Training"
