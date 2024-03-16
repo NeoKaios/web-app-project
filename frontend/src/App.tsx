@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { SimplifiedPlaylist } from "spotify-types";
 import { fetchPlaylists } from "./lib/fetchPlaylists";
 import { checkToken } from "./lib/spotify-api";
-import { Player } from "./components/player/Player";
 import { TestAPI } from "./components/test-api/TestAPI";
 
 function logout() {

@@ -16,7 +16,7 @@ function ensureToken(target: any, key: string, descriptor: PropertyDescriptor) {
 
   descriptor.value = async function(this: any, ...args: any[]) {
     const answer = await checkToken(args[0]);
-    if (answer == false) {
+    if (answer === false) {
       console.log("Wrong token : ", answer);
       return;
     }
@@ -28,7 +28,7 @@ function ensureToken(target: any, key: string, descriptor: PropertyDescriptor) {
 
 export async function checkToken(access_token: string) {
   const response = await fetch(SPOTIFY_URL + 'me', DEFAULT_HEADER(access_token));
-  if (response.status == 200) {
+  if (response.status === 200) {
     return true;
   }
   return false;

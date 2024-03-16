@@ -15,7 +15,7 @@ export function TestAPI({ access_token }: { access_token: string }) {
       setTrack(playlistItems[0].preview_url);
     };
     fn();
-  }, []);
+  }, [access_token]);
 
   return (
     <div className="test">

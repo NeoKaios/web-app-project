@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './player.scss';
 import logo from "./assets/logo.svg";
 
@@ -9,12 +9,12 @@ export function Player({ preview_url }: { preview_url: string }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio] = useState(new Audio(preview_url));
 
-  const resetCounter = () => {
+  const resetCounter = useCallback(() => {
     setCounter(0);
     setIsPlaying(false);
     audio.currentTime = 0;
     audio.pause();
-  };
+  }, [audio]);
 
   useEffect(() => {
     let intervalId: NodeJS.Timer;
@@ -28,7 +28,7 @@ export function Player({ preview_url }: { preview_url: string }) {
       }, 1000)
     };
     return () => clearInterval(intervalId);
-  }, [isPlaying, counter]);
+  }, [isPlaying, counter, resetCounter]);
 
   const play = () => {
     if (isPlaying) {
@@ -41,7 +41,7 @@ export function Player({ preview_url }: { preview_url: string }) {
   };
 
   return (
-    <div className={"player" + (isPlaying ? " playing" : "") + ((isPlaying && (counter <=3)) ? " end" : "")} onClick={play}>
+    <div className={"player" + (isPlaying ? " playing" : "") + ((isPlaying && (counter <= 3)) ? " end" : "")} onClick={play}>
       <img src={logo} className="spotify-logo" alt="logo" />
     </div>
   );
