@@ -16,9 +16,9 @@ export function Oauth({ onValidToken }: { onValidToken: (access_token: string) =
         onValidToken(access_token);
       } else { // Invalid token : generate a new one
         const res = await fetch(BACK_URL + 'refresh_token?refresh_token=' + refresh_token);
-        const refreshed_token = await res.text();
-        setCookie('access_token', refreshed_token);
-        setAccessToken(refreshed_token);
+        const new_access_token = await res.text();
+        setCookie('access_token', new_access_token);
+        setAccessToken(new_access_token);
       }
     };
     fun();

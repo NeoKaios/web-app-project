@@ -35,6 +35,12 @@ export async function checkToken(access_token: string) {
 }
 
 export class SpotifyAPI {
+  private static Instance: SpotifyAPI = new SpotifyAPI();
+
+  static getInstance() {
+    return SpotifyAPI.Instance;
+  }
+
   async requestAPI(access_token: string, uri: string) {
     const response = await fetch(uri, {
       method: 'GET',

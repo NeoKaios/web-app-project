@@ -23,7 +23,7 @@ export function Home() {
 
   const onValidToken = useCallback((access_token: string) => {
     const getPlaylistsAsync = async () => {
-      const api = new SpotifyAPI();
+      const api = SpotifyAPI.getInstance();
       setPlaylists(await api.getUserPlaylists(access_token));
     };
     getPlaylistsAsync();

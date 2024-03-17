@@ -9,7 +9,7 @@ export function TestAPI() {
 
   const onValidToken = useCallback((access_token: string) => {
     setAccessToken(access_token);
-    const api = new SpotifyAPI();
+    const api = SpotifyAPI.getInstance();
     const fn = async () => {
       const playlists = await api.getUserPlaylists(access_token);
       if (!playlists?.length || playlists.length < 1) return;
