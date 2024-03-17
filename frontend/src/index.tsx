@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.scss';
 import { TestAPI } from './components/test-api/TestAPI';
 import { Home } from './components/home/Home';
-import { Training } from './components/training/Training';
+import { Study } from './components/study/Study';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/study/:playlist_id",
-    element: <Training />,
+    element: <Study />,
   },
 ]);
 

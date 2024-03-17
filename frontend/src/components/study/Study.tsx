@@ -5,7 +5,7 @@ import { SpotifyAPI } from '../../lib/spotify-api';
 import { Oauth } from '../oauth/Oauth';
 import { Player } from '../player/Player';
 
-export function Training() {
+export function Study() {
   const { playlist_id } = useParams() as { playlist_id: string };
   const [access_token, setAccessToken] = useState('');
   const [tracks, setTracks] = useState<SimplifiedTrack[]>();
