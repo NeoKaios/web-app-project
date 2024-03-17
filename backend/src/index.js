@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
 const request = require('request');
+require('./db.js');
 
 const generateRandomString = (length) => {
   return crypto
@@ -121,6 +122,10 @@ app.get('/refresh_token', function(req, res) {
       return res.send(access_token);
     }
   });
+});
+
+app.get('/user/:user_id', function(req, res) {
+  return res.send('lqlqqlqlqlq' + req.params.user_id);
 });
 
 app.listen(4000, () => {

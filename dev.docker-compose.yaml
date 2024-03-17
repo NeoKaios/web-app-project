@@ -8,9 +8,25 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules/
+  db-dev:
+    image: mysql:latest
+    container_name: db-dev
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    expose:
+      - '3306'
+    volumes:
+      - db-dev-volume:/var/lib/mysql
   backend-dev:
+    depends_on:
+      - db-dev
     build: ./backend
     container_name: backend-dev
+    environment:
+      - DB_HOST=db-dev
+      - DB_PORT=3306
     ports:
       - '4000:4000'
     stdin_open: true
@@ -18,3 +34,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules/
+
+volumes:
+  db-dev-volume:
+
