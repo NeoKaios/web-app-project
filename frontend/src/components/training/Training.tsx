@@ -12,7 +12,7 @@ export function Training() {
 
   const onValidToken = useCallback((access_token: string) => {
     setAccessToken(access_token);
-    const api = new SpotifyAPI();
+    const api = SpotifyAPI.getInstance();
     const fn = async () => {
       const playlist_items = await api.getPlaylistItems(access_token, playlist_id);
       playlist_items !== undefined && setTracks(playlist_items);
