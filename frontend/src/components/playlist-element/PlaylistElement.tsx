@@ -14,7 +14,7 @@ export function PlaylistElement({ playlist, callback }: { playlist: SimplifiedPl
         alt={"Playlist " + playlist.name}
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography noWrap textAlign="center" gutterBottom variant="h5" component="div">
           {playlist.name}
         </Typography>
       </CardContent>

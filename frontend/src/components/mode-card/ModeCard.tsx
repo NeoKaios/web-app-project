@@ -4,12 +4,12 @@ import Grid from '@mui/material/Grid';
 export function ModeCard({ image, title, description, href }: { image: JSX.Element, title: string, description: string, href: string }) {
   return (
     <Grid item>
-      <Card sx={{ width: 345 }}>
-        <CardActionArea href={href}>
+      <Card sx={{ width: 300, height: "100%" }}>
+        <CardActionArea href={href} sx={{ height: "100%", display: "flex", alignItems: "start" }}>
+        <CardContent sx={{ textAlign: "center" }}>
           <CardMedia>
             {image}
           </ CardMedia>
-          <CardContent>
             <Typography gutterBottom variant="h5" component="div">
               {title}
             </Typography>
