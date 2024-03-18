@@ -25,7 +25,7 @@ var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
 var redirect_uri = 'http://localhost:4000/callback'; // Your redirect uri
 
-app.get('/login', (req, res) => {
+app.get('/login', (_req, res) => {
     console.log('Got login request')
 
     var state = generateRandomString(16);
