@@ -1,0 +1,20 @@
+header.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  margin-block-end: 3rem;
+  background-color: pink;
+  height: 50px;
+
+  img.logo {
+    height: 100%;
+  }
+
+  h1,
+  .log-btn {
+    margin: unset;
+  }
+
+}

@@ -1,18 +1,16 @@
 import { useCallback, useState } from 'react';
-import { SpotifyAPI } from '../../lib/spotify-api';
-import { Oauth, Player } from '..';
+import { Player } from '..';
+import { useSpotifyAPI } from '../../lib/spotify-api-provider';
 
 export function TestAPI() {
-  const [access_token, setAccessToken] = useState('');
+const api = useSpotifyAPI();
   const [track, setTrack] = useState('');
 
   const onValidToken = useCallback((access_token: string) => {
-    setAccessToken(access_token);
-    const api = SpotifyAPI.getInstance();
     const fn = async () => {
-      const playlists = await api.getUserPlaylists(access_token);
+      const playlists = await api.getUserPlaylists();
       if (!playlists?.length || playlists.length < 1) return;
-      const playlistItems = await api.getPlaylistItems(access_token, playlists[0].id.toString());
+      const playlistItems = await api.getPlaylistItems(playlists[0].id.toString());
       if (!playlistItems?.[0]) return;
       setTrack(playlistItems[0].preview_url);
     };
@@ -21,7 +19,6 @@ export function TestAPI() {
 
   return (
     <>
-      <Oauth onValidToken={onValidToken} />
       <div className="test">
         {track !== "" && (<>
           <Player preview_url={track} />

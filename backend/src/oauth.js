@@ -78,7 +78,7 @@ function oauthCallback(req, res) {
             // we can also pass the token to the browser to make requests from there
             res.cookie('access_token', access_token);
             res.cookie('refresh_token', refresh_token);
-            res.redirect('http://localhost:3000/');
+            res.redirect('http://localhost:3000/home');
         } else {
             res.redirect('http://localhost:3000/#' +
                 querystring.stringify({

@@ -7,7 +7,7 @@ export function PlaylistTable({ playlists, callback }: { playlists: SimplifiedPl
     <div className="playlist-table">
       <Grid container justifyContent="center" spacing={2} maxWidth="1000px">
         {playlists.map((playlist) => (
-          <Grid item>
+          <Grid item key={playlist.id}>
             <PlaylistElement playlist={playlist} callback={callback}/>
           </Grid>
         ))}
