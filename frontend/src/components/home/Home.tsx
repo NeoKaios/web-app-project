@@ -1,4 +1,4 @@
-import './Home.scss';
+import './home.scss';
 import { useCallback, useState } from 'react';
 import { SimplifiedPlaylist } from 'spotify-types';
 import { ACCESS_TOKEN_COOKIE, BACK_URL, FRONT_URL, REFRESH_TOKEN_COOKIE } from '../../lib/consts';
@@ -7,7 +7,7 @@ import { SpotifyAPI } from '../../lib/spotify-api';
 import { Oauth } from '../oauth/Oauth';
 import { PlaylistTable } from '../playlist-table/PlaylistTable';
 import { ModeSelector } from '../mode-selector/ModeSelector';
-import { Button, IconButton } from '@mui/material';
+import { Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import logo from "../../assets/logo.svg";
 
@@ -46,10 +46,10 @@ export function Home() {
           <Oauth onValidToken={onValidToken} />
           {access_token !== '' && playlists && (
             chosenPlaylist ? (
-              <>
-                <IconButton aria-label="unselect playlist" size="large" onClick={() => setChosenPlaylist(undefined)}><ArrowBackIcon /></IconButton>
+              <div className='mode-selector'>
+                <Button color="inherit" aria-label="unselect playlist" className="back-btn" onClick={() => setChosenPlaylist(undefined)}><ArrowBackIcon className="back-icon"/></Button>
                 <ModeSelector playlist={chosenPlaylist} />
-              </>
+              </div>
             ) : <PlaylistTable playlists={playlists} callback={setChosenPlaylist} />
           )}
         </>
