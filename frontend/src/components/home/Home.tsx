@@ -9,6 +9,7 @@ import { PlaylistTable } from '../playlist-table/PlaylistTable';
 import { ModeSelector } from '../mode-selector/ModeSelector';
 import { Button, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import logo from "../../assets/logo.svg";
 
 function logout() {
   removeCookie(ACCESS_TOKEN_COOKIE);
@@ -32,29 +33,27 @@ export function Home() {
 
   return (
     <div className="home-panel">
+      <nav className='header'>
+        <img src={logo} className="logo" alt="App logo" />
+        <h1>Spotify BlindTest Learner</h1>
+        {loggedIn ?
+          <Button className="log-btn" href={FRONT_URL} variant="contained" onClick={logout}>Log out</Button>
+          : <Button className="log-btn" href={BACK_URL + "login"} variant="contained">Login</Button>
+        }
+      </nav>
       {loggedIn ? (
         <>
           <Oauth onValidToken={onValidToken} />
-          {access_token !== '' && (
-            <>
-              {playlists && (
-                chosenPlaylist ? (
-                  <>
-                    <IconButton aria-label="unselect playlist" size="large" onClick={() => setChosenPlaylist(undefined)}><ArrowBackIcon /></IconButton>
-                    <ModeSelector playlist={chosenPlaylist} />
-                  </>
-                )
-                  : <PlaylistTable playlists={playlists} callback={setChosenPlaylist} />
-              )}
-              <div className="logout">
-                <Button className="logout" href={FRONT_URL} variant="contained" onClick={logout}>Log out</Button>
-              </div>
-            </>
+          {access_token !== '' && playlists && (
+            chosenPlaylist ? (
+              <>
+                <IconButton aria-label="unselect playlist" size="large" onClick={() => setChosenPlaylist(undefined)}><ArrowBackIcon /></IconButton>
+                <ModeSelector playlist={chosenPlaylist} />
+              </>
+            ) : <PlaylistTable playlists={playlists} callback={setChosenPlaylist} />
           )}
         </>
-      ) : (
-        <a href={BACK_URL + "login"}>Login</a>
-      )}
+      ) : null}
     </div>
   );
 }
