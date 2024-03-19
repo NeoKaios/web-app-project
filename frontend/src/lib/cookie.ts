@@ -14,11 +14,7 @@ export function getCookie(key: string) {
 }
 
 export function setCookie(key: string, value: string) {
-  const cookies = document.cookie.split(';');
-  const index = cookies.findIndex((x) => x.match('^' + key + '=\\s*'));
-  if (index === -1) return;
-  cookies[index] = key + '=' + value;
-  document.cookie = cookies.join(';');
+  document.cookie = `${key}=${value};path=/;`;
 }
 
 export function removeCookie(key: string) {
