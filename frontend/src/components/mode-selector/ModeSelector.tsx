@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { ModeCard } from "../mode-card/ModeCard";
+import { ModeCard } from "..";
 import BookIcon from '@mui/icons-material/Book';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';

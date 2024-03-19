@@ -2,8 +2,7 @@ import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { SimplifiedTrack } from 'spotify-types';
 import { SpotifyAPI } from '../../lib/spotify-api';
-import { Oauth } from '../oauth/Oauth';
-import { Player } from '../player/Player';
+import { Oauth, Player } from '..';
 
 export function Study() {
   const { playlist_id } = useParams() as { playlist_id: string };
