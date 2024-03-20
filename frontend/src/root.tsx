@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import { useAuth } from "./components";
+import { useAuth } from "./providers/auth-provider";
 import logo from "./assets/logo.svg";
 import './root.scss';
 

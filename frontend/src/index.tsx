@@ -2,12 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.scss';
-import { TestAPI } from './components/test-api/TestAPI';
-import { Home } from './components/home/Home';
-import { Study } from './components/study/Study';
-import { AuthProvider } from './components';
+import { SessionSelector, Study, TestAPI } from './components';
 import { Root } from './root';
-import { SpotifyAPIProvider } from './lib/spotify-api-provider';
+import { AuthProvider } from './providers/auth-provider';
+import { SpotifyAPIProvider } from './providers/spotify-api-provider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -27,7 +25,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/home",
-            element: <Home />,
+            element: <SessionSelector />,
           },
           {
             path: "/api",

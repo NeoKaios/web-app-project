@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Player } from '..';
-import { useSpotifyAPI } from '../../lib/spotify-api-provider';
+import { useSpotifyAPI } from '../../providers/spotify-api-provider';
 
 export function TestAPI() {
 const api = useSpotifyAPI();

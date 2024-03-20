@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { SimplifiedTrack } from 'spotify-types';
 import { Player } from '..';
-import { useSpotifyAPI } from '../../lib/spotify-api-provider';
+import { useSpotifyAPI } from '../../providers/spotify-api-provider';
 
 export function Study() {
   const api = useSpotifyAPI();

@@ -1,12 +1,12 @@
-import './home.scss';
-import { useEffect, useState } from 'react';
+import './session-selector.scss';
+import { useState } from 'react';
 import { SimplifiedPlaylist } from 'spotify-types';
 import { ModeSelector, PlaylistTable } from '..';
 import { Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useSpotifyAPI } from '../../lib/spotify-api-provider';
+import { useSpotifyAPI } from '../../providers/spotify-api-provider';
 
-export function Home() {
+export function SessionSelector() {
   const spotifyAPI = useSpotifyAPI();
   const [playlists, setPlaylists] = useState<SimplifiedPlaylist[]>();
   const [chosenPlaylist, setChosenPlaylist] = useState<SimplifiedPlaylist>();

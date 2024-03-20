@@ -1,7 +1,7 @@
 import { useContext, createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN_COOKIE, BACK_URL, REFRESH_TOKEN_COOKIE } from "../../lib/consts";
-import { getAccessToken, getRefreshToken, removeCookie, setCookie } from "../../lib/cookie";
+import { ACCESS_TOKEN_COOKIE, BACK_URL, REFRESH_TOKEN_COOKIE } from "../lib/consts";
+import { getAccessToken, getRefreshToken, removeCookie, setCookie } from "../lib/cookie";
 
 const AuthContext = createContext<any>(null);
 
