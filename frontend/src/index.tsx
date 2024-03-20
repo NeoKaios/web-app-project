@@ -5,7 +5,11 @@ import './index.scss';
 import { SessionSelector, Study, TestAPI } from './components';
 import { Root } from './root';
 import { AuthProvider } from './providers/auth-provider';
-import { SpotifyAPIProvider } from './providers/spotify-api-provider';
+import { loader as spotifyAPILoader, SpotifyAPIProvider } from './providers/spotify-api-provider';
+import { HomePage } from './routes/home-page';
+import { ErrorPage } from './routes/error-page';
+import { PlaylistSelectionPage, loader as playlistLoader } from './routes/playlist-selection-page';
+import { APIErrorPage } from './routes/api-error-page';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,19 +17,26 @@ const root = ReactDOM.createRoot(
 
 const router = createBrowserRouter([
   {
-    element: <AuthProvider><Root/></AuthProvider>,
-    errorElement: <div>Error page</div>,
+    element: <AuthProvider><Root /></AuthProvider>,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
-        element: <div style={{textAlign: "center"}}>Please login</div>,
+        element: <HomePage />,
       },
       {
         element: <SpotifyAPIProvider />,
+        loader: spotifyAPILoader,
+        errorElement: <APIErrorPage />,
         children: [
           {
             path: "/home",
             element: <SessionSelector />,
+          },
+          {
+            path: "/home2",
+            element: <PlaylistSelectionPage />,
+            loader: playlistLoader,
           },
           {
             path: "/api",

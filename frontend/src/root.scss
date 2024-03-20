@@ -8,6 +8,10 @@ header.header {
   background-color: pink;
   height: 50px;
 
+  &.loading {
+    background-color: greenyellow;
+  }
+
   img.logo {
     height: 100%;
   }

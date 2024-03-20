@@ -20,12 +20,18 @@ export async function checkToken(access_token: string) {
 
 export class SpotifyAPI {
   private auth: any;
+  private static _instance: SpotifyAPI = new SpotifyAPI();
 
-  constructor(auth: any) {
-    this.auth = auth;
+  static setAuth(auth: any) {
+    SpotifyAPI.Instance.auth = auth;
   }
 
-  async requestAPI(uri: string) {
+  static get Instance() {
+    return SpotifyAPI._instance;
+  }
+
+  private async requestAPI(uri: string) {
+    if(!this.auth) throw new Error("User is not connected");
     const response = await fetch(uri, DEFAULT_HEADER(this.auth.token));
     if (response.status === 401) {
       this.auth.refreshToken();
