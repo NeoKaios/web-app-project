@@ -4,13 +4,17 @@
 
 Simply run:
 ```
-docker compose up
+npm run dev
 ```
 
 The website is available at http://localhost:3000.
 
 
-## Dev
+## Dev on docker
+
+`npm run dev`
+
+## Dev locally
 
 ```
 cd frontend
