@@ -1,7 +1,7 @@
 import { useContext, createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN_COOKIE, BACK_URL, REFRESH_TOKEN_COOKIE } from "../lib/consts";
-import { getAccessToken, getRefreshToken, removeCookie, setCookie } from "../lib/cookie";
+import { getCookie, removeCookie, setCookie } from "../lib/cookie";
 
 const AuthContext = createContext<any>(null);
 
@@ -10,19 +10,14 @@ const loginAction = () => {
 };
 
 export function AuthProvider({ children }: any) {
-  const [token, setToken] = useState(getAccessToken() || "");
-  const refresh_token = getRefreshToken();
+  const [token, setToken] = useState(getCookie(ACCESS_TOKEN_COOKIE) || "");
+  const refresh_token = getCookie(REFRESH_TOKEN_COOKIE);
   const navigate = useNavigate();
-
-  if (token !== '') {
-    localStorage.setItem("site", token);
-  }
 
   const logout = () => {
     removeCookie(ACCESS_TOKEN_COOKIE);
     removeCookie(REFRESH_TOKEN_COOKIE);
     setToken("");
-    localStorage.removeItem("site");
     navigate("/");
   };
 
@@ -31,7 +26,6 @@ export function AuthProvider({ children }: any) {
     const new_access_token = await res.text();
     setCookie('access_token', new_access_token);
     setToken(new_access_token);
-    localStorage.setItem('site', new_access_token)
   }
 
   const setOld = () => {
