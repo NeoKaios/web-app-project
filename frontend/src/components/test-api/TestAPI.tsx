@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import { Player } from '..';
-import { useSpotifyAPI } from '../../providers/spotify-api-provider';
+import { SpotifyAPI } from '../../lib/spotify-api';
 
 export function TestAPI() {
-const api = useSpotifyAPI();
+  const api = SpotifyAPI.Instance;
   const [track, setTrack] = useState('');
 
   const onValidToken = useCallback((access_token: string) => {

@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.scss';
-import { SessionSelector, Study, TestAPI } from './components';
-import { Root } from './root';
+import { Study, TestAPI } from './components';
+import { Root } from './routes/root';
 import { AuthProvider } from './providers/auth-provider';
-import { loader as spotifyAPILoader, SpotifyAPIProvider } from './providers/spotify-api-provider';
 import { HomePage } from './routes/home-page';
 import { ErrorPage } from './routes/error-page';
 import { PlaylistSelectionPage, loader as playlistLoader } from './routes/playlist-selection-page';
-import { APIErrorPage } from './routes/api-error-page';
+import { loader as spotifyAPILoader, APIErrorPage } from './routes/api-error-page';
+import { loader as studyLoader } from './components/study/Study';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -25,16 +25,11 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        element: <SpotifyAPIProvider />,
         loader: spotifyAPILoader,
         errorElement: <APIErrorPage />,
         children: [
           {
             path: "/home",
-            element: <SessionSelector />,
-          },
-          {
-            path: "/home2",
             element: <PlaylistSelectionPage />,
             loader: playlistLoader,
           },
@@ -44,6 +39,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/study/:playlist_id",
+            loader: studyLoader,
             element: <Study />,
           },
         ]
@@ -53,7 +49,7 @@ const router = createBrowserRouter([
 ]);
 
 root.render(
-  <React.StrictMode>
+    <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
+    </React.StrictMode>
 );

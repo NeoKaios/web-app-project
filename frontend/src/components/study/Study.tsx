@@ -1,25 +1,27 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { SimplifiedTrack } from 'spotify-types';
+import { useLoaderData } from 'react-router-dom';
 import { Player } from '..';
-import { useSpotifyAPI } from '../../providers/spotify-api-provider';
+import { SpotifyAPI } from '../../lib/spotify-api';
+
+export async function loader({ params: { playlist_id } }: any) {
+  console.log('study loader, loading: ', playlist_id);
+  return await SpotifyAPI.Instance.getPlaylistItems(playlist_id);
+}
 
 export function Study() {
-  const api = useSpotifyAPI();
-  const { playlist_id } = useParams() as { playlist_id: string };
-  const [tracks, setTracks] = useState<SimplifiedTrack[]>();
+  const tracks = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-  const fn = async () => {
-    const playlist_items = await api.getPlaylistItems(playlist_id);
-    playlist_items !== undefined && setTracks(playlist_items);
-  };
-  if (tracks === undefined) fn();
+  do { //TODO: should be a map
+    var idx = Math.floor(Math.random() * tracks.length);
+    var selected_url = tracks[idx].preview_url;
+  } while(!selected_url)
+
+  console.log(tracks[idx].name);
+  console.log(tracks[idx].artists.map(ar => {return ar.name}));
+
   return (
     <div className="training-panel">
-      {tracks && (<>
-        <Player preview_url={tracks[Math.floor(Math.random() * tracks.length)].preview_url} />
-        <p>Play your song !</p>
-      </>)}
+      <Player preview_url={selected_url} />
+      <p>Play your song !</p>
     </div>
   );
 }

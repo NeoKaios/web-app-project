@@ -1,0 +1,14 @@
+.mode-selector {
+  display: flex;
+  justify-content: center;
+
+  .back-btn {
+    border-radius: 4px;
+    width: 6rem;
+
+    .back-icon {
+      height: 3rem;
+      width: 3rem;
+    }
+  }
+}
