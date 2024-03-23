@@ -50,5 +50,4 @@ export function spotifyAPILoader() {
     throw new Error(ERROR_NOT_LOGGED_IN);
   }
   setToken(token)
-  return null;
 }

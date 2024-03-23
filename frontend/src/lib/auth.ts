@@ -20,7 +20,7 @@ export async function refreshToken() {
   const res = await fetch(BACK_URL + 'refresh_token?refresh_token=' + refresh_token);
   console.log('Refreshed token');
   const new_access_token = await res.text();
-  setCookie(ACCESS_TOKEN_COOKIE, new_access_token);
+  setToken(new_access_token)
   return new_access_token;
 }
 
