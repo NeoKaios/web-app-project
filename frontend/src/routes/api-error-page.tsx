@@ -1,17 +1,5 @@
 import { Navigate, useRouteError } from "react-router-dom";
-import { ERROR_NOT_LOGGED_IN, ACCESS_TOKEN_COOKIE } from "../lib/consts";
-import { getCookie } from "../lib/cookie";
-import { SpotifyAPI } from "../lib/spotify-api";
-
-export function loader() {
-  console.log('called spoapi load');
-  const token = getCookie(ACCESS_TOKEN_COOKIE);
-  if(!token) {
-    throw new Error(ERROR_NOT_LOGGED_IN);
-  }
-  SpotifyAPI.setToken(token)
-  return null;
-}
+import { ERROR_NOT_LOGGED_IN } from "../lib/consts";
 
 export function APIErrorPage() {
   const error: any = useRouteError();

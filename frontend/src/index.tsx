@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.scss';
-import { Study, TestAPI } from './components';
+import { Study } from './components';
 import { Root } from './routes/root';
-import { AuthProvider } from './providers/auth-provider';
 import { HomePage } from './routes/home-page';
 import { ErrorPage } from './routes/error-page';
 import { PlaylistSelectionPage, loader as playlistLoader } from './routes/playlist-selection-page';
-import { loader as spotifyAPILoader, APIErrorPage } from './routes/api-error-page';
+import { APIErrorPage } from './routes/api-error-page';
 import { loader as studyLoader } from './components/study/Study';
+import { spotifyAPILoader } from './lib/spotify-api';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(
 
 const router = createBrowserRouter([
   {
-    element: <AuthProvider><Root /></AuthProvider>,
+    element: <Root />,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -32,10 +32,6 @@ const router = createBrowserRouter([
             path: "/home",
             element: <PlaylistSelectionPage />,
             loader: playlistLoader,
-          },
-          {
-            path: "/api",
-            element: <TestAPI />,
           },
           {
             path: "/study/:playlist_id",

@@ -1,10 +1,10 @@
 import { useLoaderData } from 'react-router-dom';
 import { Player } from '..';
-import { SpotifyAPI } from '../../lib/spotify-api';
+import { getPlaylistItems } from '../../lib/spotify-api';
 
 export async function loader({ params: { playlist_id } }: any) {
-  console.log('study loader, loading: ', playlist_id);
-  return await SpotifyAPI.Instance.getPlaylistItems(playlist_id);
+  console.log('Loading study mode with playlist_id = ', playlist_id);
+  return await getPlaylistItems(playlist_id);
 }
 
 export function Study() {

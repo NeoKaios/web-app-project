@@ -5,12 +5,12 @@ import { SimplifiedPlaylist } from "spotify-types";
 import { ModeSelector, PlaylistTable } from "../components";
 import { WEB_SPOTIFY_URL } from "../lib/consts";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { SpotifyAPI } from "../lib/spotify-api";
 import './playlist-selection-page.scss';
+import { getUserPlaylists } from "../lib/spotify-api";
 
 export async function loader() {
-  console.log('loader playlist page');
-  return await SpotifyAPI.Instance.getUserPlaylists();
+  console.log('Loading playlist selection page...');
+  return await getUserPlaylists();
 }
 
 export function PlaylistSelectionPage() {

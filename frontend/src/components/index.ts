@@ -4,4 +4,3 @@ export { Player } from "./player/Player";
 export { PlaylistElement } from "./playlist-element/PlaylistElement";
 export { PlaylistTable } from "./playlist-table/PlaylistTable";
 export { Study } from "./study/Study";
-export { TestAPI } from "./test-api/TestAPI";
