@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import mysql from "mysql2";
-import { Sequelize } from "sequelize";
+import { Model, Op, QueryTypes, Sequelize } from "sequelize";
 import { UserModel } from "./models/user";
 import { ProgressionModel } from "./models/progression";
 import { DB_HOST, DB_PASSWORD, DB_PORT } from "./consts";
+import { INITIAL_EF, INITIAL_INTERVAL, INITIAL_REPETITIONS, SM2State, updateSM2 } from "./lib/SM2";
 
 // Only to create database if it does not exist (the app should crash on first request,
 // but subsequent requests should work)
@@ -42,7 +43,23 @@ const User = UserModel(sequelize);
 const Progression = ProgressionModel(sequelize);
 sequelize.sync();
 
+export async function dbTest(req: Request, res: Response) {
+  const micronoyau = await User.create({ username: 'micronoyau' });
+  const progression = await Progression.create({
+    user: micronoyau.get('id'),
+    playlist: 1,
+    song: 1,
+    repetitions: 0,
+    ef: 2.5,
+    interval: 1
+  });
+  return res.send();
+}
+
 export async function dbGetUserData(req: Request<{ user_id: string }>, res: Response) {
+  /*
+   * Get registered users data
+   */
   const username = await User.findAll({
     where: {
       id: req.params.user_id
@@ -53,17 +70,58 @@ export async function dbGetUserData(req: Request<{ user_id: string }>, res: Resp
 }
 
 export async function dbGetStudySong(req: Request<{ user_id: string, playlist_id: string }>, res: Response) {
+  /*
+   * Get a random song for study.
+   * First reviews all learned songs so far, and if the list is empty, returns a new song.
+   */
+  // TODO : Use sequelize built-in functions ?
+  const progression = await sequelize.query(`SELECT song FROM Progressions
+                                            WHERE UNIX_TIMESTAMP(createdAt) + \`interval\`*3600*24 < UNIX_TIMESTAMP(CURDATE())
+                                            AND user = ${req.params.user_id}
+                                            AND playlist = ${req.params.playlist_id};`,
+    { type: QueryTypes.SELECT });
+
+  // First time practicing or no more songs to learn : Try a new song
+  if (progression.length == 0) return res.send();
+  // Random song
+  return res.send(progression[Math.floor(Math.random()*progression.length)]);
+}
+
+export async function dbUpdateStudySong(req: Request<{ user_id: string, playlist_id: string, song_id: string, quality: number }>, res: Response) {
+  /*
+   * Update SM2 score based on user feedback
+   */
   const progression = await Progression.findAll({
-    attributes: ['song', 'delay'],
     where: {
       user: req.params.user_id,
-      playlist: req.params.playlist_id
+      playlist: req.params.playlist_id,
+      song: req.params.song_id
     }
   });
 
-  // First time practicing : return a random song
+  let [repetitions, ef, interval] = [0,0,0];
+  let prog: Model;
+
+  // First time studying this song
   if (progression.length == 0) {
-    // TODO
+    prog = await Progression.create({
+      user: req.params.user_id,
+      playlist: req.params.playlist_id,
+      song: req.params.song_id
+    });
+    [repetitions, ef, interval] = [INITIAL_REPETITIONS, INITIAL_EF, INITIAL_INTERVAL];
+
+  } else {
+    prog = progression[0];
+    ({ repetitions, ef, interval } = prog.toJSON());
   }
-  return res.send(progression[0]);
+
+  // Update score
+  ({ repetitions, ef, interval } = updateSM2(req.params.quality, repetitions, ef, interval));
+  prog.set('repetitions', repetitions);
+  prog.set('ef', ef);
+  prog.set('interval', interval);
+  prog.save();
+
+  return res.send();
 }
