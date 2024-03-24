@@ -2,13 +2,13 @@ import { useLoaderData } from 'react-router-dom';
 import { Player } from '..';
 import { getPlaylistItems } from '../../lib/spotify-api';
 
-export async function loader({ params: { playlist_id } }: any) {
+export async function studyLoader({ params: { playlist_id } }: any) {
   console.log('Loading study mode with playlist_id = ', playlist_id);
   return await getPlaylistItems(playlist_id);
 }
 
 export function Study() {
-  const tracks = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const tracks = useLoaderData() as Awaited<ReturnType<typeof studyLoader>>;
 
   do { //TODO: should be a map
     var idx = Math.floor(Math.random() * tracks.length);

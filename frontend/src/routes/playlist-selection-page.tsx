@@ -8,13 +8,13 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './playlist-selection-page.scss';
 import { getUserPlaylists } from "../lib/spotify-api";
 
-export async function loader() {
+export async function playlistLoader() {
   console.log('Loading playlist selection page...');
   return await getUserPlaylists();
 }
 
 export function PlaylistSelectionPage() {
-  const playlists = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const playlists = useLoaderData() as Awaited<ReturnType<typeof playlistLoader>>;
   const [chosenPlaylist, setChosenPlaylist] = useState<SimplifiedPlaylist>();
 
   const unsetPlaylist = () => setChosenPlaylist(undefined);

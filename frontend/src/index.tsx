@@ -6,9 +6,9 @@ import { Study } from './components';
 import { Root } from './routes/root';
 import { HomePage } from './routes/home-page';
 import { ErrorPage } from './routes/error-page';
-import { PlaylistSelectionPage, loader as playlistLoader } from './routes/playlist-selection-page';
+import { PlaylistSelectionPage, playlistLoader } from './routes/playlist-selection-page';
 import { APIErrorPage } from './routes/api-error-page';
-import { loader as studyLoader } from './components/study/Study';
+import { studyLoader } from './components/study/Study';
 import { spotifyAPILoader } from './lib/spotify-api';
 
 const root = ReactDOM.createRoot(
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
 ]);
 
 root.render(
-    <React.StrictMode>
+  <React.StrictMode>
     <RouterProvider router={router} />
-    </React.StrictMode>
+  </React.StrictMode>
 );

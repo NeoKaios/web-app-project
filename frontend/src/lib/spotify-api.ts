@@ -49,5 +49,6 @@ export function spotifyAPILoader() {
   if(!token) {
     throw new Error(ERROR_NOT_LOGGED_IN);
   }
-  setToken(token)
+  setToken(token);
+  return null; // Cannot be void function
 }
