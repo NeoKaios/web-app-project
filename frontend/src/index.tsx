@@ -10,6 +10,7 @@ import { PlaylistSelectionPage, playlistLoader } from './routes/playlist-selecti
 import { APIErrorPage } from './routes/api-error-page';
 import { studyLoader } from './components/study/Study';
 import { spotifyAPILoader } from './lib/spotify-api';
+import { trainingLoader, TrainingPage } from './routes/training-page';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -37,6 +38,11 @@ const router = createBrowserRouter([
             path: "/study/:playlist_id",
             loader: studyLoader,
             element: <Study />,
+          },
+          {
+            path: "/train/:playlist_id",
+            element: <TrainingPage />,
+            loader: trainingLoader,
           },
         ]
       }

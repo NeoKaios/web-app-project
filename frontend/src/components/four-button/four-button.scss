@@ -1,0 +1,14 @@
+.four-button {
+  display: grid;
+  grid-template-areas: 1fr 1fr , 1fr 1fr; //TODO
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+
+  width: 600px;
+  height: 140px;
+
+  button {
+
+  }
+}
