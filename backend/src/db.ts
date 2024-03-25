@@ -77,14 +77,17 @@ export async function dbGetStudySong(req: Request<{ user_id: string, playlist_id
   // TODO : Use sequelize built-in functions ?
   const progression = await sequelize.query(`SELECT song FROM Progressions
                                             WHERE UNIX_TIMESTAMP(createdAt) + \`interval\`*3600*24 < UNIX_TIMESTAMP(CURDATE())
-                                            AND user = ${req.params.user_id}
-                                            AND playlist = ${req.params.playlist_id};`,
-    { type: QueryTypes.SELECT });
+                                            AND user = :user_id
+                                            AND playlist = :playlist_id;`,
+    {
+      type: QueryTypes.SELECT,
+      replacements: { user_id: req.params.user_id, playlist_id: req.params.playlist_id }
+    });
 
   // First time practicing or no more songs to learn : Try a new song
   if (progression.length == 0) return res.send();
   // Random song
-  return res.send(progression[Math.floor(Math.random()*progression.length)]);
+  return res.send(progression[Math.floor(Math.random() * progression.length)]);
 }
 
 export async function dbUpdateStudySong(req: Request<{ user_id: string, playlist_id: string, song_id: string, quality: number }>, res: Response) {
@@ -99,7 +102,7 @@ export async function dbUpdateStudySong(req: Request<{ user_id: string, playlist
     }
   });
 
-  let [repetitions, ef, interval] = [0,0,0];
+  let [repetitions, ef, interval] = [0, 0, 0];
   let prog: Model;
 
   // First time studying this song
