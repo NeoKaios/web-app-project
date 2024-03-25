@@ -14,3 +14,5 @@ export const DB_PASSWORD = process.env.MYSQL_ROOT_PASSWORD ?? '';
 
 export const CLIENT_ID = process.env.CLIENT_ID || '';
 export const CLIENT_SECRET = process.env.CLIENT_SECRET || '';
+
+// User id : jjtbsq2q93ktjkdp44j4ovgyc

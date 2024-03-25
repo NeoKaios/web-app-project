@@ -1,10 +1,10 @@
-import { FLOAT, INTEGER, Sequelize } from "sequelize";
+import { FLOAT, INTEGER, STRING, Sequelize } from "sequelize";
 
 export function ProgressionModel(sequelize: Sequelize) {
   return sequelize.define('Progression', {
-    user: { type: INTEGER, primaryKey: true, autoIncrement: false },
-    playlist: { type: INTEGER, primaryKey: true, autoIncrement: false },
-    song: { type: INTEGER, primaryKey: true, autoIncrement: false },
+    user: { type: STRING, primaryKey: true },
+    playlist: { type: STRING, primaryKey: true },
+    song: { type: STRING, primaryKey: true },
     repetitions: { type: INTEGER },
     ef: { type: FLOAT },
     interval: { type: INTEGER },

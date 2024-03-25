@@ -56,9 +56,22 @@ export async function dbTest(req: Request, res: Response) {
   return res.send();
 }
 
+export async function dbRegisterUser(req: Request<{ user_id: string, username: string }>, res: Response) {
+  /*
+   * Register user in DB
+   */
+  const user = await User.findOrCreate({
+    where: {
+      id: req.params.user_id,
+      username: req.params.username
+    }
+  });
+  return res.send();
+}
+
 export async function dbGetUserData(req: Request<{ user_id: string }>, res: Response) {
   /*
-   * Get registered users data
+   * Get registered user data
    */
   const username = await User.findAll({
     where: {
@@ -69,25 +82,32 @@ export async function dbGetUserData(req: Request<{ user_id: string }>, res: Resp
   return res.send(username[0]);
 }
 
-export async function dbGetStudySong(req: Request<{ user_id: string, playlist_id: string }>, res: Response) {
+export async function dbGetStudySongs(req: Request<{ user_id: string, playlist_id: string }>, res: Response) {
   /*
-   * Get a random song for study.
-   * First reviews all learned songs so far, and if the list is empty, returns a new song.
+   * Returns all studied (registered) songs so far + songs to study
    */
-  // TODO : Use sequelize built-in functions ?
-  const progression = await sequelize.query(`SELECT song FROM Progressions
-                                            WHERE UNIX_TIMESTAMP(createdAt) + \`interval\`*3600*24 < UNIX_TIMESTAMP(CURDATE())
+  const toStudy = await sequelize.query(`SELECT song FROM Progressions
+                                            WHERE UNIX_TIMESTAMP(updatedAt) + \`interval\`*3600*24 < UNIX_TIMESTAMP(CURDATE())
                                             AND user = :user_id
                                             AND playlist = :playlist_id;`,
     {
       type: QueryTypes.SELECT,
       replacements: { user_id: req.params.user_id, playlist_id: req.params.playlist_id }
-    });
+    }
+  ) as { song: string }[];
 
-  // First time practicing or no more songs to learn : Try a new song
-  if (progression.length == 0) return res.send();
-  // Random song
-  return res.send(progression[Math.floor(Math.random() * progression.length)]);
+  const studied = await Progression.findAll({
+    attributes: ["song"],
+    where: {
+      user: req.params.user_id,
+      playlist: req.params.playlist_id
+    }
+  });
+
+  return res.send({
+    toStudy: toStudy.map(t => t.song),
+    studied: studied.map(t => t.dataValues.song)
+  });
 }
 
 export async function dbUpdateStudySong(req: Request<{ user_id: string, playlist_id: string, song_id: string, quality: number }>, res: Response) {
@@ -124,7 +144,7 @@ export async function dbUpdateStudySong(req: Request<{ user_id: string, playlist
   prog.set('repetitions', repetitions);
   prog.set('ef', ef);
   prog.set('interval', interval);
-  prog.save();
+  await prog.save();
 
   return res.send();
 }

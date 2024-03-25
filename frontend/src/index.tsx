@@ -2,14 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.scss';
-import { Study } from './components';
 import { Root } from './routes/root';
 import { HomePage } from './routes/home-page';
 import { ErrorPage } from './routes/error-page';
 import { PlaylistSelectionPage, playlistLoader } from './routes/playlist-selection-page';
 import { APIErrorPage } from './routes/api-error-page';
-import { studyLoader } from './components/study/Study';
 import { spotifyAPILoader } from './lib/spotify-api';
+import { studyLoader, StudyPage } from './routes/study-page';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -36,7 +35,7 @@ const router = createBrowserRouter([
           {
             path: "/study/:playlist_id",
             loader: studyLoader,
-            element: <Study />,
+            element: <StudyPage />,
           },
         ]
       }

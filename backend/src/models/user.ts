@@ -1,8 +1,8 @@
-import { INTEGER, STRING, Sequelize } from "sequelize";
+import { STRING, Sequelize } from "sequelize";
 
 export function UserModel(sequelize: Sequelize) {
     return sequelize.define('User', {
-        id: { type: INTEGER, primaryKey: true, autoIncrement: true },
+        id: { type: STRING, primaryKey: true },
         username: { type: STRING, primaryKey: true, allowNull: false }
     });
 }

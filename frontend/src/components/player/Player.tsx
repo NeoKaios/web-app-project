@@ -7,13 +7,27 @@ const DEFAULT_TIME = 15;
 export function Player({ preview_url }: { preview_url: string }) {
   const [counter, setCounter] = useState(DEFAULT_TIME);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audio] = useState(new Audio(preview_url));
+  const [audio, setAudio] = useState(new Audio(preview_url));
 
   const resetCounter = useCallback(() => {
     setCounter(0);
     setIsPlaying(false);
     audio.currentTime = 0;
     audio.pause();
+  }, [audio]);
+
+  useEffect(() => {
+    audio.src = preview_url;
+    // audio.play();
+    audio.load();
+    // console.log("lkjelfkqjeflqkjef");
+    // audio.pause();
+    // setAudio(new Audio(preview_url));
+  }, [preview_url]);
+
+  useEffect(() => {
+    // console.log('lkelkj');
+    // audio.load();
   }, [audio]);
 
   useEffect(() => {

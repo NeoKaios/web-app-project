@@ -1,4 +1,4 @@
-import { SimplifiedPlaylist, SimplifiedTrack } from "spotify-types";
+import { SimplifiedPlaylist, SimplifiedTrack, PublicUser } from "spotify-types";
 import { getToken, refreshToken, setToken } from "./auth";
 import { ERROR_NOT_LOGGED_IN, SPOTIFY_URL } from "./consts";
 
@@ -31,13 +31,19 @@ async function requestAPI(uri: string): Promise<Response> {
   return response;
 }
 
-export async function getUserPlaylists(): Promise < SimplifiedPlaylist[] > {
+export async function getUserData(): Promise<PublicUser> {
+  const response = await requestAPI(`${SPOTIFY_URL}me`);
+  const data = await response.json() as PublicUser;
+  return data;
+}
+
+export async function getUserPlaylists(): Promise<SimplifiedPlaylist[]> {
   const response = await requestAPI(`${SPOTIFY_URL}me/playlists`);
   const data = await response.json() as { items: SimplifiedPlaylist[] };
   return data.items;
 }
 
-export async function getPlaylistItems(playlist_id: string): Promise < SimplifiedTrack[] > {
+export async function getPlaylistItems(playlist_id: string): Promise<SimplifiedTrack[]> {
   const response = await requestAPI(`${SPOTIFY_URL}playlists/${playlist_id}/tracks`);
   const data = await response.json() as { items: SimplifiedTrack[] };
   return data.items.map((elem: any) => elem.track);
@@ -46,7 +52,7 @@ export async function getPlaylistItems(playlist_id: string): Promise < Simplifie
 export function spotifyAPILoader() {
   console.log('API Loading...');
   const token = getToken();
-  if(!token) {
+  if (!token) {
     throw new Error(ERROR_NOT_LOGGED_IN);
   }
   setToken(token);
