@@ -1,62 +1,55 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './player.scss';
 import logo from "../../assets/logo.svg";
 
 const DEFAULT_TIME = 15;
 
-export function Player({ preview_url }: { preview_url: string }) {
-  const [counter, setCounter] = useState(DEFAULT_TIME);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [audio, setAudio] = useState(new Audio(preview_url));
+enum PlayingState {
+  Init = 'init',
+  Started = 'started',
+  Paused = 'paused',
+}
 
-  const resetCounter = useCallback(() => {
-    setCounter(0);
-    setIsPlaying(false);
-    audio.currentTime = 0;
-    audio.pause();
-  }, [audio]);
+export function Player({ preview_url }: { preview_url: string }) {
+  const [playingState, setPlayingState] = useState(PlayingState.Init);
+  const [audio] = useState(new Audio());
 
   useEffect(() => {
+    setPlayingState(PlayingState.Init);
+    if (!audio.paused) {
+      //Auto play if user clicked while music still playing
+      setTimeout(() => {
+        audio.play();
+        setPlayingState(PlayingState.Started);
+      }, 200);
+    }
     audio.src = preview_url;
-    // audio.play();
     audio.load();
-    // console.log("lkjelfkqjeflqkjef");
-    // audio.pause();
-    // setAudio(new Audio(preview_url));
   }, [preview_url]);
 
   useEffect(() => {
-    // console.log('lkelkj');
-    // audio.load();
-  }, [audio]);
+    audio.ontimeupdate = () => {
+      if (audio.currentTime > DEFAULT_TIME) {
+        audio.pause();
+        audio.currentTime = 0;
+        setPlayingState(PlayingState.Init);
+      }
+    }
+  }, [])
 
-  useEffect(() => {
-    let intervalId: NodeJS.Timer;
-    if (isPlaying) {
-      intervalId = setInterval(() => {
-        if (counter <= 1) {
-          resetCounter();
-        } else {
-          setCounter(counter - 1)
-        }
-      }, 1000)
-    };
-    return () => clearInterval(intervalId);
-  }, [isPlaying, counter, resetCounter]);
-
-  const play = () => {
-    if (isPlaying) {
-      resetCounter();
+  const handleAudio = () => {
+    if (playingState === PlayingState.Started) {
+      setPlayingState(PlayingState.Paused);
+      audio.pause();
     } else {
-      setCounter(DEFAULT_TIME);
-      setIsPlaying(true);
+      setPlayingState(PlayingState.Started);
       audio.play();
     }
   };
 
   return (
-    <div className={"player" + (isPlaying ? " playing" : "") + ((isPlaying && (counter <= 3)) ? " end" : "")} onClick={play}>
-      <img src={logo} className="spotify-logo" alt="logo" />
+    <div className={"player " + playingState} onClick={handleAudio} onAnimationEnd={() => { }}>
+      <img src={logo} className='animated' />
     </div>
   );
 }
