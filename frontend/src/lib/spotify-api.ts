@@ -1,4 +1,4 @@
-import { SimplifiedPlaylist, SimplifiedTrack, PublicUser } from "spotify-types";
+import { SimplifiedPlaylist, Track, PublicUser, Paging, PlaylistTrack } from "spotify-types";
 import { getToken, refreshToken, setToken } from "./auth";
 import { ERROR_NOT_LOGGED_IN, SPOTIFY_URL } from "./consts";
 
@@ -16,7 +16,7 @@ const DEFAULT_HEADER = (access_token: string) => {
 //   return response.status === 200;
 // }
 
-async function requestAPI(uri: string): Promise<Response> {
+async function requestAPI(uri: string): Promise<any> {
   const token = getToken();
   console.log("Calling API with token:", token);
   if (!token) throw new Error(ERROR_NOT_LOGGED_IN);
@@ -28,25 +28,36 @@ async function requestAPI(uri: string): Promise<Response> {
   else if (!response.ok) {
     throw new Error(`Fetching API data at ${uri} failed with status ${response.status}`);
   }
-  return response;
+  return await response.json();
 }
 
 export async function getUserData(): Promise<PublicUser> {
-  const response = await requestAPI(`${SPOTIFY_URL}me`);
-  const data = await response.json() as PublicUser;
-  return data;
+  return await requestAPI(`${SPOTIFY_URL}me`) as PublicUser;
 }
 
 export async function getUserPlaylists(): Promise<SimplifiedPlaylist[]> {
-  const response = await requestAPI(`${SPOTIFY_URL}me/playlists`);
-  const data = await response.json() as { items: SimplifiedPlaylist[] };
+  const data = await requestAPI(`${SPOTIFY_URL}me/playlists`) as { items: SimplifiedPlaylist[] };
   return data.items;
 }
 
-export async function getPlaylistItems(playlist_id: string): Promise<SimplifiedTrack[]> {
-  const response = await requestAPI(`${SPOTIFY_URL}playlists/${playlist_id}/tracks`);
-  const data = await response.json() as { items: SimplifiedTrack[] };
-  return data.items.map((elem: any) => elem.track);
+export async function getPlaylistItems(playlist_id: string): Promise<Track[]> {
+  var url = `${SPOTIFY_URL}playlists/${playlist_id}/tracks?limit=100`;
+  const data = await requestAPI(url) as Paging<PlaylistTrack>;
+  var tracks = data.items.map(elem => elem.track as Track)
+  if (!data.next) {
+    return tracks;
+  }
+
+  var requests: Promise<Paging<PlaylistTrack>>[] = []
+  for (let i = 100; i < data.total; i += 100) {
+    requests.push(requestAPI(url + `&offset=${i}`));
+  }
+  const datas = await Promise.all(requests); //parallelize request for speeeed
+  return tracks.concat(...datas.map(data => data.items.map(elem => elem.track as Track)))
+}
+
+export async function getPlaylist(playlist_id: string): Promise<SimplifiedPlaylist> {
+  return await requestAPI(`${SPOTIFY_URL}playlists/${playlist_id}?fields=!tracks,name,id,images,owner,public,description`) as SimplifiedPlaylist;
 }
 
 export function spotifyAPILoader() {
@@ -55,6 +66,5 @@ export function spotifyAPILoader() {
   if (!token) {
     throw new Error(ERROR_NOT_LOGGED_IN);
   }
-  setToken(token);
   return null; // Cannot be void function
 }
