@@ -32,7 +32,7 @@ async function requestAPI(uri: string): Promise<any> {
 }
 
 export async function getUserData(): Promise<PublicUser> {
-  return await requestAPI(`${SPOTIFY_URL}me`) as PublicUser;
+  return requestAPI(`${SPOTIFY_URL}me`);
 }
 
 export async function getUserPlaylists(): Promise<SimplifiedPlaylist[]> {

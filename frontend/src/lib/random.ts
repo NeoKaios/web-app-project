@@ -1,3 +1,4 @@
+import { ERROR_EMPTY_ARRAY } from "./consts";
 
 /**
  * Return a random int between 0 and max (excluded)
@@ -10,7 +11,8 @@ export function randomInt(max: number) {
  * Return a random element of an array
  */
 export function randomChoice<T>(arr: T[]): T {
-  return arr[randomInt(arr.length)];
+  if (arr.length) return arr[randomInt(arr.length)]
+  throw new Error(ERROR_EMPTY_ARRAY);
 }
 
 /**
@@ -31,5 +33,5 @@ export function randomNChoices<T>(arr: T[], n: number): T[] {
  * Shuffle an array
  */
 export function randomShuffle<T>(arr: T[]): T[] {
-return arr.sort((_, __) => 0.5 - Math.random());
+  return arr.sort((_, __) => 0.5 - Math.random());
 }
