@@ -5,7 +5,7 @@ $alert-color: #e66465ff;
   img,
   svg {
     border-radius: 50%; //for spotify-logo-pulse
-    height: 10vmax;
+    height: 10rem;
   }
 
   &:not(.init) .animated {

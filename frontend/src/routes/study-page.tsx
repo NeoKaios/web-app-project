@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { useLoaderData } from 'react-router-dom';
-import { BACK_URL, ERROR_EMPTY_PLAYLIST, ERROR_UNEXPECTED_BACKEND_ERROR } from '../lib/consts';
-import { useCallback, useEffect, useState } from 'react';
+import { ERROR_EMPTY_PLAYLIST } from '../lib/consts';
+import { useEffect, useState } from 'react';
 import { getPlaylistItems, getUserData } from '../lib/spotify-api';
 import { randomChoice } from '../lib/random';
 import { Player } from '../components';

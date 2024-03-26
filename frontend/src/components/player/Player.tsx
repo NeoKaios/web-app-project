@@ -25,7 +25,7 @@ export function Player({ preview_url }: { preview_url: string }) {
     }
     audio.src = preview_url;
     audio.load();
-  }, [preview_url]);
+  }, [preview_url, audio]);
 
   useEffect(() => {
     audio.ontimeupdate = () => {
@@ -35,7 +35,7 @@ export function Player({ preview_url }: { preview_url: string }) {
         setPlayingState(PlayingState.Init);
       }
     }
-  }, [])
+  }, [audio])
 
   const handleAudio = () => {
     if (playingState === PlayingState.Started) {
@@ -49,7 +49,7 @@ export function Player({ preview_url }: { preview_url: string }) {
 
   return (
     <div className={"player " + playingState} onClick={handleAudio} onAnimationEnd={() => { }}>
-      <img src={logo} className='animated' />
+      <img src={logo} className='animated' alt="Player"/>
     </div>
   );
 }

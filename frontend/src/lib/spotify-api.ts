@@ -1,5 +1,5 @@
 import { SimplifiedPlaylist, Track, PublicUser, Paging, PlaylistTrack } from "spotify-types";
-import { getToken, refreshToken, setToken } from "./auth";
+import { getToken, refreshToken } from "./auth";
 import { ERROR_NOT_LOGGED_IN, SPOTIFY_URL } from "./consts";
 
 const DEFAULT_HEADER = (access_token: string) => {
