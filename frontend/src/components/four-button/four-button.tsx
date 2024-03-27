@@ -1,11 +1,7 @@
 import { randomShuffle } from '../../lib/random';
 import './four-button.scss';
 
-export function FourButton({ choices, noShuffle }: { choices: { text: string, id: string }[], noShuffle: boolean }) {
-
-  const click = (id: string) => {
-    dispatchEvent(new CustomEvent('four-button-click', { detail: id }));
-  }
+export function FourButton({ choices, noShuffle, callback, square }: { choices: { text: string, id: string }[], noShuffle: boolean, square: boolean, callback: any }) {
 
   // Check the array as the correct size
   while (choices.length < 4) {
@@ -16,14 +12,15 @@ export function FourButton({ choices, noShuffle }: { choices: { text: string, id
   choices = noShuffle ? choices : randomShuffle(choices);
 
   return (
-    <div className="four-button">
-      {choices.map(({ text, id }) => {
-        return <button onClick={() => click(id)} key={id}>{text}</button>
+    <div className={"four-button" + (square ? " square" : "")}>
+      {choices.map(({ text, id }, idx) => {
+        return <button className={'color-' + idx} onClick={() => callback(id)} key={id}>{text}</button>
       })}
     </div>
   );
 }
 
 FourButton.defaultProps = {
-  noShuffle: false
+  noShuffle: false,
+  square: false,
 }

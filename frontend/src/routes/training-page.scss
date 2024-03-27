@@ -1,0 +1,12 @@
+.training-page {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 100%;
+  padding-inline: 1rem;
+  gap: 2rem;
+
+  .title {
+    margin: unset;
+  }
+}

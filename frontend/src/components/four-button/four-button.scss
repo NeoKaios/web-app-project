@@ -1,14 +1,70 @@
 .four-button {
   display: grid;
-  grid-template-areas: 1fr 1fr , 1fr 1fr; //TODO
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
   gap: 5px;
 
-  width: 600px;
-  height: 140px;
+  font-size: 1.3rem;
 
+  width: 700px;
+  height: 160px;
+
+  &.square {
+    width: 100%;
+    flex-grow: 1;
+  }
   button {
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #333 !important;
+    font-size: inherit;
+  }
 
+  button.color-0 {
+    background-color: #d13530;
+
+    &:hover {
+      background-color: #b52521;
+    }
+
+    &:active {
+      background-color: #a11915;
+    }
+  }
+
+  button.color-1 {
+    background-color: #37c45d;
+
+    &:hover {
+      background-color: #23ad48;
+    }
+
+    &:active {
+      background-color: #109133;
+    }
+  }
+
+  button.color-2 {
+    background-color: #2b6ac2;
+
+    &:hover {
+      background-color: #1b55a6;
+    }
+
+    &:active {
+      background-color: #0e4087;
+    }
+  }
+
+  button.color-3 {
+    background-color: #dbd51d;
+
+    &:hover {
+      background-color: #b8b211;
+    }
+
+    &:active {
+      background-color: #a6a008;
+    }
   }
 }

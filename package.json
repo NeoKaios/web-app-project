@@ -6,6 +6,7 @@
   },
   "scripts": {
     "prepare": "husky",
-    "dev": "docker compose -f dev.docker-compose.yaml --env-file backend/.env up"
+    "dev": "docker compose -f dev.docker-compose.yaml --env-file backend/.env up",
+    "build": "docker compose -f dev.docker-compose.yaml --env-file backend/.env up --build"
   }
 }
