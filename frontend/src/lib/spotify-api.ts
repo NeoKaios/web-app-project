@@ -1,4 +1,4 @@
-import { SimplifiedPlaylist, Track, Paging, PlaylistTrack } from "spotify-types";
+import { SimplifiedPlaylist, Track, PublicUser, Paging, PlaylistTrack } from "spotify-types";
 import { getToken, refreshToken } from "./auth";
 import { ERROR_NOT_LOGGED_IN, SPOTIFY_URL } from "./consts";
 
@@ -29,6 +29,10 @@ async function requestAPI(uri: string): Promise<any> {
     throw new Error(`Fetching API data at ${uri} failed with status ${response.status}`);
   }
   return await response.json();
+}
+
+export async function getUserData(): Promise<PublicUser> {
+  return requestAPI(`${SPOTIFY_URL}me`);
 }
 
 export async function getUserPlaylists(): Promise<SimplifiedPlaylist[]> {

@@ -1,0 +1,22 @@
+import { BACK_URL, ERROR_UNEXPECTED_BACKEND_ERROR } from "./consts";
+
+async function requestAPI(url: string) {
+  const response = await fetch(BACK_URL + url);
+  if (response.status !== 200) throw new Error(ERROR_UNEXPECTED_BACKEND_ERROR);
+  return await response.json();
+}
+
+/**
+ * Fetches songs to study and all previously encountered songs in database
+ */
+export async function getStudySongs(user_id: string, playlist_id: string): Promise<{ toStudy: string[], studied: string[] }> {
+  return requestAPI(`get_study_songs/${user_id}/${playlist_id}`);
+}
+
+/**
+ * Request backend to update song score
+ */
+export async function updateStudySong(user_id: string, playlist_id: string, song_id: string, quality: number) {
+  await fetch(BACK_URL + `update_study_song/${user_id}/${playlist_id}/${song_id}/${quality}`);
+}
+

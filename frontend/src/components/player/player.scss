@@ -1,34 +1,22 @@
-$scale: 0.85;
 $alert-color: #e66465ff;
 
 .player {
+  display: inline-block;
 
-  .spotify-logo {
-    border-radius: 50%;
-    height: 10vmax;
-
-    &:active {
-      animation: spotify-logo-scale infinite 1s ease;
-    }
+  img,
+  svg {
+    border-radius: 50%; //for spotify-logo-pulse
+    height: 10rem;
   }
 
-  &.playing {
-    .spotify-logo {
-      animation: spotify-logo-rotate infinite 1s ease;
-    }
-
-    &.end .spotify-logo {
-      animation: spotify-logo-pulse infinite 1s;
-    }
+  &:not(.init) .animated {
+    animation:
+      spotify-logo-rotate 1s 15 ease,
+      spotify-logo-pulse 1s 3 12s ease;
   }
-}
 
-@keyframes spotify-logo-scale {
-  0% {
-    transform: scale($scale);
-  }
-  100% {
-    transform: scale(1);
+  &.paused .animated {
+    animation-play-state: paused;
   }
 }
 
@@ -36,6 +24,7 @@ $alert-color: #e66465ff;
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -44,15 +33,9 @@ $alert-color: #e66465ff;
 @keyframes spotify-logo-pulse {
   0% {
     box-shadow: 0 0 0 0 $alert-color;
-    transform: rotate(0deg);
   }
 
   70% {
     box-shadow: 0 0 0 10vmin transparent;
   }
-
-  100% {
-    transform: rotate(360deg);
-  }
 }
-
