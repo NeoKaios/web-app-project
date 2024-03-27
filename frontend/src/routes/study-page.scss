@@ -1,8 +1,22 @@
-.training-panel {
+.study-page {
   text-align: center;
 
-  button {
-    display: block;
-    margin: 1vmin;
+  margin-bottom: 1rem;
+
+  .study-layout {
+    display: flex;
+
+    &.row {
+      flex-direction: row;
+      justify-content: space-between;
+
+      .difficulty-selector {
+        margin-left: 1rem;
+      }
+    }
+
+    &.col {
+      flex-direction: column;
+    }
   }
 }

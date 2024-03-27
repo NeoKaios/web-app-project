@@ -1,16 +1,9 @@
-import { useEffect, useState } from "react";
 import "./FlashCard.scss";
 import questionMark from "../../assets/question-mark.jpg"
 
-export function FlashCard({ description, flipped }: { description: string, flipped: boolean }) {
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  useEffect(() => {
-    setIsFlipped(flipped);
-  }, [flipped])
-
+export function FlashCard({ description, flipped, onClick }: { description: string, flipped: boolean, onClick: () => void }) {
   return (
-    <div className={"flashcard" + (isFlipped ? " flipped" : "")}>
+    <div onClick={onClick} className={"flashcard" + (flipped ? " flipped" : "")}>
       <div className="flashcard-inner">
         <img className="flashcard-front" src={questionMark} />
         <div className="flashcard-back">

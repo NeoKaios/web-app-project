@@ -3,7 +3,7 @@ $text-color: #cbf2f4;
 
 .flashcard {
   background-color: transparent;
-  width: min(0.4*700px, 100vmin);
+  width: min(0.4*700px, 90vw);
   display: inline-block;
 
   .flashcard-inner {
@@ -38,7 +38,7 @@ $text-color: #cbf2f4;
     }
 
     .flashcard-front, .flashcard-back {
-      border-radius: 1vmin;
+      border-radius: 0.5rem;
       backface-visibility: hidden;
     }
   }

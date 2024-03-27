@@ -14,3 +14,5 @@ export const ERROR_NOT_LOGGED_IN = 'User not logged in, unable to perform Spotif
 export const ERROR_EMPTY_PLAYLIST = 'Your playlist is empty';
 export const ERROR_EMPTY_ARRAY = 'The array is empty';
 export const ERROR_UNEXPECTED_BACKEND_ERROR = 'Unexpected backend error';
+
+export const DESKTOP_MIN_SIZE = 800;
