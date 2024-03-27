@@ -7,6 +7,7 @@ import { randomChoice } from '../lib/random';
 import { Player } from '../components';
 import { getStudySongs, updateStudySong } from '../lib/backend-api';
 import { Track } from 'spotify-types';
+import './study-page.scss';
 
 export async function studyLoader({ params: { playlist_id } }: any) {
   console.log('Loading study mode with playlist_id = ', playlist_id);
@@ -32,16 +33,25 @@ export function StudyPage() {
   const [selectedTrack, setSelectedTrack] = useState<Track>();
 
   const getRandomTrack = () => {
+    let updatedToStudy = toStudy;
+    let updatedNewTracks = newTracks;
+
     if (selectedTrack) {
-      toStudy.length ?
-        setToStudy(toStudy.filter(t => t.id !== selectedTrack.id)) :
-        setNewTracks(newTracks.filter(t => t.id !== selectedTrack.id));
+      updatedToStudy = toStudy.filter(t => t.id !== selectedTrack.id);
+      updatedNewTracks = newTracks.filter(t => t.id !== selectedTrack.id);
+      updatedToStudy.length ?
+        setToStudy(updatedToStudy) :
+        setNewTracks(updatedNewTracks);
     }
-    return toStudy.length ? randomChoice(toStudy) : randomChoice(newTracks);
+
+    if (!updatedToStudy.length && !updatedNewTracks.length) {
+      return;
+    }
+    return toStudy.length ? randomChoice(updatedToStudy) : randomChoice(updatedNewTracks);
   }
 
   useEffect(() => {
-    if (newTracks || toStudy) {
+    if (newTracks.length || toStudy.length) {
       setSelectedTrack(getRandomTrack());
     }
   }, []);
