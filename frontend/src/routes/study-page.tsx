@@ -8,6 +8,7 @@ import { Player } from '../components';
 import { getStudySongs, updateStudySong } from '../lib/backend-api';
 import { Track } from 'spotify-types';
 import './study-page.scss';
+import { FlashCard } from '../components/flashcard/FlashCard';
 
 export async function studyLoader({ params: { playlist_id } }: any) {
   console.log('Loading study mode with playlist_id = ', playlist_id);
@@ -26,11 +27,21 @@ export async function studyLoader({ params: { playlist_id } }: any) {
   return { newTracks, userId, playlistId, toStudy };
 }
 
+const LEVELS = [
+  'Never heard',
+  'Hardly know the song',
+  'Hard, would not have remembered',
+  'I swear I knew it',
+  'Remembered after a while',
+  'EZ',
+];
+
 export function StudyPage() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof studyLoader>>;
   const [newTracks, setNewTracks] = useState(loaderData.newTracks);
   const [toStudy, setToStudy] = useState(loaderData.toStudy);
   const [selectedTrack, setSelectedTrack] = useState<Track>();
+  const [flipped, setFlipped] = useState(false);
 
   const getRandomTrack = () => {
     let updatedToStudy = toStudy;
@@ -63,21 +74,30 @@ export function StudyPage() {
   const submitLevel = (quality: number) => {
     updateStudySong(loaderData.userId, loaderData.playlistId, selectedTrack.id, quality);
     setSelectedTrack(getRandomTrack());
+    setFlipped(false);
   }
 
   return (
     <div className="training-panel">
-      <p>{selectedTrack.name}</p>
-      <p>{selectedTrack.preview_url}</p>
       <Player preview_url={selectedTrack.preview_url} />
-      <p>Play your song !</p>
-      {[0, 1, 2, 3, 4, 5].map((quality) => {
-        return <Button
-          key={quality}
-          id={"difficulty-level-" + quality}
-          variant="contained"
-          onClick={() => submitLevel(quality)}>Level {quality}</Button>
-      })}
+      <>
+        <div onClick={() => setFlipped(true)}>
+          <p>Can you guess this song ?</p>
+          <FlashCard description={selectedTrack.name} flipped={flipped} />
+        </div>
+      </>
+      {flipped &&
+        <>
+          <p>How difficult was it ?</p>
+          {[0, 1, 2, 3, 4, 5].map((quality) => {
+            return <Button
+              key={quality}
+              id={"difficulty-level-" + quality}
+              variant="contained"
+              onClick={() => submitLevel(quality)}>{quality + ' - ' + LEVELS[quality]}</Button>
+          })}
+        </>
+      }
     </div>
   );
 }
