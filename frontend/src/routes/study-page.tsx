@@ -58,7 +58,7 @@ export function StudyPage() {
     if (!updatedToStudy.length && !updatedNewTracks.length) {
       return;
     }
-    return toStudy.length ? randomChoice(updatedToStudy) : randomChoice(updatedNewTracks);
+    return updatedToStudy.length ? randomChoice(updatedToStudy) : randomChoice(updatedNewTracks);
   }
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export function StudyPage() {
     }
   }, []);
 
-  if ((!newTracks && !toStudy) || !selectedTrack) {
+  if ((!newTracks.length && !toStudy.length) || !selectedTrack) {
     return <p>You already studied everything in this playlist !</p>;
   }
 
