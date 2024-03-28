@@ -1,12 +1,14 @@
-import { Button } from '@mui/material';
 import { useLoaderData } from 'react-router-dom';
-import { ERROR_EMPTY_PLAYLIST } from '../lib/consts';
+import { DESKTOP_MIN_SIZE, ERROR_EMPTY_PLAYLIST } from '../lib/consts';
 import { useEffect, useState } from 'react';
 import { getPlaylistItems, getUserData } from '../lib/spotify-api';
 import { randomChoice } from '../lib/random';
 import { Player } from '../components';
 import { getStudySongs, updateStudySong } from '../lib/backend-api';
 import { Track } from 'spotify-types';
+import { FlashCard } from '../components/flashcard/FlashCard';
+import { DifficultySelector } from '../components/difficulty-selector/DifficultySelector';
+import MediaQuery, { useMediaQuery } from 'react-responsive';
 import './study-page.scss';
 
 export async function studyLoader({ params: { playlist_id } }: any) {
@@ -31,6 +33,8 @@ export function StudyPage() {
   const [newTracks, setNewTracks] = useState(loaderData.newTracks);
   const [toStudy, setToStudy] = useState(loaderData.toStudy);
   const [selectedTrack, setSelectedTrack] = useState<Track>();
+  const [flipped, setFlipped] = useState(false);
+  const isMobile = useMediaQuery({ query: `(min-width: ${DESKTOP_MIN_SIZE}px)` })
 
   const getRandomTrack = () => {
     let updatedToStudy = toStudy;
@@ -63,21 +67,22 @@ export function StudyPage() {
   const submitLevel = (quality: number) => {
     updateStudySong(loaderData.userId, loaderData.playlistId, selectedTrack.id, quality);
     setSelectedTrack(getRandomTrack());
+    setFlipped(false);
   }
 
   return (
-    <div className="training-panel">
-      <p>{selectedTrack.name}</p>
-      <p>{selectedTrack.preview_url}</p>
+    <div className="study-page">
       <Player preview_url={selectedTrack.preview_url} />
-      <p>Play your song !</p>
-      {[0, 1, 2, 3, 4, 5].map((quality) => {
-        return <Button
-          key={quality}
-          id={"difficulty-level-" + quality}
-          variant="contained"
-          onClick={() => submitLevel(quality)}>Level {quality}</Button>
-      })}
+      <p>Can you guess this song ?</p>
+      <div className={"study-layout " + (isMobile ? "row" : "col")}>
+        <FlashCard onClick={() => setFlipped(true)} description={selectedTrack.name} flipped={flipped} />
+        <MediaQuery minWidth={DESKTOP_MIN_SIZE}>
+          <DifficultySelector row={false} callback={submitLevel} />
+        </MediaQuery>
+        <MediaQuery maxWidth={DESKTOP_MIN_SIZE - 1}>
+          <DifficultySelector row={true} callback={submitLevel} />
+        </MediaQuery>
+      </div>
     </div>
   );
 }

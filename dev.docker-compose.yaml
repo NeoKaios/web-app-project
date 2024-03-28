@@ -7,7 +7,6 @@ services:
       - '3000:3000'
     volumes:
       - ./frontend:/app
-      - /app/node_modules/
   db-dev:
     image: mysql:latest
     container_name: db-dev

@@ -1,0 +1,36 @@
+$button-color: #1f4468;
+
+.difficulty-selector {
+  display: flex;
+  justify-content: space-between;
+
+  &.row {
+    flex-direction: row;
+
+    .difficulty-button {
+      min-width: 24%;
+    }
+  }
+
+  &.col {
+    flex-direction: column;
+
+    .difficulty-button {
+      width: 0.4*700px;
+      margin: 0.5rem;
+      height: 100%;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .difficulty-button {
+    background-color: $button-color;
+  }
+}

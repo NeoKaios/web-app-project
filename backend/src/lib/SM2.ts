@@ -17,10 +17,8 @@ export type SM2State = {
 
 /*
  * Quality:
- * 5 - perfect response
- * 4 - correct response after a hesitation
- * 3 - correct response recalled with serious difficulty
- * 2 - incorrect response; where the correct one seemed easy to recall
+ * 3 - perfect response
+ * 2 - correct response recalled with serious difficulty | incorrect response; where the correct one seemed easy to recall
  * 1 - incorrect response; the correct one remembered
  * 0 - complete blackout.
  */
@@ -28,7 +26,7 @@ export function updateSM2(quality: number, repetitions: number, ef: number, inte
   var ret: SM2State = { repetitions, ef, interval };
 
   // Correct response
-  if (quality >= 3) {
+  if (quality === 3) {
     switch (repetitions) {
       case 0:
         ret.interval = 1;
@@ -40,7 +38,7 @@ export function updateSM2(quality: number, repetitions: number, ef: number, inte
         break;
     }
     ret.repetitions += 1;
-    ret.ef = Math.max(1.3, ef + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)));
+    ret.ef = Math.max(1.3, ef + (0.1 - (3 - quality) * (0.08 + (3 - quality) * 0.02)));
 
   // Incorrect response
   } else {
