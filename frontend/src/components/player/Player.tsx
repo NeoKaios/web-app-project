@@ -35,6 +35,9 @@ export function Player({ preview_url }: { preview_url: string }) {
         setPlayingState(PlayingState.Init);
       }
     }
+    return () => {
+      audio.pause();
+    }
   }, [audio])
 
   const handleAudio = () => {
@@ -49,7 +52,7 @@ export function Player({ preview_url }: { preview_url: string }) {
 
   return (
     <div className={"player " + playingState} onClick={handleAudio} onAnimationEnd={() => { }}>
-      <img src={logo} className='animated' alt="Player"/>
+      <img src={logo} className='animated' alt="Player" />
     </div>
   );
 }
