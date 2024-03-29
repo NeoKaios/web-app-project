@@ -17,6 +17,9 @@ const generateRandomString = (length: number) => {
     .slice(0, length);
 }
 
+/**
+ * The first function that gets called when you press the 'login' button
+ */
 export function oauthLogin(_req: Request, res: Response) {
   console.log('Got login request')
 
@@ -35,10 +38,10 @@ export function oauthLogin(_req: Request, res: Response) {
     }));
 }
 
+/**
+ * Requests refresh and access tokens after checking the state parameter
+ */
 export function oauthCallback(req: Request, res: Response) {
-  /*
-   * Requests refresh and access tokens after checking the state parameter
-   */
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[STATEKEY] : null;

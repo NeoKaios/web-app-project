@@ -17,7 +17,7 @@ export type SM2State = {
   interval: number
 }
 
-/*
+/**
  * Patch for only 4 options
  * 3 - perfect response
  * 2 - correct response recalled with serious difficulty | incorrect response; where the correct one seemed easy to recall
@@ -41,7 +41,7 @@ export function updateSM2(quality: number, repetitions: number, ef: number, inte
   return updateSM2Core(quality_bis, repetitions, ef, interval);
 }
 
-/*
+/**
  * Quality:
  * 5 - perfect response
  * 4 - correct response after a hesitation

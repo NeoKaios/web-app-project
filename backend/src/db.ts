@@ -56,10 +56,10 @@ export async function dbTest(req: Request, res: Response) {
   return res.send();
 }
 
+/**
+ * Register user in DB
+ */
 export async function dbRegisterUser(req: Request<{ user_id: string, username: string }>, res: Response) {
-  /*
-   * Register user in DB
-   */
   const user = await User.findOrCreate({
     where: {
       id: req.params.user_id,
@@ -69,10 +69,10 @@ export async function dbRegisterUser(req: Request<{ user_id: string, username: s
   return res.send();
 }
 
+/**
+ * Get registered user data
+ */
 export async function dbGetUserData(req: Request<{ user_id: string }>, res: Response) {
-  /*
-   * Get registered user data
-   */
   const username = await User.findAll({
     where: {
       id: req.params.user_id
@@ -82,10 +82,10 @@ export async function dbGetUserData(req: Request<{ user_id: string }>, res: Resp
   return res.send(username[0]);
 }
 
+/**
+ * Returns all studied (registered) songs so far + songs to study
+ */
 export async function dbGetStudySongs(req: Request<{ user_id: string, playlist_id: string }>, res: Response) {
-  /*
-   * Returns all studied (registered) songs so far + songs to study
-   */
   const toStudy = await sequelize.query(`SELECT song FROM Progressions
                                             WHERE UNIX_TIMESTAMP(updatedAt) + \`interval\` * :interval_duration < UNIX_TIMESTAMP(CURTIME())
                                             AND user = :user_id
@@ -114,10 +114,10 @@ export async function dbGetStudySongs(req: Request<{ user_id: string, playlist_i
   });
 }
 
+/**
+ * Returns songs to study that were updated after timestamp
+ */
 export async function dbGetNewStudySongs(req: Request<{ user_id: string, playlist_id: string, timestamp: number }>, res: Response) {
-  /*
-   * Returns songs to study that were updated after timestamp
-   */
   const toStudy = await sequelize.query(`SELECT song FROM Progressions
                                             WHERE UNIX_TIMESTAMP(updatedAt) + \`interval\` * :interval_duration < UNIX_TIMESTAMP(CURTIME())
                                             AND UNIX_TIMESTAMP(updatedAt) > :timestamp
@@ -140,10 +140,10 @@ export async function dbGetNewStudySongs(req: Request<{ user_id: string, playlis
   });
 }
 
+/**
+ * Update SM2 score based on user feedback
+ */
 export async function dbUpdateStudySong(req: Request<{ user_id: string, playlist_id: string, song_id: string, quality: number }>, res: Response) {
-  /*
-   * Update SM2 score based on user feedback
-   */
   const progression = await Progression.findAll({
     where: {
       user: req.params.user_id,

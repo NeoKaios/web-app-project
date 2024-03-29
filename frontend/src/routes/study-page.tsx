@@ -39,6 +39,10 @@ export function StudyPage() {
   const [flipped, setFlipped] = useState(false);
   const isMobile = useMediaQuery({ query: `(min-width: ${DESKTOP_MIN_SIZE}px)` })
 
+  /**
+   * Select a random track by taking care of removing
+   * the currently selected song from the loaded songs
+   */
   const getRandomTrack = () => {
     let updatedToStudy = toStudy;
     let updatedNewTracks = newTracks;
@@ -84,6 +88,9 @@ export function StudyPage() {
     return <p>You already studied everything in this playlist !</p>;
   }
 
+  /**
+   * Click handler for difficulty levels
+   */
   const submitLevel = (quality: number) => {
     updateStudySong(loaderData.userId, loaderData.playlistId, selectedTrack.id, quality);
     setSelectedTrack(getRandomTrack());
