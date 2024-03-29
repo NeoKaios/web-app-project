@@ -77,14 +77,10 @@ export function StudyPage() {
     return () => clearInterval(interval);
   }, [toStudy])
 
-  // Select a track when loading page
-  useEffect(() => {
-    if (newTracks.length || toStudy.length) {
+  if (!selectedTrack) {
+    // Ensure that a new track gets selected if there is a song to select
+    if (newTracks.length || toStudy.length)
       setSelectedTrack(getRandomTrack());
-    }
-  }, []);
-
-  if ((!newTracks.length && !toStudy.length) || !selectedTrack) {
     return <p>You already studied everything in this playlist !</p>;
   }
 

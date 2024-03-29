@@ -9,7 +9,7 @@ export const INITIAL_REPETITIONS = 0;
 export const INITIAL_EF = 2.5;
 export const INITIAL_INTERVAL = 1;
 
-export const INTERVAL_DURATION = 30; // In seconds
+export const INTERVAL_DURATION = 5; // In seconds
 
 export type SM2State = {
   repetitions: number,
