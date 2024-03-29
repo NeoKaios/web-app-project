@@ -1,50 +1,58 @@
-$card-color: #1f4468;
-$text-color: #cbf2f4;
+$card-color: #1ed760;
+$text-color: #ffffff;
+$black-color: #191414;
 
 .flashcard {
-  background-color: transparent;
-  width: min(0.4*700px, 90vw);
+  background-color: $card-color;
+  min-width: min(0.4*700px, 90vw);
   display: inline-block;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
 
   .flashcard-inner {
     position: relative;
     width: 100%;
     height: 100%;
 
-    img.flashcard-front, svg.flashcard-front {
+    .flashcard-front, .flashcard-back {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background-color: $card-color;
       width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+    }
+
+    .flashcard-front span {
+      margin: auto;
+      font-size: 20rem;
+      color: $text-color;
     }
 
     .flashcard-back {
       transform: rotateY(180deg);
-      display: flex;
-      align-items: center;
-      flex-direction: row;
       position: absolute;
-      width: 100%;
-      height: 100%;
-      text-align: center;
       top: 0;
-      background-color: $card-color;
 
       span {
-        font-size: 3em;
-        padding: 0.5vmin;
         color: $text-color;
+        background-color: $black-color;
+        border: 0.2rem solid $text-color;
+        border-radius: 1rem;
+        font-size: 3rem;
         display: inline-block;
         width: 100%;
         text-align: center;
+        margin-bottom: 1rem;
       }
-    }
-
-    .flashcard-front, .flashcard-back {
-      border-radius: 0.5rem;
-      backface-visibility: hidden;
     }
   }
 
   &.flipped .flashcard-inner {
-    transition: transform 0.8s;
+    transition: transform 0.2s;
     transform-style: preserve-3d;
     transform: rotateY(180deg);
   }
