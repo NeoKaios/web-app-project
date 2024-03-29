@@ -26,10 +26,14 @@ $black-color: #191414;
       backface-visibility: hidden;
     }
 
-    .flashcard-front span {
-      margin: auto;
-      font-size: 20rem;
-      color: $text-color;
+    .flashcard-front {
+      cursor: pointer;
+
+      span {
+        margin: auto;
+        font-size: 20rem;
+        color: $text-color;
+      }
     }
 
     .flashcard-back {

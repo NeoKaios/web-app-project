@@ -18,53 +18,54 @@
     border-style: solid;
     border-color: #333 !important;
     font-size: inherit;
+    cursor: pointer;
   }
 
   button.color-0 {
-    background-color: #d13530;
+    background-color: #ff3355;
 
     &:hover {
-      background-color: #b52521;
+      background-color: #e21b3c;
     }
 
     &:active {
-      background-color: #a11915;
+      background-color: #c50928;
     }
   }
 
   button.color-1 {
-    background-color: #37c45d;
+    background-color: #67be39;
 
     &:hover {
-      background-color: #23ad48;
+      background-color: #25890c;
     }
 
     &:active {
-      background-color: #109133;
+      background-color: #106b02;
     }
   }
 
   button.color-2 {
-    background-color: #2b6ac2;
+    background-color: #45a3e5;
 
     &:hover {
-      background-color: #1b55a6;
+      background-color: #1369ce;
     }
 
     &:active {
-      background-color: #0e4087;
+      background-color: #0542b9;
     }
   }
 
   button.color-3 {
-    background-color: #dbd51d;
+    background-color: #fcbf09;
 
     &:hover {
-      background-color: #b8b211;
+      background-color: #ffa502;
     }
 
     &:active {
-      background-color: #a6a008;
+      background-color: #d79e00;
     }
   }
 }
