@@ -1,8 +1,10 @@
 import { Button } from "@mui/material";
 import { Link, Outlet, useNavigation } from "react-router-dom";
-import logo from "../assets/logo.svg";
+import logo from "../assets/app-logo.png";
 import { getToken, login, logout } from "../lib/auth";
 import './root.scss';
+import LogoutIcon from '@mui/icons-material/Logout';
+import LoginIcon from '@mui/icons-material/Login';
 
 export function Root() {
   const navigation = useNavigation()
@@ -10,18 +12,39 @@ export function Root() {
   return (
     <>
       <header className={'header' + (navigation.state === 'loading' ? ' loading' : '')}>
-        <img src={logo} className="logo" alt="App logo" />
-        <h1>Spotify BlindTest Learner</h1>
+        <Link to='/home'>
+          <img src={logo} className="logo" alt="App logo" />
+        </Link>
         <div>
           {loggedIn ?
-            <Button className="log-btn" variant="contained" onClick={logout}>Log out</Button>
-            : <Button className="log-btn" variant="contained" onClick={login}>Login</Button>
+            <Button color="inherit"
+              aria-label="logout"
+              className="log-btn"
+              onClick={logout}>
+              <LogoutIcon className="back-icon" />
+            </Button>
+            // <Button className="log-btn" variant="contained" onClick={logout}>Log out</Button>
+            : <Button
+              color="inherit"
+              aria-label="login"
+              className="log-btn"
+              onClick={login}>
+              <LoginIcon />
+            </Button>
+            // : <Button className="log-btn" variant="contained" onClick={login}>Login</Button>
           }
-          <Link to='/home'>HOME</Link>
         </div>
       </header>
       <div className="root-container">
-        <Outlet />
+        <div className="page-container">
+          <Outlet />
+        </div>
+        <div className="area" >
+          <ul className="circles">
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((_) => <li></li>)}
+          </ul>
+        </div >
+
       </div>
     </>);
 };

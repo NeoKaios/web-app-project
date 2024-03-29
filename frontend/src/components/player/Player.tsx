@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './player.scss';
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/spotify-logo.svg";
 
 const DEFAULT_TIME = 15;
 

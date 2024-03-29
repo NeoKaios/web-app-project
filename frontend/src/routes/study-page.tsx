@@ -1,5 +1,5 @@
 import { useLoaderData } from 'react-router-dom';
-import { DESKTOP_MIN_SIZE, ERROR_EMPTY_PLAYLIST } from '../lib/consts';
+import { ERROR_EMPTY_PLAYLIST } from '../lib/consts';
 import { useEffect, useState } from 'react';
 import { getPlaylistItems, getTrack, getUserData } from '../lib/spotify-api';
 import { randomChoice } from '../lib/random';
@@ -94,7 +94,6 @@ export function StudyPage() {
   return (
     <div className="study-page">
       <Player preview_url={selectedTrack.preview_url} />
-      <p>Can you guess this song ?</p>
       <FlashCard callback={submitLevel} onClick={() => setFlipped(true)} description={selectedTrack.name} flipped={flipped} />
     </div>
   );

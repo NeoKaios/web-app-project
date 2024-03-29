@@ -1,6 +1,7 @@
 import Grid from '@mui/material/Grid';
 import { SimplifiedPlaylist } from 'spotify-types';
 import { PlaylistElement } from '..';
+import './PlaylistTable.scss';
 
 export function PlaylistTable({ playlists, callback }: { playlists: SimplifiedPlaylist[], callback: (playlist: SimplifiedPlaylist) => void }) {
   return (
