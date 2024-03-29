@@ -3,8 +3,8 @@ import mysql from "mysql2";
 import { Model, Op, QueryTypes, Sequelize } from "sequelize";
 import { UserModel } from "./models/user";
 import { ProgressionModel } from "./models/progression";
-import { DB_HOST, DB_PASSWORD, DB_PORT } from "./consts";
-import { INITIAL_EF, INITIAL_INTERVAL, INITIAL_REPETITIONS, SM2State, updateSM2 } from "./lib/SM2";
+import { DB_HOST, DB_PASSWORD, DB_PORT, UPDATE_OK } from "./consts";
+import { INITIAL_EF, INITIAL_INTERVAL, INITIAL_REPETITIONS, INTERVAL_DURATION, updateSM2 } from "./lib/SM2";
 
 // Only to create database if it does not exist (the app should crash on first request,
 // but subsequent requests should work)
@@ -87,12 +87,16 @@ export async function dbGetStudySongs(req: Request<{ user_id: string, playlist_i
    * Returns all studied (registered) songs so far + songs to study
    */
   const toStudy = await sequelize.query(`SELECT song FROM Progressions
-                                            WHERE UNIX_TIMESTAMP(updatedAt) + \`interval\`*3600*24 < UNIX_TIMESTAMP(CURDATE())
+                                            WHERE UNIX_TIMESTAMP(updatedAt) + \`interval\` * :interval_duration < UNIX_TIMESTAMP(CURTIME())
                                             AND user = :user_id
                                             AND playlist = :playlist_id;`,
     {
       type: QueryTypes.SELECT,
-      replacements: { user_id: req.params.user_id, playlist_id: req.params.playlist_id }
+      replacements: {
+        user_id: req.params.user_id,
+        playlist_id: req.params.playlist_id,
+        interval_duration: INTERVAL_DURATION
+      }
     }
   ) as { song: string }[];
 
@@ -107,6 +111,32 @@ export async function dbGetStudySongs(req: Request<{ user_id: string, playlist_i
   return res.send({
     toStudy: toStudy.map(t => t.song),
     studied: studied.map(t => t.dataValues.song)
+  });
+}
+
+export async function dbGetNewStudySongs(req: Request<{ user_id: string, playlist_id: string, timestamp: number }>, res: Response) {
+  /*
+   * Returns songs to study that were updated after timestamp
+   */
+  const toStudy = await sequelize.query(`SELECT song FROM Progressions
+                                            WHERE UNIX_TIMESTAMP(updatedAt) + \`interval\` * :interval_duration < UNIX_TIMESTAMP(CURTIME())
+                                            AND UNIX_TIMESTAMP(updatedAt) > :timestamp
+                                            AND user = :user_id
+                                            AND playlist = :playlist_id;`,
+
+    {
+      type: QueryTypes.SELECT,
+      replacements: {
+        user_id: req.params.user_id,
+        playlist_id: req.params.playlist_id,
+        interval_duration: INTERVAL_DURATION,
+        timestamp: req.params.timestamp,
+      }
+    }
+  ) as { song: string }[];
+
+  return res.send({
+    newToStudy: toStudy.map(t => t.song)
   });
 }
 
@@ -140,11 +170,14 @@ export async function dbUpdateStudySong(req: Request<{ user_id: string, playlist
   }
 
   // Update score
-  ({ repetitions, ef, interval } = updateSM2(req.params.quality, repetitions, ef, interval));
+  ({ repetitions, ef, interval } = updateSM2(Number(req.params.quality), repetitions, ef, interval));
   prog.set('repetitions', repetitions);
   prog.set('ef', ef);
   prog.set('interval', interval);
+  // Force update (even if its twice the same score, because updatedAt field is mandatory)
+  //@ts-ignore
+  prog.changed('updatedAt', true);
   await prog.save();
 
-  return res.send();
+  return res.send(UPDATE_OK);
 }

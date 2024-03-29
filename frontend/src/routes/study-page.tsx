@@ -1,15 +1,18 @@
 import { useLoaderData } from 'react-router-dom';
 import { DESKTOP_MIN_SIZE, ERROR_EMPTY_PLAYLIST } from '../lib/consts';
 import { useEffect, useState } from 'react';
-import { getPlaylistItems, getUserData } from '../lib/spotify-api';
+import { getPlaylistItems, getTrack, getUserData } from '../lib/spotify-api';
 import { randomChoice } from '../lib/random';
 import { Player } from '../components';
-import { getStudySongs, updateStudySong } from '../lib/backend-api';
+import { getNewStudySongs, getStudySongs, updateStudySong } from '../lib/backend-api';
 import { Track } from 'spotify-types';
 import { FlashCard } from '../components/flashcard/FlashCard';
 import { DifficultySelector } from '../components/difficulty-selector/DifficultySelector';
 import MediaQuery, { useMediaQuery } from 'react-responsive';
 import './study-page.scss';
+
+const REFRESH_DELAY = 10000; // Refresh period for toStudy songs in ms
+let timestamp = Math.round(Date.now() / 1000); // A bit ugly, but an initial timestamp is needed
 
 export async function studyLoader({ params: { playlist_id } }: any) {
   console.log('Loading study mode with playlist_id = ', playlist_id);
@@ -43,17 +46,34 @@ export function StudyPage() {
     if (selectedTrack) {
       updatedToStudy = toStudy.filter(t => t.id !== selectedTrack.id);
       updatedNewTracks = newTracks.filter(t => t.id !== selectedTrack.id);
-      updatedToStudy.length ?
-        setToStudy(updatedToStudy) :
-        setNewTracks(updatedNewTracks);
+      setToStudy(updatedToStudy);
+      setNewTracks(updatedNewTracks);
     }
 
     if (!updatedToStudy.length && !updatedNewTracks.length) {
       return;
     }
+
     return updatedToStudy.length ? randomChoice(updatedToStudy) : randomChoice(updatedNewTracks);
   }
 
+  // Regularly refresh songs to study
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const { newToStudy } = await getNewStudySongs(loaderData.userId, loaderData.playlistId, timestamp);
+
+      // New songs to study
+      if (newToStudy.length) {
+        timestamp = Math.round((Date.now() - REFRESH_DELAY) / 1000);
+        const newTracksToStudy = await Promise.all(newToStudy.map(getTrack));
+        setToStudy(toStudy.concat(newTracksToStudy));
+      }
+    }, REFRESH_DELAY);
+
+    return () => clearInterval(interval);
+  }, [toStudy])
+
+  // Select a track when loading page
   useEffect(() => {
     if (newTracks.length || toStudy.length) {
       setSelectedTrack(getRandomTrack());

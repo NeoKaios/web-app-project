@@ -13,10 +13,17 @@ export async function getStudySongs(user_id: string, playlist_id: string): Promi
   return requestAPI(`get_study_songs/${user_id}/${playlist_id}`);
 }
 
+
+/**
+ * Fetches songs to study that were updated after timestamp
+ */
+export async function getNewStudySongs(user_id: string, playlist_id: string, timestamp: number): Promise<{ newToStudy: string[] }> {
+  return requestAPI(`get_new_study_songs/${user_id}/${playlist_id}/${timestamp}`);
+}
+
 /**
  * Request backend to update song score
  */
 export async function updateStudySong(user_id: string, playlist_id: string, song_id: string, quality: number) {
-  await fetch(BACK_URL + `update_study_song/${user_id}/${playlist_id}/${song_id}/${quality}`);
+  return requestAPI(`update_study_song/${user_id}/${playlist_id}/${song_id}/${quality}`);
 }
-

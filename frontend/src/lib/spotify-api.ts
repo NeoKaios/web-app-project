@@ -40,6 +40,11 @@ export async function getUserPlaylists(): Promise<SimplifiedPlaylist[]> {
   return data.items;
 }
 
+export async function getTrack(track_id: string): Promise<Track> {
+  const o = await requestAPI(`${SPOTIFY_URL}tracks/${track_id}`) as Track;
+  return o;
+}
+
 export async function getPlaylistItems(playlist_id: string): Promise<Track[]> {
   var url = `${SPOTIFY_URL}playlists/${playlist_id}/tracks?limit=100`;
   const data = await requestAPI(url) as Paging<PlaylistTrack>;
