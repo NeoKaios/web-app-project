@@ -1,0 +1,39 @@
+$card-color: #1ed760;
+$card-color-hovered: #1db954;
+$black-color: #191414;
+
+.progression-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+
+  h1 {
+    padding-bottom: 1rem;
+  }
+
+  .progression-container {
+    min-width: min(0.4*600px, 90vw);
+    background-color: $card-color;
+    display: inline-block;
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    text {
+      fill: white;
+    }
+
+    p {
+      padding-top: 1rem;
+    }
+  }
+
+  button {
+    background-color: $card-color;
+    margin: 1rem;
+
+    &:hover {
+      background-color: $card-color-hovered;
+    }
+  }
+}

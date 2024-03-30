@@ -3,7 +3,7 @@ import { ModeCard } from "..";
 import BookIcon from '@mui/icons-material/Book';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';
-import { STUDY_URL, TRAIN_URL } from "../../lib/consts";
+import { PROGRESSION_URL, STUDY_URL, TRAIN_URL } from "../../lib/consts";
 import { SimplifiedPlaylist } from "spotify-types";
 
 export function ModeSelector({ selectedPlaylist }: { selectedPlaylist: SimplifiedPlaylist }) {
@@ -25,7 +25,7 @@ export function ModeSelector({ selectedPlaylist }: { selectedPlaylist: Simplifie
       <ModeCard image={learningIcon}
         title="Study"
         description="Learn your songs in an adaptative manner using an anki-based approach."
-        href={STUDY_URL(selectedPlaylist.id)}
+        href={PROGRESSION_URL(selectedPlaylist.id)}
       />
       <ModeCard image={trainingIcon}
         title="Training"

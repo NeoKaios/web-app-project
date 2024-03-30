@@ -123,7 +123,6 @@ export async function dbGetNewStudySongs(req: Request<{ user_id: string, playlis
                                             AND UNIX_TIMESTAMP(updatedAt) > :timestamp
                                             AND user = :user_id
                                             AND playlist = :playlist_id;`,
-
     {
       type: QueryTypes.SELECT,
       replacements: {
@@ -178,6 +177,70 @@ export async function dbUpdateStudySong(req: Request<{ user_id: string, playlist
   //@ts-ignore
   prog.changed('updatedAt', true);
   await prog.save();
+
+  return res.send(UPDATE_OK);
+}
+
+/**
+ * Get user progression : number of studied songs, last update and average progression
+ */
+export async function dbGetUserProgression(req: Request<{ user_id: string, playlist_id: string }>, res: Response) {
+  const registeredSongs = await Progression.count({
+    where: {
+      user: req.params.user_id,
+      playlist: req.params.playlist_id
+    }
+  });
+
+  const updatedAt = await Progression.max('updatedAt', {
+    where: {
+      user: req.params.user_id,
+      playlist: req.params.playlist_id
+    }
+  }) as string;
+  const lastUpdate = new Date(updatedAt).toLocaleString();
+
+  const averageEf = await Progression.sum('ef', {
+    where: {
+      user: req.params.user_id,
+      playlist: req.params.playlist_id
+    }
+  }) / registeredSongs;
+
+  const { toStudy } = (await sequelize.query(`SELECT COUNT(song) as toStudy FROM Progressions
+                                            WHERE UNIX_TIMESTAMP(updatedAt) + \`interval\` * :interval_duration < UNIX_TIMESTAMP(CURTIME())
+                                            AND user = :user_id
+                                            AND playlist = :playlist_id;`,
+    {
+      type: QueryTypes.SELECT,
+      replacements: {
+        user_id: req.params.user_id,
+        playlist_id: req.params.playlist_id,
+        interval_duration: INTERVAL_DURATION
+      }
+    }
+  ))[0] as { toStudy: number };
+
+  console.log(toStudy);
+
+  return res.send({
+    registeredSongs,
+    lastUpdate,
+    averageEf,
+    toStudy
+  });
+}
+
+/**
+ * Delete progression
+ */
+export async function dbResetPlaylistProgression(req: Request<{ user_id: string, playlist_id: string }>, res: Response) {
+  await Progression.destroy({
+    where: {
+      user: req.params.user_id,
+      playlist: req.params.playlist_id,
+    }
+  });
 
   return res.send(UPDATE_OK);
 }

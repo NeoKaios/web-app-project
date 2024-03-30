@@ -13,7 +13,6 @@ export async function getStudySongs(user_id: string, playlist_id: string): Promi
   return requestAPI(`get_study_songs/${user_id}/${playlist_id}`);
 }
 
-
 /**
  * Fetches songs to study that were updated after timestamp
  */
@@ -27,3 +26,18 @@ export async function getNewStudySongs(user_id: string, playlist_id: string, tim
 export async function updateStudySong(user_id: string, playlist_id: string, song_id: string, quality: number) {
   return requestAPI(`update_study_song/${user_id}/${playlist_id}/${song_id}/${quality}`);
 }
+
+/**
+ * Request backend to delete progression
+ */
+export async function getUserProgression(user_id: string, playlist_id: string) {
+  return requestAPI(`progression/${user_id}/${playlist_id}`);
+}
+
+/**
+ * Request backend to delete progression
+ */
+export async function resetProgression(user_id: string, playlist_id: string) {
+  return requestAPI(`reset_progression/${user_id}/${playlist_id}`);
+}
+
