@@ -7,6 +7,7 @@ import { WEB_SPOTIFY_URL } from "../lib/consts";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './playlist-selection-page.scss';
 import { getUserPlaylists } from "../lib/spotify-api";
+import MediaQuery from "react-responsive";
 
 export async function playlistLoader() {
   console.log('Loading playlist selection page...');
@@ -30,7 +31,15 @@ export function PlaylistSelectionPage() {
     return <PlaylistTable playlists={playlists} callback={setChosenPlaylist} />
   }
   return <div className='mode-selector'>
-    <Button color="inherit" aria-label="unselect playlist" className="back-btn" onClick={unsetPlaylist}><ArrowBackIcon className="back-icon" /></Button>
+    <MediaQuery minWidth={800}>
+      <Button
+        color="inherit"
+        aria-label="unselect playlist"
+        className="back-btn"
+        onClick={unsetPlaylist}>
+        <ArrowBackIcon className="back-icon" />
+      </Button>
+    </MediaQuery>
     <ModeSelector selectedPlaylist={chosenPlaylist} />
   </div>;
 }

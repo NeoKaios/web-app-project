@@ -23,7 +23,6 @@ export function Root() {
               onClick={logout}>
               <LogoutIcon className="back-icon" />
             </Button>
-            // <Button className="log-btn" variant="contained" onClick={logout}>Log out</Button>
             : <Button
               color="inherit"
               aria-label="login"
@@ -31,7 +30,6 @@ export function Root() {
               onClick={login}>
               <LoginIcon />
             </Button>
-            // : <Button className="log-btn" variant="contained" onClick={login}>Login</Button>
           }
         </div>
       </header>
