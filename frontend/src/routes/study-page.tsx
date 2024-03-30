@@ -1,16 +1,22 @@
 import { useLoaderData } from 'react-router-dom';
 import { ERROR_EMPTY_PLAYLIST } from '../lib/consts';
 import { useEffect, useState } from 'react';
-import { getPlaylistItems, getTrack, getUserData } from '../lib/spotify-api';
+import { getPlaylistItems, getUserData } from '../lib/spotify-api';
 import { randomChoice } from '../lib/random';
 import { Player } from '../components';
-import { getNewStudySongs, getStudySongs, updateStudySong } from '../lib/backend-api';
+import { getStudySongs, updateStudySong } from '../lib/backend-api';
 import { Track } from 'spotify-types';
 import { FlashCard } from '../components/flashcard/FlashCard';
 import './study-page.scss';
 
 const REFRESH_DELAY = 10000; // Refresh period for toStudy songs in ms
-let timestamp = Math.round(Date.now() / 1000); // A bit ugly, but an initial timestamp is needed
+
+async function getStudyTracks(userId: string, playlistId: string, tracks: Track[]) {
+  const { toStudy: toStudy_, studied } = (await getStudySongs(userId, playlistId));
+  const toStudy = tracks.filter(t => t.preview_url && toStudy_.includes(t.id));
+  const newTracks = tracks.filter(t => t.preview_url && !studied.includes(t.id));
+  return { toStudy, newTracks };
+}
 
 export async function studyLoader({ params: { playlist_id } }: any) {
   console.log('Loading study mode with playlist_id = ', playlist_id);
@@ -22,11 +28,9 @@ export async function studyLoader({ params: { playlist_id } }: any) {
   if (!tracks)
     throw new Error(ERROR_EMPTY_PLAYLIST);
 
-  const { toStudy: toStudy_, studied } = (await getStudySongs(userId, playlist_id));
-  const newTracks = tracks.filter(t => t.preview_url && !studied.includes(t.id));
-  const toStudy = tracks.filter(t => t.preview_url && toStudy_.includes(t.id));
+  const { toStudy, newTracks } = await getStudyTracks(userId, playlistId, tracks);
 
-  return { newTracks, userId, playlistId, toStudy };
+  return { userId, playlistId, tracks, toStudy, newTracks };
 }
 
 export function StudyPage() {
@@ -61,14 +65,9 @@ export function StudyPage() {
   // Regularly refresh songs to study
   useEffect(() => {
     const interval = setInterval(async () => {
-      const { newToStudy } = await getNewStudySongs(loaderData.userId, loaderData.playlistId, timestamp);
-
-      // New songs to study
-      if (newToStudy.length) {
-        timestamp = Math.round((Date.now() - REFRESH_DELAY) / 1000);
-        const newTracksToStudy = await Promise.all(newToStudy.map(getTrack));
-        setToStudy(toStudy.concat(newTracksToStudy));
-      }
+      const { toStudy: updatedToStudy, newTracks: updatedNewTracks } = await getStudyTracks(loaderData.userId, loaderData.playlistId, loaderData.tracks);
+      setToStudy(updatedToStudy);
+      setNewTracks(updatedNewTracks);
     }, REFRESH_DELAY);
 
     return () => clearInterval(interval);
@@ -78,7 +77,9 @@ export function StudyPage() {
     // Ensure that a new track gets selected if there is a song to select
     if (newTracks.length || toStudy.length)
       setSelectedTrack(getRandomTrack());
-    return <p>You already studied everything in this playlist !</p>;
+    return (<div className="study-page">
+      <p className="study-over">You already studied everything in this playlist !</p>
+    </div>);
   }
 
   /**
@@ -87,7 +88,6 @@ export function StudyPage() {
   const submitLevel = (quality: number) => {
     updateStudySong(loaderData.userId, loaderData.playlistId, selectedTrack.id, quality);
     setSelectedTrack(getRandomTrack());
-    console.log('aaa');
     setFlipped(false);
   }
 

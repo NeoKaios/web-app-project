@@ -2,9 +2,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   height: 100%;
   text-align: center;
   position: relative;
+
+  p.study-over {
+    font-size: 2rem;
+  }
 
   .flashcard {
     margin-top: 1rem;

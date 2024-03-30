@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { dbGetNewStudySongs, dbGetStudySongs, dbGetUserData, dbGetUserProgression, dbRegisterUser, dbResetPlaylistProgression, dbTest, dbUpdateStudySong } from "./db";
+import { dbGetStudySongs, dbGetUserData, dbGetUserProgression, dbRegisterUser, dbResetPlaylistProgression, dbTest, dbUpdateStudySong } from "./db";
 import { oauthCallback, oauthLogin, oauthRefreshToken } from "./oauth";
 
 const app = express();
@@ -18,7 +18,6 @@ app.get('/testdb', dbTest);
 app.get('/register_user/:user_id/:username', dbRegisterUser);
 app.get('/user/:user_id', dbGetUserData);
 app.get('/get_study_songs/:user_id/:playlist_id', dbGetStudySongs);
-app.get('/get_new_study_songs/:user_id/:playlist_id/:timestamp', dbGetNewStudySongs);
 app.get('/update_study_song/:user_id/:playlist_id/:song_id/:quality', dbUpdateStudySong);
 app.get('/progression/:user_id/:playlist_id', dbGetUserProgression);
 app.get('/reset_progression/:user_id/:playlist_id', dbResetPlaylistProgression);

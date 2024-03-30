@@ -14,13 +14,6 @@ export async function getStudySongs(user_id: string, playlist_id: string): Promi
 }
 
 /**
- * Fetches songs to study that were updated after timestamp
- */
-export async function getNewStudySongs(user_id: string, playlist_id: string, timestamp: number): Promise<{ newToStudy: string[] }> {
-  return requestAPI(`get_new_study_songs/${user_id}/${playlist_id}/${timestamp}`);
-}
-
-/**
  * Request backend to update song score
  */
 export async function updateStudySong(user_id: string, playlist_id: string, song_id: string, quality: number) {

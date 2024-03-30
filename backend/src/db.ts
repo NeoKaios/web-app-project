@@ -115,31 +115,6 @@ export async function dbGetStudySongs(req: Request<{ user_id: string, playlist_i
 }
 
 /**
- * Returns songs to study that were updated after timestamp
- */
-export async function dbGetNewStudySongs(req: Request<{ user_id: string, playlist_id: string, timestamp: number }>, res: Response) {
-  const toStudy = await sequelize.query(`SELECT song FROM Progressions
-                                            WHERE UNIX_TIMESTAMP(updatedAt) + \`interval\` * :interval_duration < UNIX_TIMESTAMP(CURTIME())
-                                            AND UNIX_TIMESTAMP(updatedAt) > :timestamp
-                                            AND user = :user_id
-                                            AND playlist = :playlist_id;`,
-    {
-      type: QueryTypes.SELECT,
-      replacements: {
-        user_id: req.params.user_id,
-        playlist_id: req.params.playlist_id,
-        interval_duration: INTERVAL_DURATION,
-        timestamp: req.params.timestamp,
-      }
-    }
-  ) as { song: string }[];
-
-  return res.send({
-    newToStudy: toStudy.map(t => t.song)
-  });
-}
-
-/**
  * Update SM2 score based on user feedback
  */
 export async function dbUpdateStudySong(req: Request<{ user_id: string, playlist_id: string, song_id: string, quality: number }>, res: Response) {

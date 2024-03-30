@@ -3,7 +3,7 @@ import { ModeCard } from "..";
 import BookIcon from '@mui/icons-material/Book';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';
-import { PROGRESSION_URL, STUDY_URL, TRAIN_URL } from "../../lib/consts";
+import { PROGRESSION_URL, TRAIN_URL } from "../../lib/consts";
 import { SimplifiedPlaylist } from "spotify-types";
 
 export function ModeSelector({ selectedPlaylist }: { selectedPlaylist: SimplifiedPlaylist }) {
