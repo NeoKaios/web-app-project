@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import sessions from "./consts";
 
 
 export function reqsCheckIfAdmin(req: Request, res: Response){
@@ -10,4 +11,19 @@ export function reqsCheckIfAdmin(req: Request, res: Response){
         res.status(403);
     }
     return res.send();
+}
+
+export function storeRequest(req: Request, res: Response){
+    const requestToAdd = req.query.req_url
+    if (typeof requestToAdd === "string"){
+        console.log(requestToAdd)
+        sessions.push(requestToAdd)
+        console.log(sessions)
+    }
+}
+
+export function fetchRequests(req: Request, res: Response){
+    console.log(sessions)
+    res.json(sessions)
+    return res;
 }

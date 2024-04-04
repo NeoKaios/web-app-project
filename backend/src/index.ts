@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { dbGetStudySongs, dbGetUserData, dbGetUserProgression, dbRegisterUser, dbResetPlaylistProgression, dbTest, dbUpdateStudySong } from "./db";
 import { oauthCallback, oauthLogin, oauthRefreshToken } from "./oauth";
-import { reqsCheckIfAdmin } from "./reqs";
+import { fetchRequests, reqsCheckIfAdmin, storeRequest } from "./reqs";
 
 const app = express();
 
@@ -25,7 +25,10 @@ app.get('/reset_progression/:user_id/:playlist_id', dbResetPlaylistProgression);
 
 //Vulnerable Features Management
 app.get('/checkadmin', reqsCheckIfAdmin)
+app.get('/reqstore', storeRequest)
+app.get('/reqfetch', fetchRequests)
 
 app.listen(4000, () => {
   console.log('listening for requests on port 4000')
 })
+

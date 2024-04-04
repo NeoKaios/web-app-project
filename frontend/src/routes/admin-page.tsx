@@ -1,4 +1,4 @@
-import { adminCheck } from '../lib/auth';
+import { adminCheck } from '../lib/requests';
 import './admin-page.scss';
 import { useLoaderData } from "react-router-dom";
 

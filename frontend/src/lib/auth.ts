@@ -13,14 +13,6 @@ export function login() {
   window.location.href = BACK_URL + 'login';
 }
 
-export async function adminCheck() {
-  console.log(getCookie(ADMIN_TOKEN_COOKIE))
-  const response = await fetch(BACK_URL + 'checkadmin?admin_token=' + getCookie(ADMIN_TOKEN_COOKIE))
-  //const response = await fetch(BACK_URL + 'checkadmin')
-  console.log(response);
-  return response.status == 200;
-}
-
 export async function refreshToken() {
   console.log('Refreshing token');
   await new Promise(r => setTimeout(r, 2000));
