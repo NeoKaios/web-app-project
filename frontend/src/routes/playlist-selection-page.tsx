@@ -21,7 +21,7 @@ export function PlaylistSelectionPage() {
 
   const unsetPlaylist = () => setChosenPlaylist(undefined);
 
-  if (playlists.length) {
+  if (!playlists.length) {
     return <>
       <h2>No playlists</h2>
       <p>You have no public playlist on Spotify.</p>
