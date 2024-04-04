@@ -10,6 +10,7 @@ export const TRAIN_URL = (playlist_id: string) => '/train/' + playlist_id;
 
 export const ACCESS_TOKEN_COOKIE = 'access_token';
 export const REFRESH_TOKEN_COOKIE = 'refresh_token';
+export const ADMIN_TOKEN_COOKIE = "admin_token"
 
 export const ERROR_TOKEN_NEED_REFRESH = 'Spotify API returned 401';
 export const ERROR_NOT_LOGGED_IN = 'User not logged in, unable to perform Spotify API call';

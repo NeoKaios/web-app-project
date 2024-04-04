@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN_COOKIE, BACK_URL, FRONT_URL, REFRESH_TOKEN_COOKIE } from "./consts";
+import { ACCESS_TOKEN_COOKIE, ADMIN_TOKEN_COOKIE, BACK_URL, FRONT_URL, REFRESH_TOKEN_COOKIE } from "./consts";
 import { getCookie, removeCookie, setCookie } from "./cookie";
 
 export function getToken() {
@@ -11,6 +11,14 @@ export function setToken(token: string) {
 
 export function login() {
   window.location.href = BACK_URL + 'login';
+}
+
+export async function adminCheck() {
+  console.log(getCookie(ADMIN_TOKEN_COOKIE))
+  const response = await fetch(BACK_URL + 'checkadmin?admin_token=' + getCookie(ADMIN_TOKEN_COOKIE))
+  //const response = await fetch(BACK_URL + 'checkadmin')
+  console.log(response);
+  return response.status == 200;
 }
 
 export async function refreshToken() {
