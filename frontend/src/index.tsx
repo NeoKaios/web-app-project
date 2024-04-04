@@ -11,6 +11,8 @@ import { spotifyAPILoader } from './lib/spotify-api';
 import { trainingLoader, TrainingPage } from './routes/training-page';
 import { studyLoader, StudyPage } from './routes/study-page';
 import { progressionLoader, ProgressionPage } from './routes/progression-page';
+import { adminLoader, AdminPage } from './routes/admin-page';
+import { requestsLoader, RequestsPage } from './routes/requests-page';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -24,6 +26,16 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/admin",
+        element: <AdminPage />,
+        loader : adminLoader,
+      },
+      {
+        path: "/requests",
+        element: <RequestsPage />,
+        loader: requestsLoader,
       },
       {
         loader: spotifyAPILoader,
