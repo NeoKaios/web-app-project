@@ -26,7 +26,7 @@ export function TrainingPage() {
   const [lottieVisibility, setLottieVisibility] = useState<boolean>(false);
   const [lottieAnim, setLottieAnim] = useState<Object>(valid);
   const [freezeButton, setFreeze] = useState<boolean>(false);
-  const useSquare = useMediaQuery({ query: '(max-width: 800px)' });
+  const isMobile = useMediaQuery({ query: '(max-width: 800px)' });
 
   if (tracks.length < 4) {
     throw new Error(ERROR_PLAYLIST_IS_TOO_SMALL);
@@ -60,11 +60,10 @@ export function TrainingPage() {
     setLottieVisibility(true);
   }
 
-  const buttonChoices = freezeButton ? choices.map((_, id) => ({text:"---", id: id+"" })) : choices.map(({ id, name }) => ({ text: name, id }));
+  const buttonChoices = freezeButton ? choices.map((_, id) => ({ text: "---", id: id + "" })) : choices.map(({ id, name }) => ({ text: name, id }));
   const selectedTrack = choices[0];
 
   const lottieOnComplete = () => {
-    console.log('completed');
     setLottieVisibility(false);
     getRandomSelection();
     setFreeze(false);
@@ -74,12 +73,12 @@ export function TrainingPage() {
     <div className="training-page">
       <h2 className='title'>Training on {playlistInfo.name}</h2>
       <Player preview_url={selectedTrack.preview_url} />
-      <FourButton choices={buttonChoices} callback={submitChoice} square={useSquare} noShuffle={false} freeze={freezeButton} />
+      <FourButton choices={buttonChoices} callback={submitChoice} square={isMobile} noShuffle={false} freeze={freezeButton} />
       {lottieVisibility ?
-        <>
+        <div id='correction-panel' className={isMobile ? 'float' : ''}>
           <h3>{selectedTrack.name}</h3>
           <Lottie animationData={lottieAnim} style={{ height: "160px", width: "160px" }} loop={false} onComplete={lottieOnComplete} />
-        </>
+        </div>
         : null}
     </div>
   );
