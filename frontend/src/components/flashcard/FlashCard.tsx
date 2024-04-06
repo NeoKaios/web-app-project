@@ -1,6 +1,5 @@
 import "./FlashCard.scss";
 import { FourButton } from "../four-button/four-button";
-import { useEffect, useState } from "react";
 
 const LEVELS = [
   'I Hardly know the song',
@@ -27,6 +26,7 @@ export function FlashCard({ description, flipped, callback, onClick }: { descrip
             })}
             noShuffle={true}
             square={true}
+            freeze={false}
             callback={(quality: string) => callback(Number(quality))} />
         </div>
       </div>

@@ -16,7 +16,7 @@
   button {
     border-radius: 5px;
     border-style: solid;
-    border-color: #333 !important;
+    border-color: #333;
     font-size: inherit;
     cursor: pointer;
   }
@@ -24,11 +24,11 @@
   button.color-0 {
     background-color: #ff3355;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: #e21b3c;
     }
 
-    &:active {
+    &:active:not(:disabled) {
       background-color: #c50928;
     }
   }
@@ -36,11 +36,11 @@
   button.color-1 {
     background-color: #67be39;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: #25890c;
     }
 
-    &:active {
+    &:active:not(:disabled) {
       background-color: #106b02;
     }
   }
@@ -48,11 +48,11 @@
   button.color-2 {
     background-color: #45a3e5;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: #1369ce;
     }
 
-    &:active {
+    &:active:not(:disabled) {
       background-color: #0542b9;
     }
   }
@@ -60,11 +60,11 @@
   button.color-3 {
     background-color: #fcbf09;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: #ffa502;
     }
 
-    &:active {
+    &:active:not(:disabled) {
       background-color: #d79e00;
     }
   }
