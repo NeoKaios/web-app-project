@@ -5,18 +5,44 @@ $alert-color: #e66465ff;
 
   img,
   svg {
-    border-radius: 50%; //for spotify-logo-pulse
+    border-radius: 50%; //for spotify-logo-warn
     height: 10rem;
+  }
+
+  &.init .animated {
+    animation: spotify-logo-pulse 4s 5s infinite ease;
   }
 
   &:not(.init) .animated {
     animation:
       spotify-logo-rotate 1s 15 ease,
-      spotify-logo-pulse 1s 3 12s ease;
+      spotify-logo-warn 1s 3 12s ease;
   }
 
   &.paused .animated {
     animation-play-state: paused;
+  }
+}
+
+@keyframes spotify-logo-pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  5% {
+    transform: scale(1.1);
+  }
+
+  10% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.1);
+  }
+
+  20% {
+    transform: scale(1);
   }
 }
 
@@ -30,7 +56,7 @@ $alert-color: #e66465ff;
   }
 }
 
-@keyframes spotify-logo-pulse {
+@keyframes spotify-logo-warn {
   0% {
     box-shadow: 0 0 0 0 $alert-color;
   }
