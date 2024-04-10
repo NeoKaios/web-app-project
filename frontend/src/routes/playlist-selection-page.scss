@@ -13,3 +13,51 @@
     }
   }
 }
+
+.no-playlist {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.requests {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+
+  margin-block: 2rem;
+
+  .input {
+    margin-block-start: 1rem;
+    font-size: 2em;
+    display: flex;
+    gap: 10px;
+
+    input {
+      font-size: 1.5rem;
+      padding-inline: .5rem;
+    }
+
+    button,
+    input[type=submit] {
+      font-size: 1rem;
+      padding-inline: 1rem;
+      color: white;
+
+      border-radius: 5px;
+      border-style: solid;
+      border-color: white;
+      font-size: inherit;
+      cursor: pointer;
+      background-color: transparent;
+
+      &:hover:not(:disabled) {
+        background-color: #333;
+      }
+
+      &:active:not(:disabled) {
+        background-color: #666;
+      }
+    }
+  }
+}

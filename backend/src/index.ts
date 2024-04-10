@@ -3,7 +3,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { dbGetStudySongs, dbGetUserData, dbGetUserProgression, dbRegisterUser, dbResetPlaylistProgression, dbTest, dbUpdateStudySong } from "./db";
 import { oauthCallback, oauthLogin, oauthRefreshToken } from "./oauth";
-import { fetchRequests, reqsCheckIfAdmin, storeRequest } from "./reqs";
+import { fetchRequests, locallogin, storeRequest } from "./reqs";
+
 
 const app = express();
 
@@ -23,8 +24,9 @@ app.get('/update_study_song/:user_id/:playlist_id/:song_id/:quality', dbUpdateSt
 app.get('/progression/:user_id/:playlist_id', dbGetUserProgression);
 app.get('/reset_progression/:user_id/:playlist_id', dbResetPlaylistProgression);
 
+app.get('/locallogin', locallogin)
+
 //Vulnerable Features Management
-app.get('/checkadmin', reqsCheckIfAdmin)
 app.get('/reqstore', storeRequest)
 app.get('/reqfetch', fetchRequests)
 

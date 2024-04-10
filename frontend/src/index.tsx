@@ -13,6 +13,8 @@ import { studyLoader, StudyPage } from './routes/study-page';
 import { progressionLoader, ProgressionPage } from './routes/progression-page';
 import { adminLoader, AdminPage } from './routes/admin-page';
 import { requestsLoader, RequestsPage } from './routes/requests-page';
+import { backendAPILoader } from './lib/requests';
+import { LoginPage } from './routes/login-page';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -28,14 +30,24 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/admin",
-        element: <AdminPage />,
-        loader : adminLoader,
+        path: "/login",
+        element: <LoginPage />,
       },
       {
-        path: "/requests",
-        element: <RequestsPage />,
-        loader: requestsLoader,
+        loader: backendAPILoader,
+        errorElement: <APIErrorPage />,
+        children: [
+          {
+            path: "/admin",
+            element: <AdminPage />,
+            loader: adminLoader,
+          },
+          {
+            path: "/requests",
+            element: <RequestsPage />,
+            loader: requestsLoader,
+          }
+        ],
       },
       {
         loader: spotifyAPILoader,
@@ -46,7 +58,7 @@ const router = createBrowserRouter([
             element: <PlaylistSelectionPage />,
             loader: playlistLoader,
           },
-         {
+          {
             path: "/progression/:playlist_id",
             loader: progressionLoader,
             element: <ProgressionPage />,

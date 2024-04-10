@@ -1,0 +1,40 @@
+.login-panel {
+  padding: 1rem;
+
+  hr {
+    margin-block: 2rem;
+  }
+
+  button, input[type=submit] {
+    font-size: 1rem;
+    padding-inline: 1rem;
+    color: white;
+
+    border-radius: 5px;
+    border-style: solid;
+    border-color: white;
+    font-size: inherit;
+    cursor: pointer;
+    background-color: transparent;
+
+    &:hover:not(:disabled) {
+      background-color: #333;
+    }
+
+    &:active:not(:disabled) {
+      background-color: #666;
+    }
+  }
+
+  .user-login, .admin-login {
+    display: flex;
+    gap: 1rem;
+
+  }
+
+  input {
+    border-radius: 5px;
+    padding-inline: .5rem;
+    font-size: 1rem;
+  }
+}

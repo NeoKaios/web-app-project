@@ -22,20 +22,25 @@ export function PlaylistSelectionPage() {
   const unsetPlaylist = () => setChosenPlaylist(undefined);
 
   if (!playlists.length) {
-    return <>
+    return <div className="no-playlist">
       <h2>No playlists</h2>
-      <p>You have no public playlist on Spotify.</p>
+      <p>You have no <strong>public</strong> playlist on Spotify.</p>
       <p>Go to <a href={WEB_SPOTIFY_URL}>Spotify</a>, add some playlist to your profile and come back here !</p>
-      <p>Do you think there is an issue with your playlist ? Send us the playlist link and we will look into it</p>
-      <div>
-      <input type="text" id="urlRequestInput" placeholder="Enter playlist url" />
-      <button onClick={handleUrlRequest}>Click Me</button>
     </div>
-
-    </>
   }
   else if (!chosenPlaylist) {
-    return <PlaylistTable playlists={playlists} callback={setChosenPlaylist} />
+    return <>
+      <PlaylistTable playlists={playlists} callback={setChosenPlaylist} />
+      <div className="requests">
+        <h2>You can make requests !</h2>
+        <p>Some songs may be missing from your playlists.</p>
+        <p>If you think that it is the case, send us the playlist id and we will look into it !</p>
+        <div className="input">
+          <input type="text" id="urlRequestInput" placeholder="Playlist id" />
+          <button onClick={handleUrlRequest}>Send request</button>
+        </div>
+      </div>
+    </>
   }
   return <div className='mode-selector'>
     <MediaQuery minWidth={800}>
