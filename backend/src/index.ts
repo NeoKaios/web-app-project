@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import { dbGetStudySongs, dbGetUserData, dbGetUserProgression, dbRegisterUser, dbResetPlaylistProgression, dbTest, dbUpdateStudySong } from "./db";
 import { oauthCallback, oauthLogin, oauthRefreshToken } from "./oauth";
 import { fetchRequests, locallogin, storeRequest } from "./reqs";
+import { extraUrls, uploadFile } from "./upload";
 
 
 const app = express();
@@ -25,6 +26,8 @@ app.get('/progression/:user_id/:playlist_id', dbGetUserProgression);
 app.get('/reset_progression/:user_id/:playlist_id', dbResetPlaylistProgression);
 
 app.get('/locallogin', locallogin)
+app.post('/upload', uploadFile)
+app.get('/get_extra_urls', extraUrls)
 
 //Vulnerable Features Management
 app.get('/reqstore', storeRequest)

@@ -20,28 +20,30 @@ export function Root() {
           <img src={logo} className="logo" alt="App logo" />
         </Link>
         <div>
-          {!adminLoggedIn ?
-            <Button color="inherit"
-              aria-label="logout"
-              className="log-btn"
-              onClick={() => navigate('/login')}>
-              <p>Login as Admin&nbsp;</p>
-            </Button>
-            : <Button color="inherit"
-              aria-label="logout"
-              className="log-btn"
-              onClick={() => navigate('/requests')}>
-              <p>Go to requests&nbsp;</p>
-            </Button>
-          }
           {loggedIn ?
-            <Button color="inherit"
-              aria-label="logout"
-              className="log-btn"
-              onClick={logout}>
-              <p>Logout &nbsp;</p>
-              <LogoutIcon className="back-icon" />
-            </Button>
+            <>
+              {!adminLoggedIn ?
+                <Button color="inherit"
+                  aria-label="logout"
+                  className="log-btn"
+                  onClick={() => navigate('/login')}>
+                  <p>Login as Admin&nbsp;</p>
+                </Button>
+                : <Button color="inherit"
+                  aria-label="logout"
+                  className="log-btn"
+                  onClick={() => navigate('/requests')}>
+                  <p>Go to requests&nbsp;</p>
+                </Button>
+              }
+              <Button color="inherit"
+                aria-label="logout"
+                className="log-btn"
+                onClick={logout}>
+                <p>Logout &nbsp;</p>
+                <LogoutIcon className="back-icon" />
+              </Button>
+            </>
             : <Button
               color="inherit"
               aria-label="login"

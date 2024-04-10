@@ -1,9 +1,16 @@
 import { BACK_URL, ERROR_UNEXPECTED_BACKEND_ERROR } from "./consts";
 
-async function requestAPI(url: string) {
-  const response = await fetch(BACK_URL + url);
+async function requestAPI(url: string, options: RequestInit | undefined = undefined) {
+  const response = await fetch(BACK_URL + url, options);
   if (response.status !== 200) throw new Error(ERROR_UNEXPECTED_BACKEND_ERROR);
   return await response.json();
+}
+
+/**
+ * Fetches extra url for songs where preview_url is missing
+ */
+export async function getExtraPreviewUrls(track_ids: string[]): Promise<{ id: string, preview_url: string }[]> {
+  return requestAPI("get_extra_urls?tracks=" + track_ids.join(','));
 }
 
 /**

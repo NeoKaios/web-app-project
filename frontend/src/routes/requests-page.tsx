@@ -1,12 +1,12 @@
 import { fetchRequests } from '../lib/requests';
 import { getPlaylist } from '../lib/spotify-api';
 import './requests-page.scss';
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 export async function requestsLoader() {
   console.log('Loading requests page...');
   const reqArray = await fetchRequests()
-  const playlistNameArray: string[] = []
+  const requestedPlaylists: { name: string, id: string }[] = []
 
 
   if (reqArray === undefined) {
@@ -16,18 +16,17 @@ export async function requestsLoader() {
   for (let i = 0; i < reqArray.length; i++) {
     try {
       const playlist = (await getPlaylist(reqArray[i]));
-      playlistNameArray.push(playlist.name);
-      playlistNameArray.push(reqArray[i]); //TODO to remove
+      requestedPlaylists.push({ name: playlist.name, id: playlist.id });
     } catch (error) {
       console.log('%s is not a valid playlist id', reqArray[i])
     }
   }
-  console.log("RETURNING");
-  console.log(playlistNameArray);
-  return playlistNameArray;
+  console.log(requestedPlaylists);
+  return requestedPlaylists;
 }
 
 export function RequestsPage() {
+  const navigate = useNavigate();
   const requests = useLoaderData() as Awaited<ReturnType<typeof requestsLoader>>;
   console.log(requests)
   console.log(requests.length)
@@ -35,15 +34,17 @@ export function RequestsPage() {
     <table className="requests-table">
       <thead>
         <tr>
-          <th>Request ID</th>
-          <th>Requested Song</th>
+          <th>Playlist ID</th>
+          <th className='main'>Requested Playlist</th>
+          <th>Analyse missing songs</th>
         </tr>
       </thead>
       <tbody>
-        {requests.map((request, index) => (
-          <tr key={index}>
-            <td>{index + 1}</td>
-            <td> <div dangerouslySetInnerHTML={{ __html: request }} /></td>
+        {requests.map(({ name, id }) => (
+          <tr key={id}>
+            <td>{id}</td>
+            <td> <div dangerouslySetInnerHTML={{ __html: name }} /></td>
+            <td><button onClick={() => {navigate('/analyse/' + id)}}>Analyse</button></td>
           </tr>
         ))}
       </tbody>

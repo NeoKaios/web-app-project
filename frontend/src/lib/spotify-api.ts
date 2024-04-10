@@ -1,5 +1,6 @@
 import { SimplifiedPlaylist, Track, PublicUser, Paging, PlaylistTrack } from "spotify-types";
 import { getToken, refreshToken } from "./auth";
+import { getExtraPreviewUrls } from "./backend-api";
 import { ERROR_NOT_LOGGED_IN, SPOTIFY_URL } from "./consts";
 
 const DEFAULT_HEADER = (access_token: string) => {
@@ -46,19 +47,32 @@ export async function getTrack(track_id: string): Promise<Track> {
 }
 
 export async function getPlaylistItems(playlist_id: string): Promise<Track[]> {
-  var url = `${SPOTIFY_URL}playlists/${playlist_id}/tracks?limit=100`;
-  const data = await requestAPI(url) as Paging<PlaylistTrack>;
-  var tracks = data.items.map(elem => elem.track as Track)
-  if (!data.next) {
-    return tracks;
-  }
+  const getAllTracks = async () => {
+    var url = `${SPOTIFY_URL}playlists/${playlist_id}/tracks?limit=100`;
+    const data = await requestAPI(url) as Paging<PlaylistTrack>;
+    var tracks = data.items.map(elem => elem.track as Track)
+    if (!data.next) {
+      return tracks;
+    }
 
-  var requests: Promise<Paging<PlaylistTrack>>[] = []
-  for (let i = 100; i < data.total; i += 100) {
-    requests.push(requestAPI(url + `&offset=${i}`));
-  }
-  const datas = await Promise.all(requests); //parallelize request for speeeed
-  return tracks.concat(...datas.map(data => data.items.map(elem => elem.track as Track)))
+    var requests: Promise<Paging<PlaylistTrack>>[] = []
+    for (let i = 100; i < data.total; i += 100) {
+      requests.push(requestAPI(url + `&offset=${i}`));
+    }
+    const datas = await Promise.all(requests); //parallelize request for speeeed
+    return tracks.concat(...datas.map(data => data.items.map(elem => elem.track as Track)))
+  };
+
+  const tracks = await getAllTracks();
+  const res = await getExtraPreviewUrls(tracks.map(track => track.id))
+  tracks.map(track => {
+    const idx = res.findIndex(({ id }) => track.id === id);
+    if (idx !== -1) {
+      track.preview_url = res[idx].preview_url;
+    }
+    return track;
+  });
+  return tracks;
 }
 
 export async function getPlaylist(playlist_id: string): Promise<SimplifiedPlaylist> {

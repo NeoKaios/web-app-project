@@ -1,16 +1,21 @@
 .requests-table {
-    width: 100%;
-    border-collapse: collapse;
-  
-    th, td {
-      padding: 8px;
-      border: 1px solid #ddd;
-      text-align: center; // Center align the content horizontally
-      vertical-align: middle; // Center align the content vertically
-    }
-  
-    th {
-      background-color: green; // Background color for table header
-      font-weight: bold; // Bold font for table header
-    }
+  margin: 1rem;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: center; // Center align the content horizontally
+    vertical-align: middle; // Center align the content vertically
   }
+
+  thead th:nth-child(2) {
+    width: 50%;
+  }
+
+  th {
+    background-color: green; // Background color for table header
+    font-weight: bold; // Bold font for table header
+  }
+}
