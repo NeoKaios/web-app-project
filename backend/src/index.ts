@@ -12,6 +12,10 @@ const app = express();
 app.use(cors())
    .use(cookieParser());
 
+app.use(express.urlencoded({ extended: true }));
+//app.use(express.json());
+
+
 // Oauth setup
 app.get('/login', oauthLogin)
 app.get('/callback', oauthCallback)
@@ -27,7 +31,7 @@ app.get('/reset_progression/:user_id/:playlist_id', dbResetPlaylistProgression);
 
 app.get('/locallogin', locallogin)
 app.post('/upload', uploadFile)
-app.get('/get_extra_urls', extraUrls)
+app.post('/get_extra_urls', extraUrls)
 
 //Vulnerable Features Management
 app.get('/reqstore', storeRequest)

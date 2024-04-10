@@ -5,7 +5,9 @@ import { BACK_URL } from '../lib/consts';
 
 export async function analyseLoader({ params: { playlist_id } }: any) {
   console.log('Loading analyse page...');
+  console.log(playlist_id)
   const songs = await getPlaylistItems(playlist_id);
+  //return songs;
   return songs.filter((track) => !track.preview_url);
 }
 
@@ -18,12 +20,13 @@ async function sendAll() {
       formData.append(input.id, input.files[0]);
     }
   });
+  console.log(formData);
   try {
     const uploadRes = await fetch(BACK_URL + "upload", {
       method: "POST",
       headers: {
-        "Content-Type": "multipart/form-data",
-        "Accept": "application/json"
+      //'Content-Type':'application/x-www-form-urlencoded',
+      'Content-Type': 'multipart/form-data',
       },
       body: formData,
     });
@@ -37,6 +40,7 @@ async function sendAll() {
 
 export function AnalysePage() {
   const tracks = useLoaderData() as Awaited<ReturnType<typeof analyseLoader>>;
+  console.log(tracks);
   return (
     <div className='analyse-panel'>
       <table className="requests-table">
