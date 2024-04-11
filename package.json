@@ -8,5 +8,9 @@
     "prepare": "husky",
     "dev": "docker compose -f dev.docker-compose.yaml --env-file backend/.env up",
     "build": "docker compose -f dev.docker-compose.yaml --env-file backend/.env up --build"
+  },
+  "dependencies": {
+    "express-fileupload": "^1.5.0",
+    "jsonwebtoken": "^9.0.2"
   }
 }

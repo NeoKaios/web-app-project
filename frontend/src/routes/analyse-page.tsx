@@ -7,8 +7,8 @@ export async function analyseLoader({ params: { playlist_id } }: any) {
   console.log('Loading analyse page...');
   console.log(playlist_id)
   const songs = await getPlaylistItems(playlist_id);
-  //return songs;
-  return songs.filter((track) => !track.preview_url);
+  return songs;
+  //return songs.filter((track) => !track.preview_url);
 }
 
 async function sendAll() {
@@ -17,7 +17,9 @@ async function sendAll() {
   inputs.forEach(input => {
     if (input.files && input.files[0]) {
       console.log(input.id)
+      //formData.append(input.id, input.files[0]);
       formData.append(input.id, input.files[0]);
+
     }
   });
   console.log(formData);
@@ -26,12 +28,12 @@ async function sendAll() {
       method: "POST",
       headers: {
       //'Content-Type':'application/x-www-form-urlencoded',
-      'Content-Type': 'multipart/form-data',
+      //'Content-Type': 'multipart/form-data',
       },
       body: formData,
     });
     if (uploadRes.ok) {
-      inputs.forEach(input => input.value = '');
+      // inputs.forEach(input => input.value = '');
     }
   } catch (err) {
     console.log(err);

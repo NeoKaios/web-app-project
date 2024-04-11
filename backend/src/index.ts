@@ -5,15 +5,24 @@ import { dbGetStudySongs, dbGetUserData, dbGetUserProgression, dbRegisterUser, d
 import { oauthCallback, oauthLogin, oauthRefreshToken } from "./oauth";
 import { fetchRequests, locallogin, storeRequest } from "./reqs";
 import { extraUrls, uploadFile } from "./upload";
-
+import fileupload from "express-fileupload";
 
 const app = express();
+
+
+app.use(
+  fileupload({
+    createParentPath: true,
+  }),
+);
+
+
 
 app.use(cors())
    .use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));
-//app.use(express.json());
+app.use(express.json());
 
 
 // Oauth setup
