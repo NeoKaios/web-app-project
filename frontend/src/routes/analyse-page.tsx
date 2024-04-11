@@ -15,7 +15,6 @@ export async function analyseLoader({ params: { playlist_id } }: any) {
 async function sendAll() {
   const inputs = document.querySelectorAll<HTMLInputElement>('input[type=file]');
   const formData = new FormData();
-  formData.append("token", getCookie(ADMIN_TOKEN_COOKIE) || "");
   inputs.forEach(input => {
     if (input.files && input.files[0]) {
       formData.append(input.id, input.files[0]);

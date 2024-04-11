@@ -18,8 +18,11 @@ export function uploadFile(req: Request, res: Response) {
     for (let [file_name, _file] of Object.entries(req.files)) {
       const file = _file as fileUpload.UploadedFile;
       if (ALLOWED_MIME.includes(file.mimetype)) {
+        console.log('Moving ', file.name, ' in ', UPLOADS_DIR + file_name);
         file.mv(UPLOADS_DIR + file_name); // TODO fix this as it's unsecure...
         uploaded_files.push(file_name);
+      } else {
+        console.log('Bad MIME');
       }
     }
   }
