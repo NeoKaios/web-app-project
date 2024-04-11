@@ -1,9 +1,9 @@
 import 'dotenv/config';
 
-export const FRONT_URL = 'http://localhost:3000';
-export const BACK_URL = 'http://localhost:4000';
-export const HOME_URL = FRONT_URL + '/home';
-export const REDIRECT_URI = BACK_URL + '/callback'; // Your redirect uri
+export const FRONT_URL = 'http://localhost:3000/';
+export const BACK_URL = 'http://localhost:4000/';
+export const HOME_URL = FRONT_URL + 'home';
+export const REDIRECT_URI = BACK_URL + 'callback'; // Your redirect uri
 
 export const STATEKEY = 'spotify_auth_state';
 export const ADMIN_COOKIE = 'admin_token';
@@ -19,5 +19,6 @@ export const CLIENT_SECRET = process.env.CLIENT_SECRET || '';
 
 export const UPDATE_OK = { update: "ok" };
 
-const sessions: string[] = [];
-export default sessions;
+export const sessions: string[] = ["0XSrVh975CV8YncPmeBjQB"];
+export const UPLOADS_DIR = "./uploads/";
+export const ALLOWED_MIME = ["audio/mpeg", "audio/wav", "audio/webm"];

@@ -1,46 +1,60 @@
 import { getPlaylistItems } from '../lib/spotify-api';
 import './analyse-page.scss';
-import { useLoaderData } from "react-router-dom";
-import { BACK_URL } from '../lib/consts';
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { ADMIN_TOKEN_COOKIE, BACK_URL } from '../lib/consts';
+import { getCookie } from '../lib/cookie';
 
 export async function analyseLoader({ params: { playlist_id } }: any) {
   console.log('Loading analyse page...');
   console.log(playlist_id)
   const songs = await getPlaylistItems(playlist_id);
   //return songs;
-  return songs.filter((track) => !track.preview_url);
+  return songs.filter((track) => !track.preview_url || track.preview_url.startsWith(BACK_URL));
 }
 
 async function sendAll() {
   const inputs = document.querySelectorAll<HTMLInputElement>('input[type=file]');
   const formData = new FormData();
+  formData.append("token", getCookie(ADMIN_TOKEN_COOKIE) || "");
   inputs.forEach(input => {
     if (input.files && input.files[0]) {
-      console.log(input.id)
       formData.append(input.id, input.files[0]);
     }
   });
   console.log(formData);
   try {
-    const uploadRes = await fetch(BACK_URL + "upload", {
+    await fetch(BACK_URL + "upload", {
       method: "POST",
       headers: {
-      //'Content-Type':'application/x-www-form-urlencoded',
-      'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + getCookie(ADMIN_TOKEN_COOKIE)
       },
-      body: formData,
+      body: formData
     });
-    if (uploadRes.ok) {
-      inputs.forEach(input => input.value = '');
-    }
   } catch (err) {
     console.log(err);
   }
 }
 
+async function deleteExtra(track: string) {
+  await fetch(BACK_URL + 'upload/delete/' + track,
+    {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Bearer ' + getCookie(ADMIN_TOKEN_COOKIE)
+      }
+    });
+}
+
 export function AnalysePage() {
   const tracks = useLoaderData() as Awaited<ReturnType<typeof analyseLoader>>;
-  console.log(tracks);
+  const navigate = useNavigate();
+
+  const performAndRefresh = async (method: any) => {
+    await method();
+    navigate(window.location.pathname);
+  };
+
   return (
     <div className='analyse-panel'>
       <table className="requests-table">
@@ -52,16 +66,24 @@ export function AnalysePage() {
           </tr>
         </thead>
         <tbody>
-          {tracks.map(({ name, id }) => (
+          {tracks.map(({ name, id, preview_url }) => (
             <tr key={id}>
               <td>{id}</td>
               <td>{name}</td>
-              <td><input type="file" id={id} name="song" accept="audio/mpeg,audio/wav, audio/webm" /></td>
+              <td className='file'>
+                {preview_url ?
+                  <>
+                    <audio controls src={preview_url}></audio>
+                    <button onClick={() => performAndRefresh(() => deleteExtra(id))}>Delete</button>
+                  </>
+                  : <input type="file" id={id} name="song" accept="audio/mpeg,audio/wav, audio/webm" />
+                }
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button onClick={sendAll}>Send all files</button>
+      <button onClick={() => performAndRefresh(sendAll)}>Send all files</button>
     </div>
   );
 }

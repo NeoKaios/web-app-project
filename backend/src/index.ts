@@ -1,20 +1,26 @@
 import express from "express";
+import fileupload from "express-fileupload";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { dbGetStudySongs, dbGetUserData, dbGetUserProgression, dbRegisterUser, dbResetPlaylistProgression, dbTest, dbUpdateStudySong } from "./db";
 import { oauthCallback, oauthLogin, oauthRefreshToken } from "./oauth";
-import { fetchRequests, locallogin, storeRequest } from "./reqs";
-import { extraUrls, uploadFile } from "./upload";
-
+import { fetchRequests, storeRequest } from "./reqs";
+import { deleteFile, extraUrls, uploadFile } from "./upload";
+import { locallogin, protectRoute } from "./admin";
+import { UPLOADS_DIR } from "./consts";
 
 const app = express();
 
+app.use(fileupload({ createParentPath: true }));
+
 app.use(cors())
-   .use(cookieParser());
+  .use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));
-//app.use(express.json());
+app.use(express.json());
 
+
+app.use('/audio', express.static(UPLOADS_DIR));
 
 // Oauth setup
 app.get('/login', oauthLogin)
@@ -29,8 +35,12 @@ app.get('/update_study_song/:user_id/:playlist_id/:song_id/:quality', dbUpdateSt
 app.get('/progression/:user_id/:playlist_id', dbGetUserProgression);
 app.get('/reset_progression/:user_id/:playlist_id', dbResetPlaylistProgression);
 
+// Local Auth
 app.get('/locallogin', locallogin)
-app.post('/upload', uploadFile)
+
+// Upload
+app.post('/upload', protectRoute(uploadFile))
+app.delete('/upload/delete/:track_id', protectRoute(deleteFile))
 app.post('/get_extra_urls', extraUrls)
 
 //Vulnerable Features Management

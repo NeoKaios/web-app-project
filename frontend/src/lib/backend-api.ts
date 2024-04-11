@@ -9,13 +9,13 @@ async function requestAPI(url: string, options: RequestInit | undefined = undefi
 /**
  * Fetches extra url for songs where preview_url is missing
  */
-export async function getExtraPreviewUrls(track_ids: string[]): Promise<{ id: string, preview_url: string }[]> {
+export async function getExtraPreviewUrls(track_ids: string[]): Promise<string[]> {
   return requestAPI("get_extra_urls",{
     method: "POST",
     headers: {
     'Content-Type':'application/x-www-form-urlencoded',
     },
-    body: track_ids.join(','),
+    body: "tracks="+track_ids.join(','),
   });
 }
 

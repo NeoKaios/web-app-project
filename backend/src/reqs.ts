@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 import { Request, Response } from "express";
-import sessions, { CLIENT_SECRET } from "./consts";
+import { sessions, CLIENT_SECRET } from "./consts";
 
 export function locallogin(req: Request, res: Response) {
   if (req.query.userLogin) {

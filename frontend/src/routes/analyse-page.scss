@@ -21,6 +21,11 @@
       width: 50%;
     }
 
+    tbody td.file {
+      display: flex;
+      justify-content: center;
+    }
+
     th {
       background-color: green; // Background color for table header
       font-weight: bold; // Bold font for table header
