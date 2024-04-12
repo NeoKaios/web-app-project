@@ -1,12 +1,12 @@
 import { Button } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { getUserProgression, resetProgression } from "../lib/backend-api";
-import { getPlaylistItems, getUserData } from "../lib/spotify-api";
+import { getUserProgression, resetProgression } from "../../lib/backend-api";
+import { getPlaylistItems, getUserData } from "../../lib/spotify-api";
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import './progression-page.scss';
-import { PROGRESSION_URL, STUDY_URL } from "../lib/consts";
+import { PROGRESSION_URL, STUDY_URL } from "../../lib/consts";
 
 export async function progressionLoader({ params: { playlist_id } }: any) {
   const userId = (await getUserData()).id;

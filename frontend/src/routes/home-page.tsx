@@ -1,14 +1,64 @@
+import { Button } from "@mui/material";
+import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
+import { SimplifiedPlaylist } from "spotify-types";
+import { ModeSelector, PlaylistTable } from "../components";
+import { WEB_SPOTIFY_URL } from "../lib/consts";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './home-page.scss';
+import { getUserPlaylists } from "../lib/spotify-api";
+import MediaQuery from "react-responsive";
+import { submitRequest } from "../lib/backend-api";
+
+export async function playlistLoader() {
+  console.log('Loading home page...');
+  return await getUserPlaylists();
+}
+
+
+const handleUrlRequest = () => {
+  const url = (document.getElementById('urlRequestInput') as HTMLInputElement);
+  submitRequest(url.value)
+  url.value = '';
+};
 
 export function HomePage() {
-  return (
-    <>
-      <div className="home-panel">
-        <h1>Welcome to <em>Song Trainer</em></h1>
-        <p>Enhance your ability to recognize your favorite tunes by seamlessly connecting your <a href="https://open.spotify.com">Spotify account</a> with our app.</p>
-        <p>Get ready to elevate your music recognition skills !</p>
-        <p>Please login if you wish to continue using this app.</p>
+  const playlists = useLoaderData() as Awaited<ReturnType<typeof playlistLoader>>;
+  const [chosenPlaylist, setChosenPlaylist] = useState<SimplifiedPlaylist>();
+
+  const unsetPlaylist = () => setChosenPlaylist(undefined);
+
+  if (!playlists.length) {
+    return <div className="no-playlist">
+      <h2>No playlists</h2>
+      <p>You have no <strong>public</strong> playlist on Spotify.</p>
+      <p>Go to <a href={WEB_SPOTIFY_URL}>Spotify</a>, add some playlist to your profile and come back here !</p>
+    </div>
+  }
+  else if (!chosenPlaylist) {
+    return <>
+      <PlaylistTable playlists={playlists} callback={setChosenPlaylist} />
+      <div className="requests">
+        <h2>You can make requests !</h2>
+        <p>Some songs may be missing from your playlists.</p>
+        <p>If you think that it is the case, send us the playlist id and we will look into it !</p>
+        <div className="input">
+          <input type="text" id="urlRequestInput" placeholder="Playlist id" />
+          <button onClick={handleUrlRequest}>Send request</button>
+        </div>
       </div>
     </>
-  );
+  }
+  return <div className='mode-selector'>
+    <MediaQuery minWidth={800}>
+      <Button
+        color="inherit"
+        aria-label="unselect playlist"
+        className="back-btn"
+        onClick={unsetPlaylist}>
+        <ArrowBackIcon className="back-icon" />
+      </Button>
+    </MediaQuery>
+    <ModeSelector selectedPlaylist={chosenPlaylist} />
+  </div>;
 }

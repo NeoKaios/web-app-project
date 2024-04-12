@@ -1,12 +1,12 @@
 import { useLoaderData } from 'react-router-dom';
-import { ERROR_EMPTY_PLAYLIST } from '../lib/consts';
+import { ERROR_EMPTY_PLAYLIST } from '../../lib/consts';
 import { useEffect, useState } from 'react';
-import { getPlaylistItems, getUserData } from '../lib/spotify-api';
-import { randomChoice } from '../lib/random';
-import { Player } from '../components';
-import { getStudySongs, updateStudySong } from '../lib/backend-api';
+import { getPlaylistItems, getUserData } from '../../lib/spotify-api';
+import { randomChoice } from '../../lib/random';
+import { Player } from '../../components';
+import { getStudySongs, updateStudySong } from '../../lib/backend-api';
 import { Track } from 'spotify-types';
-import { FlashCard } from '../components/flashcard/FlashCard';
+import { FlashCard } from '../../components/flashcard/FlashCard';
 import './study-page.scss';
 
 const REFRESH_DELAY = 10000; // Refresh period for toStudy songs in ms

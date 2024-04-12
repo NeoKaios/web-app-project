@@ -1,8 +1,8 @@
-import { getPlaylist, getPlaylistItems } from '../lib/spotify-api';
+import { getPlaylist, getPlaylistItems } from '../../lib/spotify-api';
 import './analyse-page.scss';
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { BACK_URL } from '../lib/consts';
-import { deleteExtra, deleteRequest, uploadAudioFiles } from '../lib/backend-api';
+import { BACK_URL } from '../../lib/consts';
+import { deleteExtra, deleteRequest, uploadAudioFiles } from '../../lib/backend-api';
 
 export async function analyseLoader({ params: { playlist_id } }: any) {
   console.log('Loading analyse page...');

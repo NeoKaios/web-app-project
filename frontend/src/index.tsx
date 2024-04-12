@@ -3,18 +3,17 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.scss';
 import { Root } from './routes/root';
-import { HomePage } from './routes/home-page';
+import { IndexPage } from './routes/index-page';
 import { ErrorPage } from './routes/error-page';
-import { PlaylistSelectionPage, playlistLoader } from './routes/playlist-selection-page';
+import { HomePage, playlistLoader } from './routes/home-page';
 import { APIErrorPage } from './routes/api-error-page';
 import { spotifyAPILoader } from './lib/spotify-api';
-import { trainingLoader, TrainingPage } from './routes/training-page';
-import { studyLoader, StudyPage } from './routes/study-page';
-import { progressionLoader, ProgressionPage } from './routes/progression-page';
-import { adminLoader, AdminPage } from './routes/admin-page';
-import { requestsLoader, RequestsPage } from './routes/requests-page';
+import { trainingLoader, TrainingPage } from './routes/game/training-page';
+import { studyLoader, StudyPage } from './routes/game/study-page';
+import { progressionLoader, ProgressionPage } from './routes/game/progression-page';
+import { requestsLoader, RequestsPage } from './routes/admin/requests-page';
 import { LoginPage } from './routes/login-page';
-import { analyseLoader, AnalysePage } from './routes/analyse-page';
+import { analyseLoader, AnalysePage } from './routes/admin/analyse-page';
 import { adminSecureLoader } from './lib/backend-api';
 
 const root = ReactDOM.createRoot(
@@ -28,7 +27,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />,
+        element: <IndexPage />,
       },
       {
         loader: spotifyAPILoader,
@@ -43,11 +42,6 @@ const router = createBrowserRouter([
             errorElement: <APIErrorPage />,
             children: [
               {
-                path: "/admin",
-                element: <AdminPage />,
-                loader: adminLoader,
-              },
-              {
                 path: "/analyse/:playlist_id",
                 element: <AnalysePage />,
                 loader: analyseLoader,
@@ -61,7 +55,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/home",
-            element: <PlaylistSelectionPage />,
+            element: <HomePage />,
             loader: playlistLoader,
           },
           {

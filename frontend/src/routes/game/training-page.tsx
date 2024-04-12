@@ -1,14 +1,14 @@
 import './training-page.scss';
 import { useState } from "react";
 import Lottie from "lottie-react";
-import valid from "../assets/valid.json";
-import invalid from "../assets/invalid.json";
+import valid from "../../assets/valid.json";
+import invalid from "../../assets/invalid.json";
 import { useLoaderData } from "react-router-dom";
 import { Track } from "spotify-types";
-import { FourButton, Player } from "../components";
-import { ERROR_PLAYLIST_IS_TOO_SMALL } from "../lib/consts";
-import { randomChoice, randomNChoices } from "../lib/random";
-import { getPlaylist, getPlaylistItems } from "../lib/spotify-api";
+import { FourButton, Player } from "../../components";
+import { ERROR_PLAYLIST_IS_TOO_SMALL } from "../../lib/consts";
+import { randomChoice, randomNChoices } from "../../lib/random";
+import { getPlaylist, getPlaylistItems } from "../../lib/spotify-api";
 import { useMediaQuery } from 'react-responsive';
 
 export async function trainingLoader({ params: { playlist_id } }: any) {

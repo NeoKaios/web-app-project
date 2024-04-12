@@ -1,8 +1,8 @@
-import { getPlaylist } from '../lib/spotify-api';
+import { getPlaylist } from '../../lib/spotify-api';
 import './requests-page.scss';
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { fetchRequests } from '../lib/backend-api';
-import { logoutAdmin } from '../lib/auth';
+import { fetchRequests } from '../../lib/backend-api';
+import { logoutAdmin } from '../../lib/auth';
 
 export async function requestsLoader() {
   console.log('Loading requests page...');

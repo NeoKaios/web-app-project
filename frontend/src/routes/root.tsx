@@ -16,8 +16,9 @@ export function Root() {
   return (
     <>
       <header className={'header' + (navigation.state === 'loading' ? ' loading' : '')}>
-        <Link to='/home'>
+        <Link className="href-logo" to='/home'>
           <img src={logo} className="logo" alt="App logo" />
+          <h2>Song Trainer</h2>
         </Link>
         <div>
           {loggedIn ?
