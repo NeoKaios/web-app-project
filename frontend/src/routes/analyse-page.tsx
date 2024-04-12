@@ -1,15 +1,15 @@
-import { getPlaylistItems } from '../lib/spotify-api';
+import { getPlaylist, getPlaylistItems } from '../lib/spotify-api';
 import './analyse-page.scss';
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { ADMIN_TOKEN_COOKIE, BACK_URL } from '../lib/consts';
-import { getCookie } from '../lib/cookie';
+import { BACK_URL } from '../lib/consts';
+import { deleteExtra, deleteRequest, uploadAudioFiles } from '../lib/backend-api';
 
 export async function analyseLoader({ params: { playlist_id } }: any) {
   console.log('Loading analyse page...');
-  console.log(playlist_id)
+  const playlist = await getPlaylist(playlist_id);
   const songs = await getPlaylistItems(playlist_id);
-  //return songs;
-  return songs.filter((track) => !track.preview_url || track.preview_url.startsWith(BACK_URL));
+  const tracks = songs.filter((track) => !track.preview_url || track.preview_url.startsWith(BACK_URL));
+  return { tracks, playlist };
 }
 
 async function sendAll() {
@@ -20,33 +20,12 @@ async function sendAll() {
       formData.append(input.id, input.files[0]);
     }
   });
-  console.log(formData);
-  try {
-    await fetch(BACK_URL + "upload", {
-      method: "POST",
-      headers: {
-        'Authorization': 'Bearer ' + getCookie(ADMIN_TOKEN_COOKIE)
-      },
-      body: formData
-    });
-  } catch (err) {
-    console.log(err);
-  }
+  uploadAudioFiles(formData);
 }
 
-async function deleteExtra(track: string) {
-  await fetch(BACK_URL + 'upload/delete/' + track,
-    {
-      method: "DELETE",
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Bearer ' + getCookie(ADMIN_TOKEN_COOKIE)
-      }
-    });
-}
 
 export function AnalysePage() {
-  const tracks = useLoaderData() as Awaited<ReturnType<typeof analyseLoader>>;
+  const { tracks, playlist } = useLoaderData() as Awaited<ReturnType<typeof analyseLoader>>;
   const navigate = useNavigate();
 
   const performAndRefresh = async (method: any) => {
@@ -54,8 +33,14 @@ export function AnalysePage() {
     navigate(window.location.pathname);
   };
 
+  const deleteRequestAndBack = () => {
+    deleteRequest(playlist.id);
+    navigate('/requests');
+  }
+
   return (
     <div className='analyse-panel'>
+    <h2>{playlist.name}</h2>
       <table className="requests-table">
         <thead>
           <tr>
@@ -83,6 +68,7 @@ export function AnalysePage() {
         </tbody>
       </table>
       <button onClick={() => performAndRefresh(sendAll)}>Send all files</button>
+      <button onClick={deleteRequestAndBack}>Delete request</button>
     </div>
   );
 }

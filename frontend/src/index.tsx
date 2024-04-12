@@ -13,9 +13,9 @@ import { studyLoader, StudyPage } from './routes/study-page';
 import { progressionLoader, ProgressionPage } from './routes/progression-page';
 import { adminLoader, AdminPage } from './routes/admin-page';
 import { requestsLoader, RequestsPage } from './routes/requests-page';
-import { backendAPILoader } from './lib/requests';
 import { LoginPage } from './routes/login-page';
 import { analyseLoader, AnalysePage } from './routes/analyse-page';
+import { adminSecureLoader } from './lib/backend-api';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
             element: <LoginPage />,
           },
           {
-            loader: backendAPILoader,
+            loader: adminSecureLoader,
             errorElement: <APIErrorPage />,
             children: [
               {

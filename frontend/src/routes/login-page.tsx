@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+import { KeyboardEvent, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ADMIN_TOKEN_COOKIE, BACK_URL, USER_TOKEN_COOKIE } from '../lib/consts';
+import { adminLogin, userLogin } from '../lib/backend-api';
+import { ADMIN_TOKEN_COOKIE, USER_TOKEN_COOKIE } from '../lib/consts';
 import { setCookie } from '../lib/cookie';
 import './login-page.scss';
 
@@ -9,10 +10,9 @@ export function LoginPage() {
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const handleAdminLogin = async () => {
-    const res = await fetch(BACK_URL + "locallogin?password=" + passwordRef.current?.value);
-    const token = await res.json()
-    if (token.success) {
-      setCookie(ADMIN_TOKEN_COOKIE, token.token);
+    const token = await adminLogin(passwordRef.current?.value || '')
+    if (token) {
+      setCookie(ADMIN_TOKEN_COOKIE, token);
       navigate('/home');
     } else if (passwordRef.current) {
       passwordRef.current.value = '';
@@ -20,10 +20,15 @@ export function LoginPage() {
   }
 
   const handleUserLogin = async () => {
-    const res = await fetch(BACK_URL + "locallogin?userLogin=true");
-    const token = await res.text()
+    const token = await userLogin();
     setCookie(USER_TOKEN_COOKIE, token);
     navigate('/home');
+  }
+
+  const enterManager = (ev: KeyboardEvent<HTMLInputElement>) => {
+    if(ev.key === "Enter") {
+      handleAdminLogin();
+    }
   }
 
   return (
@@ -35,7 +40,7 @@ export function LoginPage() {
       <hr />
       <div className='admin-login'>
         <h1>Login as an Admin :</h1>
-        <input ref={passwordRef} type="password" placeholder='Admin password' name="password" />
+        <input ref={passwordRef} type="password" placeholder='Admin password' name="password" onKeyUp={enterManager} />
         <button type="submit" onClick={handleAdminLogin}>Login</button>
       </div>
     </div>

@@ -19,6 +19,5 @@ export const CLIENT_SECRET = process.env.CLIENT_SECRET || '';
 
 export const UPDATE_OK = { update: "ok" };
 
-export const sessions: string[] = ["0XSrVh975CV8YncPmeBjQB"];
 export const UPLOADS_DIR = "./uploads/";
 export const ALLOWED_MIME = ["audio/mpeg", "audio/wav", "audio/webm"];

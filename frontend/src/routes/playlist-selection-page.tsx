@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { SimplifiedPlaylist } from "spotify-types";
 import { ModeSelector, PlaylistTable } from "../components";
@@ -8,12 +8,19 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './playlist-selection-page.scss';
 import { getUserPlaylists } from "../lib/spotify-api";
 import MediaQuery from "react-responsive";
-import { submitRequest } from "../lib/requests";
+import { submitRequest } from "../lib/backend-api";
 
 export async function playlistLoader() {
   console.log('Loading playlist selection page...');
   return await getUserPlaylists();
 }
+
+
+const handleUrlRequest = () => {
+  const url = (document.getElementById('urlRequestInput') as HTMLInputElement);
+  submitRequest(url.value)
+  url.value = '';
+};
 
 export function PlaylistSelectionPage() {
   const playlists = useLoaderData() as Awaited<ReturnType<typeof playlistLoader>>;
@@ -55,10 +62,3 @@ export function PlaylistSelectionPage() {
     <ModeSelector selectedPlaylist={chosenPlaylist} />
   </div>;
 }
-
-
-const handleUrlRequest = () => {
-  const url = (document.getElementById('urlRequestInput') as HTMLInputElement).value;
-  console.log('Clicked with input text:', url);
-  submitRequest(url)
-};

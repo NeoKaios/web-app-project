@@ -1,13 +1,13 @@
-import { fetchRequests } from '../lib/requests';
 import { getPlaylist } from '../lib/spotify-api';
 import './requests-page.scss';
 import { useLoaderData, useNavigate } from "react-router-dom";
+import { fetchRequests } from '../lib/backend-api';
+import { logoutAdmin } from '../lib/auth';
 
 export async function requestsLoader() {
   console.log('Loading requests page...');
   const reqArray = await fetchRequests()
   const requestedPlaylists: { name: string, id: string }[] = []
-
 
   if (reqArray === undefined) {
     return [];
@@ -28,26 +28,33 @@ export async function requestsLoader() {
 export function RequestsPage() {
   const navigate = useNavigate();
   const requests = useLoaderData() as Awaited<ReturnType<typeof requestsLoader>>;
-  console.log(requests)
-  console.log(requests.length)
+
+  const logout = () => {
+    logoutAdmin();
+    navigate('/home');
+  }
+
   return (
-    <table className="requests-table">
-      <thead>
-        <tr>
-          <th>Playlist ID</th>
-          <th className='main'>Requested Playlist</th>
-          <th>Analyse missing songs</th>
-        </tr>
-      </thead>
-      <tbody>
-        {requests.map(({ name, id }) => (
-          <tr key={id}>
-            <td>{id}</td>
-            <td> <div dangerouslySetInnerHTML={{ __html: name }} /></td>
-            <td><button onClick={() => {navigate('/analyse/' + id)}}>Analyse</button></td>
+    <div className='requests-panel'>
+      <table className="requests-table">
+        <thead>
+          <tr>
+            <th>Playlist ID</th>
+            <th className='main'>Requested Playlist</th>
+            <th>Analyse missing songs</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {requests.map(({ name, id }) => (
+            <tr key={id}>
+              <td>{id}</td>
+              <td> <div dangerouslySetInnerHTML={{ __html: name }} /></td>
+              <td><button onClick={() => { navigate('/analyse/' + id) }}>Analyse</button></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <button onClick={logout}>Logout of Admin role</button>
+    </div>
   );
 }

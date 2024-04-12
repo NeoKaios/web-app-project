@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { CLIENT_SECRET } from "./consts";
 
-export function protectRoute(callback: (req: Request, res: Response) => Response) {
+export function protectRoute(callback: (req: Request, res: Response) => Response | Promise<Response>) {
   return (req: Request, res: Response) => {
     const auth = req.header("Authorization");
     if (auth && auth.startsWith('Bearer ')) {
@@ -11,7 +11,7 @@ export function protectRoute(callback: (req: Request, res: Response) => Response
         return callback(req, res);
       }
     }
-    return res.status(403).end();
+    return res.status(401).end();
   }
 }
 
@@ -19,9 +19,9 @@ export function locallogin(req: Request, res: Response) {
   if (req.query.userLogin) {
     res.send(getUserToken());
   } else if (req.query.password === 'admin') {
-    res.send({ success: true, token: getAdminToken() });
+    res.send(getAdminToken());
   } else {
-    res.send({ success: false, token: '' });
+    res.status(401).end();
   }
   return res;
 }
