@@ -26,7 +26,7 @@ export function LoginPage() {
   }
 
   const enterManager = (ev: KeyboardEvent<HTMLInputElement>) => {
-    if(ev.key === "Enter") {
+    if (ev.key === "Enter") {
       handleAdminLogin();
     }
   }

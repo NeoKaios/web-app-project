@@ -40,7 +40,7 @@ export function AnalysePage() {
 
   return (
     <div className='analyse-panel'>
-    <h2>{playlist.name}</h2>
+      <h2>{playlist.name}</h2>
       <table className="requests-table">
         <thead>
           <tr>

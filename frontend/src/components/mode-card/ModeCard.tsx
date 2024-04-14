@@ -8,10 +8,10 @@ export function ModeCard({ image, title, description, href }: { image: JSX.Eleme
     <Grid item>
       <Card sx={{ width: 300, height: "100%" }}>
         <CardActionArea onClick={() => navigate(href)} sx={{ height: "100%", display: "flex", alignItems: "start" }}>
-        <CardContent sx={{ textAlign: "center" }}>
-          <CardMedia>
-            {image}
-          </ CardMedia>
+          <CardContent sx={{ textAlign: "center" }}>
+            <CardMedia>
+              {image}
+            </ CardMedia>
             <Typography gutterBottom variant="h5" component="div">
               {title}
             </Typography>

@@ -5,7 +5,8 @@
     margin-block: 2rem;
   }
 
-  button, input[type=submit] {
+  button,
+  input[type=submit] {
     font-size: 1rem;
     padding-inline: 1rem;
     color: white;
@@ -26,7 +27,8 @@
     }
   }
 
-  .user-login, .admin-login {
+  .user-login,
+  .admin-login {
     display: flex;
     gap: 1rem;
 

@@ -5,9 +5,9 @@
     "husky": "^9.0.11"
   },
   "scripts": {
-    "prepare": "husky",
+    "prepare": "husky && npm --prefix frontend i && npm --prefix backend i",
     "dev": "docker compose -f dev.docker-compose.yaml --env-file backend/.env up",
     "prod": "docker compose -f prod.docker-compose.yaml --env-file backend/.env up",
-    "build": "docker compose -f dev.docker-compose.yaml --env-file backend/.env up --build"
+    "build": "docker compose -f dev.docker-compose.yaml --env-file backend/.env build --no-cache"
   }
 }

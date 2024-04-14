@@ -16,7 +16,8 @@ $black-color: #191414;
     width: 100%;
     height: 100%;
 
-    .flashcard-front, .flashcard-back {
+    .flashcard-front,
+    .flashcard-back {
       display: flex;
       flex-direction: column;
       align-items: center;

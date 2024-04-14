@@ -10,7 +10,7 @@ enum PlayingState {
   Paused = 'paused',
 }
 
-export function Player({ preview_url, id, volume }: { preview_url: string, id?:string, volume? :number }) {
+export function Player({ preview_url, id, volume }: { preview_url: string, id?: string, volume?: number }) {
   const [playingState, setPlayingState] = useState(PlayingState.Init);
   const [audio] = useState(new Audio());
 
@@ -25,7 +25,7 @@ export function Player({ preview_url, id, volume }: { preview_url: string, id?:s
     }
     audio.src = preview_url;
     audio.load();
-    audio.volume=volume?volume:1;
+    audio.volume = volume ? volume : 1;
     console.log(audio.volume);
   }, [preview_url, audio]);
 
@@ -51,11 +51,11 @@ export function Player({ preview_url, id, volume }: { preview_url: string, id?:s
       setPlayingState(PlayingState.Started);
       audio.play();
     }
-    
+
   };
 
   return (
-    <div className={"player " + playingState} onClick={handleAudio} onAnimationEnd={() => { } } id={id} >
+    <div className={"player " + playingState} onClick={handleAudio} onAnimationEnd={() => { }} id={id} >
       <img src={logo} className='animated' alt="Player" />
     </div>
   );

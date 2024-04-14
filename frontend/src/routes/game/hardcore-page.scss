@@ -1,45 +1,51 @@
 .hardcore-page {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    height: 100%;
-    padding: 0 1rem;
-    gap: 2rem;
-  
-    .title {
-      margin: unset;
-    }
-  
-   
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  height: 100%;
+  padding: 0 1rem;
+  gap: 2rem;
+
+  .title {
+    margin: unset;
   }
-  
+
+
+}
+
 select {
-    display: ok;
+  display: ok;
 }
 
 .animated {
-    
-    
-    text-align: center;
-    line-height: 100px; /* Adjust based on logo size */
-    font-size: 24px; /* Adjust font size as needed */
-    animation: rotateLogo 2s linear infinite; /* Rotate animation */
+
+
+  text-align: center;
+  line-height: 100px;
+  /* Adjust based on logo size */
+  font-size: 24px;
+  /* Adjust font size as needed */
+  animation: rotateLogo 2s linear infinite;
+  /* Rotate animation */
+}
+
+@keyframes rotateLogo {
+  from {
+    transform: rotate(0deg);
+    /* Start rotation from 0 degrees */
   }
-  
-  @keyframes rotateLogo {
-    from {
-      transform: rotate(0deg); /* Start rotation from 0 degrees */
-    }
-    to {
-      transform: rotate(360deg); /* Rotate 360 degrees */
-    }
+
+  to {
+    transform: rotate(360deg);
+    /* Rotate 360 degrees */
   }
-  
+}
 
 
 
-  #score {
-    transform-style: preserve-3d;
-    font-size:90px;
-    line-height: 90px;
-  }
+
+#score {
+  transform-style: preserve-3d;
+  font-size: 90px;
+  line-height: 90px;
+}

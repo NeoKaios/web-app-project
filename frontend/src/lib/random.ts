@@ -19,7 +19,7 @@ export function randomChoice<T>(arr: T[]): T {
  * Return n random, different elements of an array
  */
 export function randomNChoices<T>(arr: T[], n: number): T[] {
-  if(arr.length < n) throw new Error(ERROR_EMPTY_ARRAY);
+  if (arr.length < n) throw new Error(ERROR_EMPTY_ARRAY);
   var indexes = Array.from(Array(arr.length), (_, idx) => idx);
   var selected = []
   for (let i = 0; i < n; i++) {

@@ -7,18 +7,18 @@ export function PlaylistElement({ playlist, callback }: { playlist: SimplifiedPl
   return (
     <Card sx={{ maxWidth: cardSize, margin: "auto" }}>
       <CardActionArea onClick={() => callback(playlist)}>
-      <CardMedia
-        component="img"
-        height="100%"
-        image={playlist.images[0].url}
-        alt={"Playlist " + playlist.name}
-      />
-      <CardContent>
-        <Typography noWrap textAlign="center" gutterBottom variant="h5" component="div">
-          {playlist.name}
-        </Typography>
-      </CardContent>
-    </CardActionArea>
+        <CardMedia
+          component="img"
+          height="100%"
+          image={playlist.images[0].url}
+          alt={"Playlist " + playlist.name}
+        />
+        <CardContent>
+          <Typography noWrap textAlign="center" gutterBottom variant="h5" component="div">
+            {playlist.name}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
     </Card >
   );
 }
