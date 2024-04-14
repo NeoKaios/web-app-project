@@ -5,8 +5,11 @@ import './hardcore-page.scss';
 import { Track } from 'spotify-types';
 import { MouseEventHandler, useState } from 'react';
 import { FourButton, Player } from '../../components';
-import logo from '../../assets/spotify-logo.svg'
-
+import logo0 from '../../assets/0-spotify-logo.svg'
+import logo1 from '../../assets/1-spotify-logo.svg'
+import logo2 from '../../assets/2-spotify-logo.svg'
+import logo3 from '../../assets/3-spotify-logo.svg'
+import Select from 'react-select';
 
 export async function hardcoreLoader({ params: { playlist_id } }: any) {
     console.log('Loading hardcore page...');
@@ -21,8 +24,10 @@ export async function hardcoreLoader({ params: { playlist_id } }: any) {
   
   export function HardcorePage() {
     const { tracks, playlistInfo } = useLoaderData() as Awaited<ReturnType<typeof hardcoreLoader>>;
-    const [choices, setChoices] = useState<[ Track, Track, Track]>();
+    const [choices, setChoices] = useState<Track[]>();
     const [volume, setVolume] = useState<[number, number, number]>([1,0.85,0.70]);
+    
+    const logos = [logo0,logo1,logo2,logo3]
 
     const getRandomSelection = () => {
         setChoices([...(randomNChoices(tracks, 3))] as typeof choices);
@@ -40,15 +45,60 @@ export async function hardcoreLoader({ params: { playlist_id } }: any) {
         console.log(volume);
     }   
 
+    const options = tracks.map((item, index) => ({
+        value: item.id,
+        label: item.name,
+      }));
+
+      const submitChoice = (selectedOption : any) => {
+        const chosen = selectedOption.value;
+        if (choices?.filter(tr => tr.id == chosen).length !=0){
+            setChoices(oldValues => {
+                    return oldValues?.filter(tr => tr.id != chosen);
+            })
+            
+        }
+        //setChoices()
+      }
+
     return (
         <div className="hardcore-page">
           <h2 className='title'>Training on {playlistInfo.name}</h2>
           <div id="allPlayers" hidden>
-            <Player preview_url={choices[0].preview_url} id="partialPlayer1" volume={volume[0]}/>
-            <Player preview_url={choices[1].preview_url} id="partialPlayer2" volume={volume[1]}/>
-            <Player preview_url={choices[2].preview_url} id="partialPlayer3" volume ={volume[2]}/>
+            <div></div>
+            {choices.map(({ preview_url }, idx) => {
+                return <Player preview_url={preview_url} id={"partialPlayer"+idx.toString()} volume={volume[idx]}/>
+         })}
             </div>
-          <img src={logo} className='animated' alt="Player" onClick={handleClick} />
+          <img src={logos[choices.length]} className='animated' alt="Player" onClick={handleClick} />
+          <Select placeholder="Select a song" options={options} styles={{
+            menu: (base) =>({
+                width:"max-content",
+                minWidth:"100%"
+            }),
+            input: (base) =>({
+                color:'white'
+            }),
+            control: (baseStyles, state) => ({
+                ...baseStyles,
+                borderColor: 'green',
+                backgroundColor:'black',
+                color:'green',
+            }),
+            singleValue:(provided:any) => ({
+                ...provided,
+                height:'100%',
+                color:'white',
+                paddingTop:'3px',
+                backgroundColor:'black'
+              }),
+              option: (styles, {isFocused, isSelected}) => ({
+                ...styles,
+                backgroundColor: isFocused?'green':'black',           
+            })
+            }}
+            onChange={submitChoice}
+            />
         </div>
       );
 
