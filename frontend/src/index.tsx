@@ -15,6 +15,7 @@ import { requestsLoader, RequestsPage } from './routes/admin/requests-page';
 import { LoginPage } from './routes/login-page';
 import { analyseLoader, AnalysePage } from './routes/admin/analyse-page';
 import { adminSecureLoader } from './lib/backend-api';
+import { HardcorePage } from './routes/game/hardcore-page';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -71,6 +72,11 @@ const router = createBrowserRouter([
           {
             path: "/train/:playlist_id",
             element: <TrainingPage />,
+            loader: trainingLoader,
+          },
+          {
+            path: "/hardcore/:playlist_id",
+            element: <HardcorePage />,
             loader: trainingLoader,
           },
         ]
