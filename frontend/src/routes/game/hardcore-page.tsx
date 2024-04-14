@@ -31,14 +31,16 @@ export async function hardcoreLoader({ params: { playlist_id } }: any) {
         console.log(choices)
       }
     
-    if (!choices || choices.length==0) {
-        if (choices?.length==0){
-            setCurrentScore(oldScore =>{
-                return oldScore+100;
-            })
-        }
+    if (!choices) {
         getRandomSelection();
-        return null;
+        return null
+    }
+
+    if (choices.length==0){
+        setCurrentScore(oldScore =>{
+            return oldScore+100;
+        })
+        getRandomSelection();
     }
 
     const handleClick = () => {
@@ -70,7 +72,6 @@ export async function hardcoreLoader({ params: { playlist_id } }: any) {
           <h2 className='title'>Training on {playlistInfo.name}</h2>
           <div id="allPlayers" hidden>
             <div></div>
-            if(choices.length !=0)
             {choices.map(({ preview_url }, idx) => {
                 return <Player preview_url={preview_url} id={"partialPlayer"+idx.toString()} volume={volume[idx]}/>
          })}
