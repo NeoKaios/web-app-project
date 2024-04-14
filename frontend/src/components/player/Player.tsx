@@ -10,7 +10,7 @@ enum PlayingState {
   Paused = 'paused',
 }
 
-export function Player({ preview_url }: { preview_url: string }) {
+export function Player({ preview_url, id, volume }: { preview_url: string, id?:string, volume? :number }) {
   const [playingState, setPlayingState] = useState(PlayingState.Init);
   const [audio] = useState(new Audio());
 
@@ -25,6 +25,8 @@ export function Player({ preview_url }: { preview_url: string }) {
     }
     audio.src = preview_url;
     audio.load();
+    audio.volume=volume?volume:1;
+    console.log(audio.volume);
   }, [preview_url, audio]);
 
   useEffect(() => {
@@ -41,6 +43,7 @@ export function Player({ preview_url }: { preview_url: string }) {
   }, [audio])
 
   const handleAudio = () => {
+    console.log(volume);
     if (playingState === PlayingState.Started) {
       setPlayingState(PlayingState.Paused);
       audio.pause();
@@ -48,10 +51,14 @@ export function Player({ preview_url }: { preview_url: string }) {
       setPlayingState(PlayingState.Started);
       audio.play();
     }
+    
   };
+  
+
+  
 
   return (
-    <div className={"player " + playingState} onClick={handleAudio} onAnimationEnd={() => { }}>
+    <div className={"player " + playingState} onClick={handleAudio} onAnimationEnd={() => { } } id={id} >
       <img src={logo} className='animated' alt="Player" />
     </div>
   );
