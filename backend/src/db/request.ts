@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { Database } from "./setup";
-import { request } from "http";
 
 /**
  * Create a user request for a playlist

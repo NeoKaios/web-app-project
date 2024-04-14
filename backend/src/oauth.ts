@@ -1,7 +1,6 @@
 import crypto from 'crypto';
 import querystring from 'querystring';
 import { Request, Response } from 'express';
-// import request from 'request';
 import { CLIENT_ID, CLIENT_SECRET, FRONT_URL, HOME_URL, REDIRECT_URI, STATEKEY } from './consts';
 
 const encodeFormData = (data: any) => {

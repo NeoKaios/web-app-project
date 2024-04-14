@@ -52,7 +52,7 @@ app.post('/get_extra_urls', extraUrls)
 //Vulnerable Features Management
 app.get('/reqstore', dbStoreRequest)
 app.get('/reqfetch', protectRoute(dbFetchAllRequests))
-app.get('/reqdelete', dbDeleteRequest)
+app.get('/reqdelete', protectRoute(dbDeleteRequest))
 
 app.listen(4000, () => {
   console.log('listening for requests on port 4000')

@@ -2,17 +2,17 @@ import { Request, Response } from "express";
 import { Database } from "./setup";
 
 export async function dbTest(req: Request, res: Response) {
-    const micronoyau = await Database.User.create({ username: 'micronoyau' });
-    const progression = await Database.Progression.create({
-      user: micronoyau.get('id'),
-      playlist: 1,
-      song: 1,
-      repetitions: 0,
-      ef: 2.5,
-      interval: 1
-    });
-    return res.send();
-  }
+  const micronoyau = await Database.User.create({ username: 'micronoyau' });
+  const progression = await Database.Progression.create({
+    user: micronoyau.get('id'),
+    playlist: 1,
+    song: 1,
+    repetitions: 0,
+    ef: 2.5,
+    interval: 1
+  });
+  return res.send();
+}
 
 /**
  * Register user in DB
