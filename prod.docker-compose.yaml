@@ -5,14 +5,30 @@ services:
     container_name: frontend-prod
     ports:
       - '3000:3000'
+  db-prod:
+    image: mysql:latest
+    container_name: db-prod
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    expose:
+      - '3306'
     volumes:
-      - /app
+      - db-prod-volume:/var/lib/mysql
   backend-prod:
+    depends_on:
+      - db-prod
     build: ./backend
     container_name: backend-prod
+    environment:
+      - DB_HOST=db-prod
+      - DB_PORT=3306
     ports:
       - '4000:4000'
     stdin_open: true
     tty: true
-    volumes:
-      - /app
+
+volumes:
+  db-prod-volume:
+
