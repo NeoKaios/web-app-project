@@ -19,7 +19,7 @@ select {
 
 .animated {
     
-   
+    
     text-align: center;
     line-height: 100px; /* Adjust based on logo size */
     font-size: 24px; /* Adjust font size as needed */
@@ -35,3 +35,11 @@ select {
     }
   }
   
+
+
+
+  #score {
+    transform-style: preserve-3d;
+    font-size:90px;
+    line-height: 90px;
+  }

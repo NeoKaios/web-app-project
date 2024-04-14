@@ -16,9 +16,6 @@ export async function hardcoreLoader({ params: { playlist_id } }: any) {
     const allTracks = await getPlaylistItems(playlist_id);
     const playlistInfo = await getPlaylist(playlist_id);
     const tracks = allTracks.filter(track => track.preview_url);
-    
-
-
     return { tracks, playlistInfo };
   }
   
@@ -26,17 +23,23 @@ export async function hardcoreLoader({ params: { playlist_id } }: any) {
     const { tracks, playlistInfo } = useLoaderData() as Awaited<ReturnType<typeof hardcoreLoader>>;
     const [choices, setChoices] = useState<Track[]>();
     const [volume, setVolume] = useState<[number, number, number]>([1,0.85,0.70]);
-    
+    const [currentScore, setCurrentScore] = useState<number>(0)
     const logos = [logo0,logo1,logo2,logo3]
 
     const getRandomSelection = () => {
-        setChoices([...(randomNChoices(tracks, 3))] as typeof choices);
+        setChoices([...(randomNChoices(tracks, 3))] as typeof choices); 
+        console.log(choices)
       }
     
-      if (!choices) {
+    if (!choices || choices.length==0) {
+        if (choices?.length==0){
+            setCurrentScore(oldScore =>{
+                return oldScore+100;
+            })
+        }
         getRandomSelection();
         return null;
-      }
+    }
 
     const handleClick = () => {
         const players = document.querySelectorAll('[id^="partialPlayer"]');
@@ -54,23 +57,30 @@ export async function hardcoreLoader({ params: { playlist_id } }: any) {
         const chosen = selectedOption.value;
         if (choices?.filter(tr => tr.id == chosen).length !=0){
             setChoices(oldValues => {
-                    return oldValues?.filter(tr => tr.id != chosen);
+                return oldValues?.filter(tr => tr.id != chosen);
             })
-            
+            setCurrentScore(oldScore =>{
+                return oldScore+50;
+            })
         }
-        //setChoices()
       }
-
+      
     return (
         <div className="hardcore-page">
           <h2 className='title'>Training on {playlistInfo.name}</h2>
           <div id="allPlayers" hidden>
             <div></div>
+            if(choices.length !=0)
             {choices.map(({ preview_url }, idx) => {
                 return <Player preview_url={preview_url} id={"partialPlayer"+idx.toString()} volume={volume[idx]}/>
          })}
             </div>
-          <img src={logos[choices.length]} className='animated' alt="Player" onClick={handleClick} />
+            <img src={logos[choices.length]} className='animated' alt="Player" onClick={handleClick} /> 
+            <div id="center">
+                <div className='animated-score' id="score">
+                    {currentScore}
+                </div>
+            </div>
           <Select placeholder="Select a song" options={options} styles={{
             menu: (base) =>({
                 width:"max-content",
@@ -99,7 +109,9 @@ export async function hardcoreLoader({ params: { playlist_id } }: any) {
             }}
             onChange={submitChoice}
             />
+           
         </div>
+        
       );
 
 }

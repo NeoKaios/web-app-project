@@ -53,9 +53,6 @@ export function Player({ preview_url, id, volume }: { preview_url: string, id?:s
     }
     
   };
-  
-
-  
 
   return (
     <div className={"player " + playingState} onClick={handleAudio} onAnimationEnd={() => { } } id={id} >
