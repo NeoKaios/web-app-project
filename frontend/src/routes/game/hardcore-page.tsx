@@ -10,6 +10,7 @@ import logo1 from '../../assets/1-spotify-logo.svg'
 import logo2 from '../../assets/2-spotify-logo.svg'
 import logo3 from '../../assets/3-spotify-logo.svg'
 import Select from 'react-select';
+import { ERROR_PLAYLIST_IS_TOO_SMALL } from '../../lib/consts';
 
 export async function hardcoreLoader({ params: { playlist_id } }: any) {
     console.log('Loading hardcore page...');
@@ -25,6 +26,10 @@ export async function hardcoreLoader({ params: { playlist_id } }: any) {
     const [volume, setVolume] = useState<[number, number, number]>([1,0.85,0.70]);
     const [currentScore, setCurrentScore] = useState<number>(0)
     const logos = [logo0,logo1,logo2,logo3]
+
+    if (tracks.length < 3) {
+        throw new Error(ERROR_PLAYLIST_IS_TOO_SMALL);
+      }
 
     const getRandomSelection = () => {
         setChoices([...(randomNChoices(tracks, 3))] as typeof choices); 
