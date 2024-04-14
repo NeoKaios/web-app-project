@@ -8,14 +8,14 @@ import { ErrorPage } from './routes/error-page';
 import { HomePage, playlistLoader } from './routes/home-page';
 import { APIErrorPage } from './routes/api-error-page';
 import { spotifyAPILoader } from './lib/spotify-api';
-import { trainingLoader, TrainingPage } from './routes/game/training-page';
+import { quizLoader, QuizPage } from './routes/game/quiz-page';
 import { studyLoader, StudyPage } from './routes/game/study-page';
 import { progressionLoader, ProgressionPage } from './routes/game/progression-page';
 import { requestsLoader, RequestsPage } from './routes/admin/requests-page';
 import { LoginPage } from './routes/login-page';
 import { analyseLoader, AnalysePage } from './routes/admin/analyse-page';
 import { adminSecureLoader } from './lib/backend-api';
-import { HardcorePage } from './routes/game/hardcore-page';
+import { hardcoreLoader, HardcorePage } from './routes/game/hardcore-page';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -70,14 +70,14 @@ const router = createBrowserRouter([
             element: <StudyPage />,
           },
           {
-            path: "/train/:playlist_id",
-            element: <TrainingPage />,
-            loader: trainingLoader,
+            path: "/quiz/:playlist_id",
+            element: <QuizPage />,
+            loader: quizLoader,
           },
           {
             path: "/hardcore/:playlist_id",
             element: <HardcorePage />,
-            loader: trainingLoader,
+            loader: hardcoreLoader,
           },
         ]
       }

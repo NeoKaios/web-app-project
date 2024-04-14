@@ -6,7 +6,7 @@ export const BACK_URL = 'http://localhost:4000/'
 export const HOME_URL = '/'
 export const STUDY_URL = (playlist_id: string) => '/study/' + playlist_id;
 export const PROGRESSION_URL = (playlist_id: string) => '/progression/' + playlist_id;
-export const TRAIN_URL = (playlist_id: string) => '/train/' + playlist_id;
+export const QUIZ_URL = (playlist_id: string) => '/quiz/' + playlist_id;
 export const HARDCORE_URL = (playlist_id: string) => '/hardcore/' + playlist_id
 
 export const ACCESS_TOKEN_COOKIE = 'access_token';

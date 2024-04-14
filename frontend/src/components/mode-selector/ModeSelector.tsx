@@ -3,14 +3,14 @@ import { ModeCard } from "..";
 import BookIcon from '@mui/icons-material/Book';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';
-import { HARDCORE_URL, PROGRESSION_URL, TRAIN_URL } from "../../lib/consts";
+import { HARDCORE_URL, PROGRESSION_URL, QUIZ_URL } from "../../lib/consts";
 import { SimplifiedPlaylist } from "spotify-types";
 
 export function ModeSelector({ selectedPlaylist }: { selectedPlaylist: SimplifiedPlaylist }) {
   const learningIcon = (<BookIcon sx={{
     fontSize: "15vmin"
   }} />);
-  const trainingIcon = (<SportsEsportsIcon sx={{
+  const quizIcon = (<SportsEsportsIcon sx={{
     fontSize: "15vmin"
   }} />);
   const challengeIcon = (<SportsScoreIcon sx={{
@@ -27,10 +27,10 @@ export function ModeSelector({ selectedPlaylist }: { selectedPlaylist: Simplifie
         description="Learn your songs in an adaptative manner using an anki-based approach."
         href={PROGRESSION_URL(selectedPlaylist.id)}
       />
-      <ModeCard image={trainingIcon}
-        title="Training"
-        description="Train yourself in a quizz-like fashion"
-        href={TRAIN_URL(selectedPlaylist.id)}
+      <ModeCard image={quizIcon}
+        title="Quiz"
+        description="Test yourself in a quiz-like fashion"
+        href={QUIZ_URL(selectedPlaylist.id)}
       />
       <ModeCard image={challengeIcon}
         title="Challenge (WIP)"

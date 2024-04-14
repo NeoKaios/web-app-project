@@ -20,10 +20,11 @@ export async function hardcoreLoader({ params: { playlist_id } }: any) {
   return { tracks, playlistInfo };
 }
 
+const VOLUMES = [1, 0.85, 0.70] as const;
+
 export function HardcorePage() {
   const { tracks, playlistInfo } = useLoaderData() as Awaited<ReturnType<typeof hardcoreLoader>>;
   const [choices, setChoices] = useState<Track[]>();
-  const [volume, setVolume] = useState<[number, number, number]>([1, 0.85, 0.70]);
   const [currentScore, setCurrentScore] = useState<number>(0)
   const logos = [logo0, logo1, logo2, logo3]
 
@@ -68,11 +69,11 @@ export function HardcorePage() {
 
   return (
     <div className="hardcore-page">
-      <h2 className='title'>Training on {playlistInfo.name}</h2>
+      <h2 className='title'>Multiple songs from {playlistInfo.name}</h2>
       <div id="allPlayers" hidden>
         <div></div>
         {choices.map(({ preview_url }, idx) => {
-          return <Player preview_url={preview_url} id={"partialPlayer" + idx.toString()} volume={volume[idx]} />
+          return <Player preview_url={preview_url} id={"partialPlayer" + idx.toString()} volume={VOLUMES[idx]} />
         })}
       </div>
       <img src={logos[choices.length]} className='animated' alt="Player" onClick={handleClick} />
@@ -82,13 +83,8 @@ export function HardcorePage() {
         </div>
       </div>
       <Select placeholder="Select a song" options={options} styles={{
-        menu: (base) => ({
-          width: "max-content",
-          minWidth: "100%"
-        }),
-        input: (base) => ({
-          color: 'white'
-        }),
+        menu: (base) => ({ width: "max-content", minWidth: "100%" }),
+        input: (base) => ({ color: 'white' }),
         control: (baseStyles, state) => ({
           ...baseStyles,
           borderColor: 'green',
