@@ -26,7 +26,6 @@ export function Player({ preview_url, id, volume }: { preview_url: string, id?: 
     audio.src = preview_url;
     audio.load();
     audio.volume = volume ? volume : 1;
-    console.log(audio.volume);
   }, [preview_url, audio]);
 
   useEffect(() => {
@@ -43,7 +42,6 @@ export function Player({ preview_url, id, volume }: { preview_url: string, id?: 
   }, [audio])
 
   const handleAudio = () => {
-    console.log(volume);
     if (playingState === PlayingState.Started) {
       setPlayingState(PlayingState.Paused);
       audio.pause();

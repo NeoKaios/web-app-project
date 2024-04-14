@@ -33,7 +33,6 @@ export function HardcorePage() {
 
   const getRandomSelection = () => {
     setChoices([...(randomNChoices(tracks, 3))] as typeof choices);
-    console.log(choices)
   }
 
   if (!choices) {
@@ -41,7 +40,7 @@ export function HardcorePage() {
     return null
   }
 
-  if (choices.length == 0) {
+  if (choices.length === 0) {
     setCurrentScore(oldScore => {
       return oldScore + 100;
     })
@@ -50,21 +49,16 @@ export function HardcorePage() {
 
   const handleClick = () => {
     const players = document.querySelectorAll('[id^="partialPlayer"]');
-    console.log(players)
     players.forEach((player: any) => player.click());
-    console.log(volume);
   }
 
-  const options = tracks.map((item, index) => ({
-    value: item.id,
-    label: item.name,
-  }));
+  const options = tracks.map(item => ({ value: item.id, label: item.name, }));
 
   const submitChoice = (selectedOption: any) => {
     const chosen = selectedOption.value;
-    if (choices?.filter(tr => tr.id == chosen).length != 0) {
+    if (choices?.filter(tr => tr.id === chosen).length !== 0) {
       setChoices(oldValues => {
-        return oldValues?.filter(tr => tr.id != chosen);
+        return oldValues?.filter(tr => tr.id !== chosen);
       })
       setCurrentScore(oldScore => {
         return oldScore + 50;

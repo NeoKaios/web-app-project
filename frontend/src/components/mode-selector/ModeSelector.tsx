@@ -33,7 +33,7 @@ export function ModeSelector({ selectedPlaylist }: { selectedPlaylist: Simplifie
         href={TRAIN_URL(selectedPlaylist.id)}
       />
       <ModeCard image={challengeIcon}
-        title="Challenge"
+        title="Challenge (WIP)"
         description="Hardcore mode : try to recognize several songs at once !"
         href={HARDCORE_URL(selectedPlaylist.id)}
       />
