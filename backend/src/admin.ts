@@ -18,7 +18,7 @@ export function protectRoute(callback: (req: Request, res: Response) => Response
 export function locallogin(req: Request, res: Response) {
   if (req.query.userLogin) {
     res.send(getUserToken());
-  } else if (req.query.password === ADMIN_PASSWD) {
+  } else if (req.query.password && req.query.password === ADMIN_PASSWD) {
     res.send(getAdminToken());
   } else {
     res.status(401).end();

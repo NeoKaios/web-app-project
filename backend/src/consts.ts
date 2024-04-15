@@ -16,7 +16,7 @@ export const DB_PASSWORD = process.env.MYSQL_ROOT_PASSWORD ?? '';
 
 export const CLIENT_ID = process.env.CLIENT_ID || '';
 export const CLIENT_SECRET = process.env.CLIENT_SECRET || '';
-export const ADMIN_PASSWD = process.env.ADMIN_PASSWD || '';
+export const ADMIN_PASSWD = process.env.ADMIN_PASSWD;
 
 export const UPDATE_OK = { update: "ok" };
 
