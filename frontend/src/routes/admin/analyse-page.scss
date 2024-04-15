@@ -22,10 +22,11 @@
       width: 50%;
     }
 
-    // tbody td.file {
-    //   display: flex;
-    //   justify-content: center;
-    // }
+    tbody td div.audio-cell {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
 
     th {
       background-color: green; // Background color for table header

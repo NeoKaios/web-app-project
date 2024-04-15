@@ -8,6 +8,11 @@ export async function analyseLoader({ params: { playlist_id } }: any) {
   console.log('Loading analyse page...');
   const playlist = await getPlaylist(playlist_id);
   const tracks = await getPlaylistItems(playlist_id);
+  tracks.sort((a,b) => {
+    const a_score = a.preview_url ? (a.preview_url.startsWith(BACK_URL) ? 0 : 1) : -1;
+    const b_score = b.preview_url ? (b.preview_url.startsWith(BACK_URL) ? 0 : 1) : -1;
+    return a_score - b_score;
+  });
   return { tracks, playlist };
 }
 
@@ -54,7 +59,7 @@ export function AnalysePage() {
             <tr key={id}>
               <td>{id}</td>
               <td>{name}</td>
-              <td> {preview_url ? <div style={{display:"flex", alignItems:"center"}}>{preview_url.startsWith(BACK_URL) ? "LOCAL" : "SPOTIFY"} <audio controls src={preview_url}></audio></div> : "No song present"}</td>
+              <td> {preview_url ? <div className='audio-cell'>{preview_url.startsWith(BACK_URL) ? "LOCAL" : "SPOTIFY"} <audio controls src={preview_url}></audio></div> : "No song present"}</td>
               <td>
                 {(!preview_url || !preview_url.startsWith(BACK_URL)) ?
                   <input type="file" id={id} name="song" accept="audio/mpeg,audio/wav, audio/webm" />
